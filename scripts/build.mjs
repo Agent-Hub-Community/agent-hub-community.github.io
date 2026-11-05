@@ -8,6 +8,7 @@ await Promise.all([
   copyFile('src/react-bits/LICENSE.md', 'assets/licenses/react-bits.txt'),
   copyFile('src/amicro/LICENSE', 'assets/licenses/amicro.txt'),
   copyFile('src/brand/space-grotesk-LICENSE.txt', 'assets/licenses/space-grotesk.txt'),
+  copyFile('src/theme-init.js', 'assets/theme.js'),
   copyFile('node_modules/@fontsource-variable/inter/LICENSE', 'assets/licenses/inter.txt'),
   copyFile('src/join-example.html', 'join-example.html')
 ]);

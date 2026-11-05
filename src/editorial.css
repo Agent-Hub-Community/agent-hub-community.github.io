@@ -22,8 +22,8 @@
 .js .topic-chapter.is-active h3 { animation: chapter-title-in .65s var(--ease-out) both; }
 .js .topic-chapter.is-active p { animation: chapter-copy-in .75s var(--ease-out) both; }
 .js .topic-chapter.is-active .topic-ghost { animation: chapter-number-in .9s var(--ease-out) both; }
-@keyframes chapter-title-in { from { clip-path: inset(100% 0 0 0); transform: translateY(30px); } to { clip-path: inset(0); transform: none; } }
-@keyframes chapter-copy-in { from { clip-path: inset(0 100% 0 0); transform: translateX(20px); } to { clip-path: inset(0); transform: none; } }
+@keyframes chapter-title-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes chapter-copy-in { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
 @keyframes chapter-number-in { from { transform: translateY(32px); } to { transform: none; } }
 .topic-navigation { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-lg); }
 .topic-tab { min-height: 64px; display: flex; flex-direction: column; align-items: start; justify-content: center; border-top: 1px solid var(--color-rule); gap: var(--space-2xs); padding: var(--space-xs) 0; text-align: left; position: relative; color: var(--color-muted); }
@@ -43,8 +43,6 @@
 .discussion-heading .quiet-link { margin-top: var(--space-sm); }
 .discussion-toolbar { padding-block: var(--space-md); border-top: 1px solid var(--color-rule); margin-bottom: var(--space-xl); }
 .discussion-spread { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--space-xl) var(--space-2xl); align-items: start; }
-.js .discussion-spread { animation: spread-in .75s var(--ease-out) both; }
-@keyframes spread-in { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0); } }
 .discussion-card { position: relative; min-width: 0; padding: var(--space-lg) 0 0; border-top: 1px solid var(--color-rule); }
 .discussion-card--lead { grid-row: span 2; padding-right: var(--space-2xl); border-right: 1px solid var(--color-rule); }
 .discussion-meta { display: flex; justify-content: space-between; align-items: center; color: var(--color-muted); font-size: var(--text-xs); letter-spacing: .02em; margin-bottom: var(--space-lg); }

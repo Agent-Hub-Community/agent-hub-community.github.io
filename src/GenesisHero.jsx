@@ -16,6 +16,7 @@ function useAsciiHands(ref, left, right, progress) {
     const source = new Image();
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     let fields = [[], []], width = 0, height = 0, cellX = 0, cellY = 0;
+    let handColors = [];
     let frame = 0, clock = 0, last = 0, loaded = false, visible = true;
     let paused = preference.matches, active = progress.get() < .72;
     const chars = ' .,:;irsXA253hMHGS#9B&@';
@@ -24,7 +25,7 @@ function useAsciiHands(ref, left, right, progress) {
         context.clearRect(0, 0, width, height);
         context.font = `500 ${cellY * .82}px SFMono-Regular, Consolas, monospace`;
         context.textAlign = 'center';context.textBaseline = 'middle';
-        context.fillStyle = hand ? '#c5d6e8' : '#efece4';
+        context.fillStyle = handColors[hand];
         for (const point of fields[hand]) {
           const wave = Math.sin(point.x * .012 - clock * .8) * Math.sin(point.y * .014 + clock * .4);
           const light = Math.max(0, Math.min(1, point.light + wave * .045));
@@ -61,6 +62,14 @@ function useAsciiHands(ref, left, right, progress) {
       frame = requestAnimationFrame(tick);
     }
     function sync() { cancelAnimationFrame(frame);last = 0;if (loaded) {draw();if (!paused && active && visible && !document.hidden) frame = requestAnimationFrame(tick);} }
+    function updateTheme() {
+      const styles = getComputedStyle(document.documentElement);
+      handColors = ['--color-hand-human', '--color-hand-machine'].map(token => styles.getPropertyValue(token).trim());
+      if (loaded) draw();
+    }
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    updateTheme();
     const stopProgress = progress.on('change', value => { const next = value < .72;if (next !== active) {active = next;sync();} });
     const change = event => { paused = event.matches;sync(); };
     const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting;sync(); });observer.observe(host);
@@ -68,7 +77,7 @@ function useAsciiHands(ref, left, right, progress) {
     preference.addEventListener('change', change);document.addEventListener('visibilitychange', sync);
     source.onload = () => { loaded = true;resize();sync(); };
     source.src = 'assets/human-machine-source.png';
-    return () => { cancelAnimationFrame(frame);stopProgress();observer.disconnect();resizeObserver.disconnect();preference.removeEventListener('change', change);document.removeEventListener('visibilitychange', sync);source.onload = null; };
+    return () => { cancelAnimationFrame(frame);stopProgress();observer.disconnect();resizeObserver.disconnect();themeObserver.disconnect();preference.removeEventListener('change', change);document.removeEventListener('visibilitychange', sync);source.onload = null; };
   }, [ref, left, right, progress]);
 }
 

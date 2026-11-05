@@ -52,15 +52,18 @@
     return spiral[low] + (spiral[high] - spiral[low]) * (index - low);
   }
 
+  function readTheme() {
+    const theme = getComputedStyle(document.documentElement);
+    coreColor = theme.getPropertyValue('--color-galaxy-core').trim();
+    armColor = theme.getPropertyValue('--color-galaxy-arm').trim();
+    glyphFont = theme.getPropertyValue('--font-outlier').trim();
+  }
   function resize() {
     if (!loaded) return;
     // Use layout dimensions: parent scaling must not lower the canvas resolution.
     size = figure.clientWidth;
     if (!size) return;
-    const theme = getComputedStyle(document.documentElement);
-    coreColor = theme.getPropertyValue('--color-galaxy-core').trim();
-    armColor = theme.getPropertyValue('--color-galaxy-arm').trim();
-    glyphFont = theme.getPropertyValue('--font-outlier').trim();
+    readTheme();
     const ratio = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(size * ratio);
     canvas.height = Math.round(size * ratio);
@@ -179,6 +182,7 @@
   figure.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; sync(); } });
   figure.addEventListener('pointerleave', () => { hovering = false; sync(); });
   motion.addEventListener('change', event => { paused = event.matches; sync(); });
+  new MutationObserver(() => { readTheme();if (loaded) draw(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   document.addEventListener('visibilitychange', sync);
   figure.addEventListener('pointermove', event => {
     const box = figure.getBoundingClientRect();

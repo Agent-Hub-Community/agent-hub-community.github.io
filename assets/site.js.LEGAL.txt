@@ -96,6 +96,8 @@ lucide-react/dist/esm/icons/chevron-right.js:
 lucide-react/dist/esm/icons/github.js:
 lucide-react/dist/esm/icons/image.js:
 lucide-react/dist/esm/icons/menu.js:
+lucide-react/dist/esm/icons/moon.js:
+lucide-react/dist/esm/icons/sun.js:
 lucide-react/dist/esm/icons/x.js:
 lucide-react/dist/esm/lucide-react.js:
   /**

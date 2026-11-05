@@ -1,9 +1,11 @@
-import React, { useEffect, useId, useMemo, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { MotionConfig, motion, useReducedMotion } from 'motion/react';
+import { MotionConfig, motion, useReducedMotion, useTransform } from 'motion/react';
 import { ChevronLeft, ChevronRight, Github, Menu, X } from 'lucide-react';
 import BrandWordmark from './BrandWordmark';
 import GenesisHero from './GenesisHero';
+import ThemeToggle from './ThemeToggle';
+import CameraScene, { useSceneProgress } from './CameraScene';
 import { IconSwap, MagneticGlyph, MicroArrow, RollingLabel } from './amicro/MicroInteractions';
 import { ChapterTransition, Events, Topics } from './EditorialSections';
 import LogoLoop from './react-bits/LogoLoop';
@@ -53,10 +55,10 @@ function Header({ visible }) {
 }
 
 function About() {
-  return <section className="section about" id="about"><div className="wrap">
+  return <section className="section about" id="about"><CameraScene className="wrap" orbit>
     <ScrollReveal splitBy="chars" enableBlur={false} baseOpacity={.2} baseRotation={0} stagger={.025} smoothing={.25} wordAnimationEnd="bottom 62%" containerClassName="community-statement" textClassName="statement-text">聚焦 LLM Agent 的研究与应用。</ScrollReveal>
     <Reveal className="about-foot"><p>社群设有四个讨论群，内容涵盖模型评估与训练、Agent 架构和科研应用。成员分享论文和项目，也交流实验与工程中的具体问题。</p><a href="#join" className="quiet-link">加入社群</a></Reveal>
-  </div></section>;
+  </CameraScene></section>;
 }
 
 function MemberLogo({ item }) {
@@ -87,11 +89,14 @@ const filters = [
   { name: '科学与安全', tags: ['AI4Science', '数学', 'Safety', 'Alignment'] }
 ];
 
-function Discussion({ item, position }) {
+function Discussion({ item, position, progress }) {
   const [expanded, setExpanded] = useState(false);
   const reduce = useReducedMotion();
+  const y = useTransform(progress, [0, .28, .78, 1], [position === 0 ? 42 : 76, 0, 0, position === 0 ? -16 : -32]);
+  const scale = useTransform(progress, [0, .28, .78, 1], [.97, 1, 1, .99]);
+  const rotateX = useTransform(progress, [0, .28, .78, 1], [3, 0, 0, -1]);
   const id = 'discussion-' + item.index;
-  return <motion.article className={'discussion-card' + (position === 0 ? ' discussion-card--lead' : '') + (expanded ? ' is-expanded' : '')} initial={false} whileInView={reduce ? {} : { y: [position === 0 ? 40 : 64, 0], rotate: [position === 0 ? -1 : 1, 0] }} viewport={{ once: true, amount: .15 }} transition={{ duration: .8, delay: position * .08, ease: [.16, 1, .3, 1] }}>
+  return <motion.article className={'discussion-card' + (position === 0 ? ' discussion-card--lead' : '') + (expanded ? ' is-expanded' : '')} style={reduce ? {} : { y, scale, rotateX }}>
     <div className="discussion-meta"><span>{item.tag}</span><span>摘录 / {String(item.index + 1).padStart(2, '0')}</span></div>
     <h3>{item.question}</h3>
     <blockquote><span className="discussion-quote-mark" aria-hidden="true">“</span><p>{item.quote}</p></blockquote>
@@ -102,6 +107,8 @@ function Discussion({ item, position }) {
 }
 
 function Discussions() {
+  const scene = useRef(null);
+  const progress = useSceneProgress(scene);
   const [filter, setFilter] = useState(0);
   const [page, setPage] = useState(0);
   const items = useMemo(() => data.discussions.map((item, index) => ({ ...item, index })).filter(item => !filters[filter].tags || filters[filter].tags.includes(item.tag)), [filter]);
@@ -109,25 +116,25 @@ function Discussions() {
   return <section className="section discussions-section" id="discussions"><div className="wrap">
     <div className="chapter-heading discussion-heading"><div><span className="chapter-kicker">02 / DISCUSSIONS</span><h2 className="section-title">讨论摘录</h2></div><div><p>社群交流中的问题与观点，按主题整理。</p><a href={DAILY} className="quiet-link"><RollingLabel>阅读完整日报</RollingLabel><MicroArrow size={17}/></a></div></div>
     <div className="discussion-toolbar"><div className="filter-tabs" role="group" aria-label="筛选讨论话题">{filters.map((item, index) => <button type="button" key={item.name} className={filter === index ? 'is-active' : ''} aria-pressed={filter === index} onClick={() => { setFilter(index); setPage(0); }}>{item.name}{filter === index && <motion.span className="filter-underline" layoutId="discussion-filter" aria-hidden="true" transition={{ duration: .22, ease: [.16, 1, .3, 1] }}/>}</button>)}</div><span className="discussion-count">{items.length} 则摘录</span></div>
-    <div className="discussion-list discussion-spread" key={filter + '-' + page} aria-live="polite">{items.slice(page * 3, page * 3 + 3).map((item, position) => <Discussion key={item.index} item={item} position={position}/>)}</div>
+    <div className="discussion-list discussion-spread" ref={scene} aria-live="polite">{items.slice(page * 3, page * 3 + 3).map((item, position) => <Discussion key={item.index} item={item} position={position} progress={progress}/>)}</div>
     <div className="discussion-bottom"><p>摘自社群交流，保留讨论中的不同观点。</p><div className="pagination"><PageCounter value={page + 1} total={pages}/><Tip label={page === 0 ? '已经是第一组' : '上一组讨论'}><button type="button" aria-label="上一组讨论" disabled={page === 0} onClick={() => setPage(page - 1)}><MagneticGlyph><ChevronLeft size={18}/></MagneticGlyph></button></Tip><Tip label={page >= pages - 1 ? '已经是最后一组' : '下一组讨论'}><button type="button" aria-label="下一组讨论" disabled={page >= pages - 1} onClick={() => setPage(page + 1)}><MagneticGlyph><ChevronRight size={18}/></MagneticGlyph></button></Tip></div></div>
   </div></section>;
 }
 
 function Daily() {
   const reduce = useReducedMotion();
-  return <section className="daily-chapter" id="daily"><div className="wrap">
+  return <section className="daily-chapter" id="daily"><CameraScene className="wrap daily-camera" strength={.7} orbit>
     <div className="daily-layout"><div><ScrollFloat containerClassName="daily-float" textClassName="daily-title" distance={56} stretch={1.1} ease="power3.out" scrollStart="top 95%" scrollEnd="top 60%" stagger={.05} smoothing={.2}>社群日报</ScrollFloat><a href={DAILY} className="editorial-link"><RollingLabel>阅读日报</RollingLabel><MicroArrow/></a></div><Reveal className="daily-copy"><p>社群讨论与外部资讯的日常整理。</p><span>日报整理前一天的群内讨论与外部资讯。<br/>每周一发布周报，汇总一周的内容。</span></Reveal></div>
     <motion.div className="daily-rule" aria-hidden="true" initial={false} whileInView={reduce ? {} : { scaleX: [.05, 1] }} viewport={{ once: true }} transition={{ duration: 1.2, ease: [.16, 1, .3, 1] }}/>
     <div className="daily-foot"><span>Agent Hub Newspaper</span></div>
-  </div></section>;
+  </CameraScene></section>;
 }
 
 function Join() {
-  return <section className="section join-section" id="join"><div className="wrap join-layout">
+  return <section className="section join-section" id="join"><CameraScene className="wrap" strength={.6}><div className="join-layout">
     <div><ScrollFloat containerClassName="join-float" textClassName="join-title" distance={56} stretch={1.1} ease="power3.out" scrollStart="top 95%" scrollEnd="top 60%" stagger={.05} smoothing={.2}>加入社群</ScrollFloat><a href={JOIN_FORM} className="join-form-link"><RollingLabel>填写入群申请</RollingLabel><MicroArrow size={28}/></a><p className="join-form-note"><span>示例表单</span>正式申请入口待更新</p></div>
     <Reveal className="join-copy"><p>社群采用成员邀请制。从事 Agent 相关研究或工程工作的朋友，可通过现有成员推荐加入。</p><p>活动合作或内容共建，可在 <a href={GITHUB}>GitHub</a> 联系我们。</p><div className="community-note"><p>社群以技术讨论为主，欢迎基于论文、代码和实验结果交流不同观点。</p></div></Reveal>
-  </div></section>;
+  </div></CameraScene></section>;
 }
 
 function Footer() {
@@ -136,7 +143,7 @@ function Footer() {
 
 export function App() {
   const [interfaceVisible, setInterfaceVisible] = useState(false);
-  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><main><GenesisHero onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
+  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><ThemeToggle/><main><GenesisHero onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <App/>);

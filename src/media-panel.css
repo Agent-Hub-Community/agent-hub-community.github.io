@@ -2,6 +2,7 @@
 .media-stage { position: relative; perspective: 1200px; aspect-ratio: 6 / 7; }
 .media-plane { position: absolute; inset: 0; overflow: clip; background: var(--color-media-front); transform-style: preserve-3d; transform-origin: center; }
 .media-shot { position: absolute; inset: 0; background: var(--color-media-front); }
+.media-shot-content { position: absolute; inset: 0; }
 .media-shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .media-empty { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: var(--space-xl); color: var(--color-media-letter); overflow: clip; }
 .media-empty > svg { position: absolute; top: var(--space-xl); left: var(--space-xl); color: var(--color-muted); opacity: .6; }
@@ -12,8 +13,6 @@
 .media-stack-backs > span { transition: transform .65s var(--ease-out); }
 .media-stage:hover .media-stack-backs > span:first-child { transform: rotate(-9deg) translate(-24px, -20px); }
 .media-stage:hover .media-stack-backs > span:last-child { transform: rotate(7deg) translate(24px, -12px); }
-.media-wipe { display: none; position: absolute; inset: 0; z-index: 2; background: var(--color-media-mid); transform-origin: right; pointer-events: none; }
-.js .media-wipe { display: block; }
 .media-sheen { position: absolute; inset: -50%; z-index: 3; background: linear-gradient(115deg, var(--color-transparent) 35%, color-mix(in srgb, var(--color-ink) 13%, var(--color-transparent)) 49%, var(--color-transparent) 62%); opacity: 0; pointer-events: none; transition: opacity .4s var(--ease-out); }
 .media-stage:hover .media-sheen { opacity: 1; }
 .media-caption { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); margin-top: var(--space-lg); font: 400 var(--text-sm)/1.6 var(--font-body); color: var(--color-muted); }
@@ -69,8 +68,8 @@
   .topic-trigger, .event-trigger { min-height: 48px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .media-panel, .media-plane, .media-shot { transform: none !important; }
+  .media-panel, .media-plane, .media-shot, .media-shot-content { transform: none !important; }
   .media-shot { transition: none; animation: none; }
-  .media-sheen, .js .media-wipe { display: none; }
+  .media-sheen { display: none; }
   .media-stack-backs > span { transition: none; }
 }
