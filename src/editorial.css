@@ -35,7 +35,6 @@
 .topic-reading-hint { display: flex; align-items: center; gap: var(--space-md); color: var(--color-muted); font-size: var(--text-xs); margin-top: var(--space-lg); }
 .scroll-track { position: relative; width: 56px; height: 1px; background: var(--color-rule); }
 .scroll-track i { position: absolute; inset: 0; background: var(--color-ink); transform-origin: left; }
-.desktop-story-hint { display: none; }
 .chapter-transition { padding-top: var(--space-2xl); overflow: clip; background: var(--color-paper); }
 .transition-word { width: max-content; font: 400 clamp(5rem, 16.3vw, 16rem)/1.2 var(--font-body); letter-spacing: -.065em; color: var(--color-transparent); -webkit-text-stroke: 1px var(--color-rule); white-space: nowrap; }
 .transition-rule { height: 1px; background: var(--color-rule); transform-origin: left; margin-top: var(--space-xl); }
@@ -121,8 +120,6 @@
   .js .topic-story { height: 360svh; padding-bottom: 0; }
   .js .topic-sticky { position: sticky; top: var(--header-height); height: calc(100svh - var(--header-height)); display: flex; align-items: center; padding-block: var(--space-xl); }
   .js .topic-scene { width: 100%; }
-  .js .desktop-story-hint { display: inline; }
-  .js .compact-story-hint { display: none; }
   .js .activity-story { height: 300svh; }
   .js .activity-sticky { position: sticky; top: var(--header-height); padding-block: var(--space-lg); }
   .js .activity-viewport { overflow: clip; scroll-snap-type: none; }

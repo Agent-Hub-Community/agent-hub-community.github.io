@@ -54,7 +54,7 @@ export function Topics() {
           <div className="topic-folio"><span>研究方向</span><span>{pad(active + 1)} / {pad(topics.length)}</span></div>
           <div className="topic-detail" aria-live="polite">{topics.map(([title, text], index) => <div key={title} id={'topic-detail-' + index} className={'topic-chapter' + (active === index ? ' is-active' : '')}><span className="topic-ghost" aria-hidden="true">{pad(index + 1)}</span><h3>{title}</h3><p>{text}</p></div>)}</div>
           <div className="topic-navigation" role="group" aria-label="选择研究方向">{topics.map(([title], index) => <button type="button" key={title} className={'topic-tab' + (active === index ? ' is-active' : '')} aria-label={title} aria-pressed={active === index} aria-describedby={'topic-detail-' + index} onClick={() => select(index)}><span>{pad(index + 1)}</span><span>{title}</span></button>)}</div>
-          <div className="topic-reading-hint"><span className="scroll-track" aria-hidden="true"><motion.i style={reduce ? {} : { scaleX: progress }}/></span><span className="desktop-story-hint">继续滚动，浏览研究方向</span><span className="compact-story-hint">选择编号，切换研究方向</span></div>
+          <div className="topic-reading-hint" aria-hidden="true"><span className="scroll-track"><motion.i style={reduce ? {} : { scaleX: progress }}/></span></div>
         </div>
       </div>
     </div></div>

@@ -1,6 +1,6 @@
 /* Hallmark · shape: Research folio · genre: atmospheric · theme: brand · redesign: full · job: join · hero: Ledge · nav: edge-aligned research index · footer: mast · signature: supplied ASCII community galaxy · axes: dark/roman-serif/neutral · posture: Restrained · imagery: supplied logos and live ASCII mark · draw: a9e72c adapted to supplied brand · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 · weakest: hierarchy, previous labels competed with small heads; replace with clear full-width section objects. */
-/* Hallmark · waive 80 · SVG is the supplied community wordmark · Agent Hub geometry was approved by the user as their brand. */
+/* Brand wordmark uses Space Grotesk outlines; source and font license are retained in src/brand/. */
 /* Hallmark · hero-review: ship, subagent · four viewports preserve the cover; interaction checks deferred to the final sweep. */
 /* Brand constraints: independent cover, slow galaxy and solid warm-white lettering. Latest user direction adds a concise community introduction to the first screen. */
 /* Hallmark · waive 39b · full-width discussion disclosures are multi-line content rows · Agent Hub excerpts need one generous click target across the complete row, not a 48px strip. */
@@ -67,9 +67,6 @@ svg { flex-shrink: 0; }
 .ascii-fallback { opacity: .65; }
 .js .ascii-figure.is-ready .ascii-fallback { visibility: hidden; }
 .hero-bottom { position: absolute; bottom: var(--space-lg); left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); }
-.scroll-cue, .ascii-toggle { display: inline-flex; align-items: center; min-height: 48px; padding: 0; color: var(--color-muted); font-size: var(--text-sm); }
-.scroll-cue:hover, .ascii-toggle:hover { color: var(--color-ink); }
-.ascii-toggle[hidden] { display: none; }
 .hero-curtain { display: none; }
 .js .hero-curtain { display: block; position: absolute; inset: 0; z-index: 5; pointer-events: none; }
 .hero-curtain > span { position: absolute; top: 0; bottom: 0; width: 50.1%; background: var(--color-paper); transform: scaleX(0); }
@@ -96,9 +93,6 @@ svg { flex-shrink: 0; }
 .members h2 { font-family: var(--font-body); font-size: var(--text-lg); line-height: 1.8; letter-spacing: 0; max-width: 14ch; }
 .members-intro p { font-size: var(--text-md); color: var(--color-muted); line-height: 1.8; max-width: 65ch; }
 .logo-loops { display: flex; flex-direction: column; gap: var(--space-lg); }
-.members-controls { display: flex; justify-content: end; margin-top: var(--space-md); }
-.members-controls button { font-size: var(--text-sm); min-height: 48px; padding: 0; color: var(--color-muted); }
-.members-controls button:hover { color: var(--color-ink); }
 .member-logo, .member-logo > span { display: flex; align-items: center; height: 32px; }
 .member-logo { opacity: .75; }
 .member-logo img, .member-logo svg { display: block; height: 28px; width: auto; max-width: 112px; filter: grayscale(1) brightness(0) invert(.85); }
@@ -230,7 +224,6 @@ svg { flex-shrink: 0; }
   .hero-wordmark { width: 100%; }
   .ascii-figure { top: 4%; right: calc(-1 * var(--space-md)); width: min(110%, 56svh, 460px); max-width: none; }
   .hero-bottom { bottom: var(--space-md); }
-  .scroll-cue, .ascii-toggle { font-size: var(--text-xs); }
   .about { padding-top: var(--section-gap); padding-bottom: var(--space-xl); }
   .community-statement .statement-text { font-size: clamp(2rem, 6.8vw, 2.75rem); line-height: 1.65; }
   .about-foot { grid-template-columns: minmax(0, 1fr); gap: var(--space-md); }

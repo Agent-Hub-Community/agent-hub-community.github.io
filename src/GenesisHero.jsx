@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { ArrowDown } from 'lucide-react';
+import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import BrandWordmark from './BrandWordmark';
-import { PlaybackGlyph } from './amicro/MicroInteractions';
 import './genesis.css';
 
 // Sample one grayscale plate into two independent character fields. Animation
@@ -17,7 +15,6 @@ function useAsciiHands(ref, left, right, progress) {
     const sampler = sample.getContext('2d', { willReadFrequently: true });
     const source = new Image();
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
-    const toggle = document.querySelector('.ascii-toggle');
     let fields = [[], []], width = 0, height = 0, cellX = 0, cellY = 0;
     let frame = 0, clock = 0, last = 0, loaded = false, visible = true;
     let paused = preference.matches, active = progress.get() < .72;
@@ -65,19 +62,17 @@ function useAsciiHands(ref, left, right, progress) {
     }
     function sync() { cancelAnimationFrame(frame);last = 0;if (loaded) {draw();if (!paused && active && visible && !document.hidden) frame = requestAnimationFrame(tick);} }
     const stopProgress = progress.on('change', value => { const next = value < .72;if (next !== active) {active = next;sync();} });
-    const watchToggle = new MutationObserver(() => { paused = toggle.getAttribute('aria-pressed') !== 'true';sync(); });
-    watchToggle.observe(toggle, { attributes: true, attributeFilter: ['aria-pressed'] });
     const change = event => { paused = event.matches;sync(); };
     const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting;sync(); });observer.observe(host);
     const resizeObserver = new ResizeObserver(resize);resizeObserver.observe(host);
     preference.addEventListener('change', change);document.addEventListener('visibilitychange', sync);
     source.onload = () => { loaded = true;resize();sync(); };
     source.src = 'assets/human-machine-source.png';
-    return () => { cancelAnimationFrame(frame);stopProgress();observer.disconnect();resizeObserver.disconnect();watchToggle.disconnect();preference.removeEventListener('change', change);document.removeEventListener('visibilitychange', sync);source.onload = null; };
+    return () => { cancelAnimationFrame(frame);stopProgress();observer.disconnect();resizeObserver.disconnect();preference.removeEventListener('change', change);document.removeEventListener('visibilitychange', sync);source.onload = null; };
   }, [ref, left, right, progress]);
 }
 
-export default function GenesisHero({ interfaceVisible, onInterfaceChange }) {
+export default function GenesisHero({ onInterfaceChange }) {
   const ref = useRef(null), field = useRef(null), left = useRef(null), right = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
@@ -102,9 +97,8 @@ export default function GenesisHero({ interfaceVisible, onInterfaceChange }) {
   const handsOpacity = useTransform(progress, [0, .45, .7], [1, .9, 0]);
   const logoScale = useTransform(progress, [0, .06, .52, .86], [.025, .025, .82, 1]);
   const logoOpacity = useTransform(progress, [0, .05, .22], [0, 0, 1]);
-  const titleY = useTransform(progress, [.58, .85], [80, 0]);
-  const titleClip = useTransform(progress, [.58, .86], ['inset(100% 0 0 0)', 'inset(0% 0 0 0)']);
-  const titleOpacity = useTransform(progress, [.57, .7], [0, 1]);
+  const titleProgress = useSpring(progress, { stiffness: 120, damping: 30, mass: .6 });
+  const titleScale = useTransform(titleProgress, [.47, .84], [.97, 1]);
   const introY = useTransform(progress, [.7, .94], [32, 0]);
   const introOpacity = useTransform(progress, [.7, .92], [0, 1]);
   useAsciiHands(field, left, right, progress);
@@ -119,9 +113,8 @@ export default function GenesisHero({ interfaceVisible, onInterfaceChange }) {
       <motion.div className="genesis-logo" style={reduce ? {} : { scale: logoScale, opacity: logoOpacity }}>
         <figure className="ascii-figure" data-source="assets/agenthub-galaxy.webp" aria-label="Agent Hub 社区的动态 ASCII 星系标志"><img className="ascii-fallback" src="assets/agenthub-galaxy.webp" width="720" height="720" alt=""/><canvas aria-hidden="true"/></figure>
       </motion.div>
-      <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { y: titleY, clipPath: titleClip, opacity: titleOpacity }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark/></h1></motion.div>
+      <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { scale: titleScale }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark progress={titleProgress}/></h1></motion.div>
       <motion.div className="genesis-introduction wrap" style={reduce ? {} : { y: introY, opacity: introOpacity }}><p>Agent Hub 是一个中文技术社群，<br/>专注 LLM Agent 的研究与应用。</p><span>成员来自基模团队与高校，分享研究进展和工程经验。</span></motion.div>
-      <div className={'genesis-bottom wrap' + (interfaceVisible ? ' is-visible' : '')}><a href="#about" className="genesis-enter"><ArrowDown size={16}/><span>进入主页</span></a><button className="ascii-toggle" type="button" aria-pressed="true" hidden><PlaybackGlyph/><span data-motion-label>暂停动画</span></button></div>
     </div>
   </section>;
 }

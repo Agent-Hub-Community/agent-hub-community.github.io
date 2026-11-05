@@ -1,23 +1,10 @@
 /*! Adapted from Amicro by SYED SUBHAN UDDIN. MIT. See LICENSE. */
-import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion, useSpring } from 'motion/react';
-import { ArrowUpRight, Pause, Play } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export function IconSwap({ state, children }) {
   const reduce = useReducedMotion();
   return <span className="micro-icon-slot" aria-hidden="true"><AnimatePresence initial={false} mode="popLayout"><motion.span key={String(state)} className="micro-icon-state" initial={{ opacity: 0, scale: reduce ? 1 : .25, rotate: reduce ? 0 : -35 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} exit={{ opacity: 0, scale: reduce ? 1 : .25, rotate: reduce ? 0 : 35 }} transition={{ type: 'spring', duration: reduce ? 0 : .28, bounce: 0 }}>{children}</motion.span></AnimatePresence></span>;
-}
-
-export function PlaybackGlyph() {
-  const ref = useRef(null);
-  const [playing, setPlaying] = useState(true);
-  useEffect(() => {
-    const button = ref.current.closest('button');
-    const update = () => setPlaying(button.getAttribute('aria-pressed') === 'true');
-    update();const observer = new MutationObserver(update);observer.observe(button, { attributes: true, attributeFilter: ['aria-pressed'] });
-    return () => observer.disconnect();
-  }, []);
-  return <span ref={ref} className="playback-glyph"><IconSwap state={playing}>{playing ? <Pause size={14} strokeWidth={1.5}/> : <Play size={14} strokeWidth={1.5}/>}</IconSwap></span>;
 }
 
 // The native link/button keeps its hit box; only its inner glyph follows the pointer.

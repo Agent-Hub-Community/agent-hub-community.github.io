@@ -73,11 +73,10 @@ function MemberLogo({ item }) {
 }
 
 function Members() {
-  const [paused, setPaused] = useState(false);
   const rows = useMemo(() => data.logos.map(row => row.map(item => ({ node: <MemberLogo item={item}/>, title: item.title, ariaLabel: item.title }))), []);
   return <section className="members" aria-labelledby="members-title"><div className="wrap">
     <Reveal className="members-intro"><h2 id="members-title">成员所在的团队与高校</h2><p>成员中有基模团队的研究员，也有高校的青年教授和博士。我们正邀请自然科学领域的学者加入，交流 AI4Science、RSI 和 AI Safety。</p></Reveal>
-    <div className="logo-loops"><LogoLoop logos={rows[0]} speed={paused ? 0 : 10} logoHeight={25} gap={58} labels="hover" intro={false} pauseOnHover ariaLabel="成员所在团队"/><LogoLoop logos={rows[1]} speed={paused ? 0 : 9} direction="right" logoHeight={26} gap={50} labels="hover" intro={false} pauseOnHover ariaLabel="成员所在高校"/></div><div className="members-controls"><button type="button" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? '继续滚动' : '暂停滚动'}</button></div>
+    <div className="logo-loops"><LogoLoop logos={rows[0]} speed={10} logoHeight={25} gap={58} labels="hover" intro={false} pauseOnHover ariaLabel="成员所在团队"/><LogoLoop logos={rows[1]} speed={9} direction="right" logoHeight={26} gap={50} labels="hover" intro={false} pauseOnHover ariaLabel="成员所在高校"/></div>
   </div></section>;
 }
 
@@ -137,7 +136,7 @@ function Footer() {
 
 export function App() {
   const [interfaceVisible, setInterfaceVisible] = useState(false);
-  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><main><GenesisHero interfaceVisible={interfaceVisible} onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
+  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><main><GenesisHero onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <App/>);

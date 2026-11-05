@@ -1,19 +1,24 @@
-// Original geometric lettering, drawn as vectors so the brand is consistent at every size.
-const letters = [
-  'M 12 130 L 65 27 Q 72 13 80 27 L 135 130',
-  'M 238 57 H 194 Q 169 57 169 82 V 105 Q 169 130 194 130 H 211 Q 238 130 238 105 V 57 V 135 Q 238 155 216 155 H 177',
-  'M 337 130 H 295 Q 270 130 270 105 V 82 Q 270 57 295 57 H 312 Q 337 57 337 82 V 93 H 272',
-  'M 370 130 V 83 Q 370 57 396 57 H 412 Q 438 57 438 83 V 130',
-  'M 477 25 V 104 Q 477 130 503 130 H 519 M 460 57 H 517',
-  'M 574 20 V 130 M 650 20 V 130 M 574 75 H 650',
-  'M 685 57 V 104 Q 685 130 711 130 H 727 Q 753 130 753 104 V 57',
-  'M 790 20 V 104 Q 790 130 816 130 H 832 Q 858 130 858 104 V 83 Q 858 57 832 57 H 809'
-];
+import { motion, useTransform } from 'motion/react';
+import wordmark from './brand/wordmark.json';
 
-export default function BrandWordmark({ animated = false, className = '' }) {
-  return <svg className={'brand-wordmark ' + (animated ? 'is-animated ' : '') + className} viewBox="0 0 870 168" fill="none" aria-hidden="true" focusable="false">
-    <g stroke="currentColor" strokeWidth="16" strokeLinejoin="round" strokeLinecap="butt">
-      {letters.map((d, index) => <path key={index} d={d} pathLength="1" style={{ '--letter-index': index }}/>) }
-    </g>
+// Space Grotesk outlines with a compact, continuous AgentHub setting.
+// Every letter remains whole while it settles into place; no reveal mask.
+function ResolvingLetter({ letter, index, progress }) {
+  const start = .47 + Math.abs(index - 3.5) * .012;
+  const phase = useTransform(progress, value => {
+    const t = Math.max(0, Math.min(1, (value - start) / .28));
+    return t * t * (3 - 2 * t);
+  });
+  const x = useTransform(phase, value => (letter.center - wordmark.center) * .075 * (1 - value));
+  const y = useTransform(phase, [0, 1], [18, 0]);
+  const blur = useTransform(phase, [0, 1], ['blur(2.5px)', 'blur(0px)']);
+  return <motion.g className="wordmark-letter" style={{ x, y, opacity: phase, filter: blur }}><path d={letter.d}/></motion.g>;
+}
+
+export default function BrandWordmark({ progress, className = '' }) {
+  return <svg className={'brand-wordmark ' + className} viewBox={wordmark.viewBox} fill="currentColor" aria-hidden="true" focusable="false">
+    {wordmark.letters.map((letter, index) => progress
+      ? <ResolvingLetter key={letter.char} letter={letter} index={index} progress={progress}/>
+      : <path key={letter.char} d={letter.d}/>) }
   </svg>;
 }

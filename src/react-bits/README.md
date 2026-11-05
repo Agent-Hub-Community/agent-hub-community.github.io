@@ -2,7 +2,7 @@
 
 Source: https://github.com/DavidHDev/react-bits/tree/e12c22192ac7b4b452c5e2feb9b586d74765d696
 
-The page currently uses LogoLoop, ScrollReveal, ScrollFloat and WarmTooltip. Earlier BlurText, SpotlightCard and SpecularButton source is retained but is not imported by the page. The brand lettering is a custom vector wordmark.
+The page currently uses LogoLoop, ScrollReveal, ScrollFloat and WarmTooltip. Earlier BlurText, SpotlightCard and SpecularButton source is retained but is not imported by the page. The brand lettering uses Space Grotesk vector outlines; attribution and license are in `src/brand/`.
 
 See LICENSE.md for the original license. Local adaptations:
 

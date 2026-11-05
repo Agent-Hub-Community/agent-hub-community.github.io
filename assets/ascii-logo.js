@@ -3,8 +3,7 @@
   const figure = document.querySelector('.ascii-figure');
   const canvas = figure?.querySelector('canvas');
   const context = canvas?.getContext('2d');
-  const toggle = document.querySelector('.ascii-toggle');
-  if (!context || !toggle) return;
+  if (!context) return;
 
   const source = new Image();
   const sample = document.createElement('canvas');
@@ -18,7 +17,7 @@
   let columns = 0, rows = 0, cells = new Float32Array(), coreCells = new Uint8Array();
   let frame = 0, lastTime = 0, time = 0;
   let paused = motion.matches, visible = true, loaded = false;
-  let hovering = false, focused = false;
+  let hovering = false;
   let coreColor, armColor, glyphFont;
 
   // Read the two arms' angle at successive radii from the supplied logo.
@@ -159,7 +158,7 @@
 
   function tick(now) {
     frame = 0;
-    if (paused || hovering || focused || !visible || document.hidden || !loaded) return;
+    if (paused || hovering || !visible || document.hidden || !loaded) return;
     const delta = lastTime ? now - lastTime : 33.33;
     if (delta >= 33) {
       time += Math.min(delta, 66) / 1000 * animationSpeed;
@@ -172,16 +171,11 @@
     cancelAnimationFrame(frame);
     frame = 0;
     lastTime = 0;
-    (toggle.querySelector('[data-motion-label]') || toggle).textContent = paused ? '播放动画' : '暂停动画';
-    toggle.setAttribute('aria-pressed', String(!paused));
     if (loaded) {
       if (paused) draw(0);
-      else if (!hovering && !focused && visible && !document.hidden) frame = requestAnimationFrame(tick);
+      else if (!hovering && visible && !document.hidden) frame = requestAnimationFrame(tick);
     }
   }
-  toggle.addEventListener('click', () => { paused = !paused; sync(); });
-  toggle.addEventListener('focus', () => { focused = true; sync(); });
-  toggle.addEventListener('blur', () => { focused = false; sync(); });
   figure.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovering = true; sync(); } });
   figure.addEventListener('pointerleave', () => { hovering = false; sync(); });
   motion.addEventListener('change', event => { paused = event.matches; sync(); });
@@ -205,7 +199,6 @@
     loaded = true;
     traceSpiral();
     resize();
-    toggle.hidden = false;
     sync();
   };
   source.src = figure.dataset.source;
