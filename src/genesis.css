@@ -10,6 +10,7 @@
 .genesis-logo .ascii-figure { inset: 0; width: 100%; max-width: none; animation: none; }
 .genesis-wordmark { position: absolute; left: 0; right: 0; top: 43%; z-index: 4; pointer-events: none; }
 .genesis-wordmark h1 { width: 100%; max-width: min(1120px, 120svh); margin: auto; filter: drop-shadow(0 3px 8px var(--color-paper)); }
+.genesis-slogan { margin: clamp(12px, 1.8svh, 20px) auto 0; color: var(--color-ink-2); font: 400 clamp(14px, 1.6vw, 21px)/1.4 var(--font-body); letter-spacing: .16em; text-align: center; white-space: nowrap; text-shadow: 0 2px 12px var(--color-paper); }
 .genesis-introduction { position: absolute; top: 75%; left: 0; right: 0; text-align: center; z-index: 4; }
 .genesis-introduction > p { margin-inline: auto; font: 400 clamp(1.125rem, 1.55vw, 1.375rem)/1.7 var(--font-body); color: var(--color-ink); }
 .genesis-introduction > span { display: block; font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-sm); }
@@ -25,16 +26,17 @@
 }
 html:not(.js) .genesis { height: 100svh; }
 html:not(.js) .hands-field { display: none; }
-html:not(.js) .genesis-logo, html:not(.js) .genesis-wordmark, html:not(.js) .wordmark-letter, html:not(.js) .genesis-introduction { opacity: 1 !important; transform: none !important; filter: none !important; }
+html:not(.js) .genesis-logo, html:not(.js) .genesis-wordmark, html:not(.js) .wordmark-letter, html:not(.js) .genesis-slogan, html:not(.js) .genesis-introduction { opacity: 1 !important; transform: none !important; filter: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .genesis { height: 100svh; min-height: 600px; }
   .genesis-stage { position: relative; }
   .hands-field { display: none; }
-  .genesis-logo, .genesis-wordmark, .wordmark-letter, .genesis-introduction { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .genesis-logo, .genesis-wordmark, .wordmark-letter, .genesis-slogan, .genesis-introduction { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 
 @media (max-height: 700px) {
-  .genesis-introduction { top: 70%; }
+  .genesis-wordmark { top: 40%; }
+  .genesis-introduction { top: 76%; }
   .genesis-introduction > p { font-size: 14px; line-height: 1.6; }
   .genesis-introduction > span { font-size: 12px; line-height: 1.5; margin-top: 8px; }
 }

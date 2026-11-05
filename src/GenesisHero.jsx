@@ -108,6 +108,8 @@ export default function GenesisHero({ onInterfaceChange }) {
   const logoOpacity = useTransform(progress, [0, .05, .22], [0, 0, 1]);
   const titleProgress = useSpring(progress, { stiffness: 120, damping: 30, mass: .6 });
   const titleScale = useTransform(titleProgress, [.47, .84], [.97, 1]);
+  const sloganOpacity = useTransform(titleProgress, [.56, .8], [0, 1]);
+  const sloganY = useTransform(titleProgress, [.56, .8], [14, 0]);
   const introY = useTransform(progress, [.7, .94], [32, 0]);
   const introOpacity = useTransform(progress, [.7, .92], [0, 1]);
   useAsciiHands(field, left, right, progress);
@@ -122,7 +124,7 @@ export default function GenesisHero({ onInterfaceChange }) {
       <motion.div className="genesis-logo" style={reduce ? {} : { scale: logoScale, opacity: logoOpacity }}>
         <figure className="ascii-figure" data-source="assets/agenthub-galaxy.webp" aria-label="Agent Hub 社区的动态 ASCII 星系标志"><img className="ascii-fallback" src="assets/agenthub-galaxy.webp" width="720" height="720" alt=""/><canvas aria-hidden="true"/></figure>
       </motion.div>
-      <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { scale: titleScale }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark progress={titleProgress}/></h1></motion.div>
+      <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { scale: titleScale }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark progress={titleProgress}/></h1><motion.p className="genesis-slogan" lang="en" style={reduce ? {} : { opacity: sloganOpacity, y: sloganY }}>Human × Agent</motion.p></motion.div>
       <motion.div className="genesis-introduction wrap" style={reduce ? {} : { y: introY, opacity: introOpacity }}><p>Agent Hub 是一个中文技术社群，<br/>专注 LLM Agent 的研究与应用。</p><span>成员来自基模团队与高校，分享研究进展和工程经验。</span></motion.div>
     </div>
   </section>;
