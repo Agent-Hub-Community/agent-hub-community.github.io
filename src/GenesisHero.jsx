@@ -39,7 +39,8 @@ function useAsciiHands(ref, left, right, progress) {
     function resize() {
       if (!loaded) return;
       width = host.clientWidth;height = width * source.height / source.width;
-      const ratio = Math.min(devicePixelRatio || 1, 2);
+      // Bound the backing bitmap, not the composition's CSS width, on large displays.
+      const ratio = Math.min(devicePixelRatio || 1, 2, 4096 / width);
       canvases.forEach((canvas, index) => { canvas.width = Math.round(width * ratio);canvas.height = Math.round(height * ratio);contexts[index].setTransform(ratio, 0, 0, ratio, 0, 0); });
       const columns = Math.max(100, Math.min(380, Math.round(width / 5.2)));
       const rows = Math.round(columns * source.height / source.width * .55);
