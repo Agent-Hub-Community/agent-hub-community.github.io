@@ -1,0 +1,56 @@
+import * as esbuild from 'esbuild';
+import { mkdir, copyFile, readFile, writeFile, rm } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+
+await mkdir('assets/licenses', { recursive: true });
+await Promise.all([
+  copyFile('src/react-bits/LICENSE.md', 'assets/licenses/react-bits.txt'),
+  copyFile('src/amicro/LICENSE', 'assets/licenses/amicro.txt'),
+  copyFile('node_modules/@fontsource-variable/inter/LICENSE', 'assets/licenses/inter.txt'),
+  copyFile('src/join-example.html', 'join-example.html')
+]);
+
+const options = {
+  entryPoints: ['src/main.jsx'],
+  bundle: true,
+  minify: true,
+  format: 'esm',
+  target: ['es2020'],
+  outfile: 'assets/site.js',
+  jsx: 'automatic',
+  loader: { '.woff2': 'file', '.woff': 'file' },
+  assetNames: 'fonts/[name]-[hash]',
+  define: { 'process.env.NODE_ENV': '"production"' },
+  legalComments: 'linked',
+  logLevel: 'info'
+};
+
+async function renderHTML() {
+  const temporary = '.build/prerender.mjs';
+  await mkdir('.build', { recursive: true });
+  try {
+    await esbuild.build({
+      entryPoints: ['src/render.jsx'], bundle: true, platform: 'node',
+      format: 'esm', packages: 'external', outfile: temporary,
+      jsx: 'automatic', loader: { '.css': 'empty' }, logLevel: 'silent'
+    });
+    const { render } = await import(`${pathToFileURL(resolve(temporary))}?build=${Date.now()}`);
+    const template = await readFile('src/index.html', 'utf8');
+    await writeFile('index.html', template.replace('<!--app-->', render()));
+  } finally {
+    await rm(temporary, { force: true });
+  }
+}
+
+if (process.argv.includes('--watch')) {
+  options.plugins = [{ name: 'prerender', setup(build) {
+    build.onEnd(async result => { if (!result.errors.length) await renderHTML(); });
+  } }];
+  const context = await esbuild.context(options);
+  await context.watch();
+  console.log('Watching source files. Preview: http://127.0.0.1:8000/');
+} else {
+  await esbuild.build(options);
+  await renderHTML();
+}
