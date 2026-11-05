@@ -37,7 +37,9 @@ svg { flex-shrink: 0; }
 .skip-link { position: fixed; z-index: var(--z-toast); left: var(--space-lg); top: calc(-1 * var(--space-3xl)); padding: var(--space-sm) var(--space-lg); background: var(--color-ink); color: var(--color-paper); }
 .skip-link:focus-visible { top: var(--space-md); }
 
-.site-header { position: sticky; top: 0; z-index: var(--z-sticky-nav); height: var(--header-height); background: var(--color-header); }
+.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: var(--z-sticky-nav); height: var(--header-height); background: var(--color-header); transition: opacity .4s var(--ease-out), transform .4s var(--ease-out), visibility .4s; }
+.js .site-header:not(.is-visible) { opacity: 0; visibility: hidden; transform: translateY(-12px); pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
 .header-inner { display: flex; align-items: center; gap: var(--space-xl); height: 100%; }
 .brand { display: flex; align-items: center; gap: var(--space-sm); flex-shrink: 0; min-height: 48px; }
 .brand img { width: 28px; height: 28px; border-radius: 50%; }

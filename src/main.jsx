@@ -26,9 +26,10 @@ function Reveal({ children, className = '' }) {
   return <motion.div className={className} initial={false} whileInView={reduce ? {} : { opacity: [.2, 1], y: [28, 0] }} viewport={{ once: true, amount: .15 }} transition={{ duration: .8, ease: [.22, 1, .36, 1] }}>{children}</motion.div>;
 }
 
-function Header() {
+function Header({ visible }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
+  useEffect(() => { if (!visible) setOpen(false); }, [visible]);
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => { if (entry.isIntersecting) setActive(entry.target.id); });
@@ -36,7 +37,7 @@ function Header() {
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
     return () => observer.disconnect();
   }, []);
-  return <header className="site-header">
+  return <header className={'site-header' + (visible ? ' is-visible' : '')}>
     <div className="wrap header-inner">
       <a href="#" className="brand" aria-label="Agent Hub 首页"><img src="assets/agenthub-icon.webp" alt="" width="30" height="30"/><BrandWordmark/></a>
       <nav className={'nav' + (open ? ' is-open' : '')} aria-label="页面导航">
@@ -135,7 +136,8 @@ function Footer() {
 }
 
 export function App() {
-  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header/><main><GenesisHero/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress/></WarmTooltipGroup></MotionConfig>;
+  const [interfaceVisible, setInterfaceVisible] = useState(false);
+  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><main><GenesisHero interfaceVisible={interfaceVisible} onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <App/>);

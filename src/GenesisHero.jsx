@@ -43,7 +43,7 @@ function useAsciiHands(ref, left, right, progress) {
       width = host.clientWidth;height = width * source.height / source.width;
       const ratio = Math.min(devicePixelRatio || 1, 2);
       canvases.forEach((canvas, index) => { canvas.width = Math.round(width * ratio);canvas.height = Math.round(height * ratio);contexts[index].setTransform(ratio, 0, 0, ratio, 0, 0); });
-      const columns = Math.max(140, Math.min(520, Math.round(width / 3.4)));
+      const columns = Math.max(100, Math.min(380, Math.round(width / 5.2)));
       const rows = Math.round(columns * source.height / source.width * .55);
       cellX = width / columns;cellY = height / rows;
       sample.width = columns;sample.height = rows;sampler.drawImage(source, 0, 0, columns, rows);
@@ -77,7 +77,7 @@ function useAsciiHands(ref, left, right, progress) {
   }, [ref, left, right, progress]);
 }
 
-export default function GenesisHero() {
+export default function GenesisHero({ interfaceVisible, onInterfaceChange }) {
   const ref = useRef(null), field = useRef(null), left = useRef(null), right = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
@@ -86,24 +86,31 @@ export default function GenesisHero() {
   const progress = useMotionValue(0);
   useMotionValueEvent(scrollYProgress, 'change', value => progress.set(value));
   useEffect(() => { progress.set(scrollYProgress.get()); }, [progress, scrollYProgress]);
+  useEffect(() => {
+    let previous;
+    const sync = value => {
+      const visible = Boolean(reduce || value >= .72);
+      if (visible !== previous) { previous = visible;onInterfaceChange(visible); }
+    };
+    sync(progress.get());
+    return progress.on('change', sync);
+  }, [progress, reduce, onInterfaceChange]);
   const leftX = useTransform(progress, [0, .12, .67], ['0%', '-2%', '-57%']);
   const rightX = useTransform(progress, [0, .12, .67], ['0%', '2%', '57%']);
   const leftRotate = useTransform(progress, [0, .65], [0, -12]);
   const rightRotate = useTransform(progress, [0, .65], [0, 12]);
   const handsOpacity = useTransform(progress, [0, .45, .7], [1, .9, 0]);
-  const logoScale = useTransform(progress, [0, .16, .62, .86], [.025, .025, .82, 1]);
-  const logoOpacity = useTransform(progress, [0, .15, .3], [0, 0, 1]);
+  const logoScale = useTransform(progress, [0, .06, .52, .86], [.025, .025, .82, 1]);
+  const logoOpacity = useTransform(progress, [0, .05, .22], [0, 0, 1]);
   const titleY = useTransform(progress, [.58, .85], [80, 0]);
   const titleClip = useTransform(progress, [.58, .86], ['inset(100% 0 0 0)', 'inset(0% 0 0 0)']);
   const titleOpacity = useTransform(progress, [.57, .7], [0, 1]);
   const introY = useTransform(progress, [.7, .94], [32, 0]);
   const introOpacity = useTransform(progress, [.7, .92], [0, 1]);
-  const captionOpacity = useTransform(progress, [0, .14, .4], [1, 1, 0]);
   useAsciiHands(field, left, right, progress);
   useEffect(() => { import('../assets/ascii-logo.js'); }, []);
   return <section id="cover" className="genesis" ref={ref} aria-labelledby="hero-title">
     <div className="genesis-stage">
-      <motion.div className="genesis-caption wrap" style={reduce ? {} : { opacity: captionOpacity }}><span>HUMAN × MACHINE</span><span>LLM Agent 中文社群</span></motion.div>
       <div className="hands-field" ref={field} role="img" aria-label="人手与机械手用 ASCII 字符组成，以创造亚当的姿态伸向彼此。向下滚动，两只手分开，社区标志从中间展开。">
         <img className="hands-fallback" src="assets/human-machine-source.png" alt="" width="1536" height="1024" fetchPriority="high"/>
         <motion.div className="ascii-hand human-hand" style={reduce ? {} : { x: leftX, rotate: leftRotate, opacity: handsOpacity }}><canvas ref={left} aria-hidden="true"/></motion.div>
@@ -114,8 +121,7 @@ export default function GenesisHero() {
       </motion.div>
       <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { y: titleY, clipPath: titleClip, opacity: titleOpacity }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark/></h1></motion.div>
       <motion.div className="genesis-introduction wrap" style={reduce ? {} : { y: introY, opacity: introOpacity }}><p>Agent Hub 是一个中文技术社群，<br/>专注 LLM Agent 的研究与应用。</p><span>成员来自基模团队与高校，分享研究进展和工程经验。</span></motion.div>
-      <div className="genesis-bottom wrap"><a href="#about" className="genesis-enter"><ArrowDown size={16}/><span className="genesis-cue-first">向下滚动</span><span className="genesis-cue-reduced">进入主页</span></a><div><button className="ascii-toggle" type="button" aria-pressed="true" hidden><PlaybackGlyph/><span data-motion-label>暂停动画</span></button><a href="#about" className="genesis-skip">跳过开场 ↗</a></div></div>
-      <motion.div className="genesis-progress" aria-hidden="true" style={{ scaleX: progress }}/>
+      <div className={'genesis-bottom wrap' + (interfaceVisible ? ' is-visible' : '')}><a href="#about" className="genesis-enter"><ArrowDown size={16}/><span>进入主页</span></a><button className="ascii-toggle" type="button" aria-pressed="true" hidden><PlaybackGlyph/><span data-motion-label>暂停动画</span></button></div>
     </div>
   </section>;
 }

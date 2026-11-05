@@ -8,6 +8,7 @@
 .page-counter > i { font-style: normal; color: var(--color-muted); white-space: nowrap; }
 .warm-tooltip__box { box-shadow: none; }
 .page-reading-progress { position: fixed; z-index: var(--z-sticky-nav); top: calc(var(--header-height) - 1px); left: 0; right: 0; height: 1px; background: var(--color-rule); transform-origin: 0 50%; pointer-events: none; }
+.js .page-reading-progress:not(.is-visible) { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) { .accordion-mark > span { transition: none; } }
 
 /* Amicro-inspired details share the page's existing motion and colour tokens. */
