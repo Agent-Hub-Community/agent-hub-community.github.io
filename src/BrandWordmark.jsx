@@ -1,7 +1,7 @@
 import { motion, useTransform } from 'motion/react';
 import wordmark from './brand/wordmark.json';
 
-// Space Grotesk outlines with a compact, continuous AgentHub setting.
+// Bespoke geometric lettering, drawn as paths rather than font outlines.
 // Every letter remains whole while it settles into place; no reveal mask.
 function ResolvingLetter({ letter, index, progress }) {
   const start = .47 + Math.abs(index - 3.5) * .012;
@@ -16,7 +16,7 @@ function ResolvingLetter({ letter, index, progress }) {
 }
 
 export default function BrandWordmark({ progress, className = '' }) {
-  return <svg className={'brand-wordmark ' + className} viewBox={wordmark.viewBox} fill="currentColor" aria-hidden="true" focusable="false">
+  return <svg className={'brand-wordmark ' + className} viewBox={wordmark.viewBox} fill="none" stroke="currentColor" strokeWidth={wordmark.strokeWidth} strokeLinecap="butt" strokeLinejoin="round" aria-hidden="true" focusable="false">
     {wordmark.letters.map((letter, index) => progress
       ? <ResolvingLetter key={letter.char} letter={letter} index={index} progress={progress}/>
       : <path key={letter.char} d={letter.d}/>) }

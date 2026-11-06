@@ -29,6 +29,8 @@ const options = {
 };
 
 async function renderHTML() {
+  const wordmark = JSON.parse(await readFile('src/brand/wordmark.json', 'utf8'));
+  await writeFile('assets/agenthub-wordmark.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${wordmark.viewBox}" fill="none" stroke="currentColor" stroke-width="${wordmark.strokeWidth}" stroke-linecap="butt" stroke-linejoin="round" role="img" aria-labelledby="title"><title id="title">AgentHub</title>${wordmark.letters.map(letter => `<path d="${letter.d}"/>`).join('')}</svg>\n`);
   const temporary = '.build/prerender.mjs';
   await mkdir('.build', { recursive: true });
   try {
