@@ -9,3 +9,5 @@ License: SIL Open Font License 1.1, retained in `space-grotesk-LICENSE.txt` and 
 `wordmark.json` contains the eight glyphs converted to SVG outlines with fontTools. The font was instantiated at weight 450, transformed by `(0.16, 0, 0, -0.16, cursor, 116)`, and advanced using each glyph's horizontal metric minus 30 font units. The page does not request a separate font or a third-party service for the wordmark.
 
 During the opening, complete letters soften into focus and settle toward their final spacing, starting near the centre. Position and opacity follow a smoothed scroll value with slight per-letter offsets. There is no clipping mask. Reduced motion and no-script rendering show the complete stationary wordmark.
+
+The slogan pairs italic Georgia for “Human” with Space Grotesk for “Agent”. `space-grotesk-latin-450.woff` is a static weight-450 subset of the same source font, covering basic Latin and the multiplication sign. It is bundled locally through the stylesheet and uses the same SIL Open Font License. The slogan uses compact spacing and a smaller multiplication sign instead of widely tracked body text.

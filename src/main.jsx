@@ -143,7 +143,7 @@ function Footer() {
 
 export function App() {
   const [interfaceVisible, setInterfaceVisible] = useState(false);
-  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><ThemeToggle/><main><GenesisHero onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
+  return <MotionConfig reducedMotion="user"><WarmTooltipGroup delay={850} warmWindow={250} lean={0}><a className="skip-link" href="#about">跳转到主要内容</a><Header visible={interfaceVisible}/><ThemeToggle visible={interfaceVisible}/><main><GenesisHero onInterfaceChange={setInterfaceVisible}/><About/><Topics/><ChapterTransition/><Discussions/><Events/><Members/><Daily/><Join/></main><Footer/><PageProgress visible={interfaceVisible}/></WarmTooltipGroup></MotionConfig>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <App/>);

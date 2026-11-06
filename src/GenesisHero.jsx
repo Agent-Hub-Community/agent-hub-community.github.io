@@ -3,6 +3,9 @@ import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScrol
 import BrandWordmark from './BrandWordmark';
 import './genesis.css';
 
+const HANDS_SOURCE = 'assets/human-machine-creation.png';
+const HANDS_SPLIT = .495;
+
 // Sample one grayscale plate into two independent character fields. Animation
 // changes the glyphs and their positions; the raster never appears over them.
 function useAsciiHands(ref, left, right, progress) {
@@ -52,7 +55,7 @@ function useAsciiHands(ref, left, right, progress) {
         const i = (y * columns + x) * 4;
         const light = (pixels[i] * .2126 + pixels[i + 1] * .7152 + pixels[i + 2] * .0722) / 255;
         if (light < .055) continue;
-        fields[x < columns / 2 ? 0 : 1].push({ x: (x + .5) * cellX, y: (y + .5) * cellY, light: Math.pow(light, .82), phase: x * .7 + y * .3 });
+        fields[(x + .5) / columns < HANDS_SPLIT ? 0 : 1].push({ x: (x + .5) * cellX, y: (y + .5) * cellY, light: Math.pow(light, .82), phase: x * .7 + y * .3 });
       }
       draw();host.classList.add('is-ready');
     }
@@ -65,7 +68,7 @@ function useAsciiHands(ref, left, right, progress) {
     function sync() { cancelAnimationFrame(frame);last = 0;if (loaded) {draw();if (!paused && active && visible && !document.hidden) frame = requestAnimationFrame(tick);} }
     function updateTheme() {
       const styles = getComputedStyle(document.documentElement);
-      handColors = ['--color-hand-human', '--color-hand-machine'].map(token => styles.getPropertyValue(token).trim());
+      handColors = ['--color-hand-machine', '--color-hand-human'].map(token => styles.getPropertyValue(token).trim());
       glyphWeight = styles.getPropertyValue('--hand-glyph-weight').trim() || 500;
       opacityFloor = parseFloat(styles.getPropertyValue('--hand-opacity-floor')) || .18;
       if (loaded) draw();
@@ -79,7 +82,7 @@ function useAsciiHands(ref, left, right, progress) {
     const resizeObserver = new ResizeObserver(resize);resizeObserver.observe(host);
     preference.addEventListener('change', change);document.addEventListener('visibilitychange', sync);
     source.onload = () => { loaded = true;resize();sync(); };
-    source.src = 'assets/human-machine-source.png';
+    source.src = HANDS_SOURCE;
     return () => { cancelAnimationFrame(frame);stopProgress();observer.disconnect();resizeObserver.disconnect();themeObserver.disconnect();preference.removeEventListener('change', change);document.removeEventListener('visibilitychange', sync);source.onload = null; };
   }, [ref, left, right, progress]);
 }
@@ -119,15 +122,15 @@ export default function GenesisHero({ onInterfaceChange }) {
   useEffect(() => { import('../assets/ascii-logo.js'); }, []);
   return <section id="cover" className="genesis" ref={ref} aria-labelledby="hero-title">
     <div className="genesis-stage">
-      <div className="hands-field" ref={field} role="img" aria-label="人手与机械手用 ASCII 字符组成，以创造亚当的姿态伸向彼此。向下滚动，两只手分开，社区标志从中间展开。">
-        <img className="hands-fallback" src="assets/human-machine-source.png" alt="" width="1536" height="1024" fetchPriority="high"/>
-        <motion.div className="ascii-hand human-hand" style={reduce ? {} : { x: leftX, rotate: leftRotate, opacity: handsOpacity }}><canvas ref={left} aria-hidden="true"/></motion.div>
-        <motion.div className="ascii-hand machine-hand" style={reduce ? {} : { x: rightX, rotate: rightRotate, opacity: handsOpacity }}><canvas ref={right} aria-hidden="true"/></motion.div>
+      <div className="hands-field" ref={field} role="img" aria-label="左侧机器手对应亚当，右侧人手对应上帝，以创造亚当的姿态伸向彼此。两只手由 ASCII 字符组成，随滚动分开，社区标志从中间展开。">
+        <img className="hands-fallback" src={HANDS_SOURCE} alt="" width="1536" height="1024" fetchPriority="high"/>
+        <motion.div className="ascii-hand machine-hand left-hand" style={reduce ? {} : { x: leftX, rotate: leftRotate, opacity: handsOpacity }}><canvas ref={left} aria-hidden="true"/></motion.div>
+        <motion.div className="ascii-hand human-hand right-hand" style={reduce ? {} : { x: rightX, rotate: rightRotate, opacity: handsOpacity }}><canvas ref={right} aria-hidden="true"/></motion.div>
       </div>
       <motion.div className="genesis-logo" style={reduce ? {} : { scale: logoScale, opacity: logoOpacity }}>
         <figure className="ascii-figure" data-source="assets/agenthub-galaxy.webp" aria-label="Agent Hub 社区的动态 ASCII 星系标志"><img className="ascii-fallback" src="assets/agenthub-galaxy.webp" width="720" height="720" alt=""/><canvas aria-hidden="true"/></figure>
       </motion.div>
-      <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { scale: titleScale }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark progress={titleProgress}/></h1><motion.p className="genesis-slogan" lang="en" style={reduce ? {} : { opacity: sloganOpacity, y: sloganY }}>Human × Agent</motion.p></motion.div>
+      <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { scale: titleScale }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark progress={titleProgress}/></h1><motion.p className="genesis-slogan" lang="en" style={reduce ? {} : { opacity: sloganOpacity, y: sloganY }}><span className="slogan-human">Human</span>{' '}<span className="slogan-cross">×</span>{' '}<span className="slogan-agent">Agent</span></motion.p></motion.div>
       <motion.div className="genesis-introduction wrap" style={reduce ? {} : { y: introY, opacity: introOpacity }}><p>Agent Hub 是一个中文技术社群，<br/>专注 LLM Agent 的研究与应用。</p><span>成员来自基模团队与高校，分享研究进展和工程经验。</span></motion.div>
     </div>
   </section>;
