@@ -22,6 +22,8 @@
   --color-media-letter: #71796b;
   --color-hand-human: #efece4;
   --color-hand-machine: #c5d6e8;
+  --hand-glyph-weight: 500;
+  --hand-opacity-floor: .18;
   --color-scene-glow: #738f9a;
   --color-scene-shadow: #00000040;
   --font-body: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -66,8 +68,10 @@
   --color-media-back: #b6c5bb;
   --color-media-event: #d6e0e2;
   --color-media-letter: #65796e;
-  --color-hand-human: #443a31;
-  --color-hand-machine: #254e67;
+  --color-hand-human: #211b15;
+  --color-hand-machine: #102b3a;
+  --hand-glyph-weight: 600;
+  --hand-opacity-floor: .45;
   --color-scene-glow: #63838c;
   --color-scene-shadow: #223c3020;
 }

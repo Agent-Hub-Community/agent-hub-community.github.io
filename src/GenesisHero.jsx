@@ -16,21 +16,21 @@ function useAsciiHands(ref, left, right, progress) {
     const source = new Image();
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     let fields = [[], []], width = 0, height = 0, cellX = 0, cellY = 0;
-    let handColors = [];
+    let handColors = [], glyphWeight = 500, opacityFloor = .18;
     let frame = 0, clock = 0, last = 0, loaded = false, visible = true;
     let paused = preference.matches, active = progress.get() < .72;
     const chars = ' .,:;irsXA253hMHGS#9B&@';
     function draw() {
       contexts.forEach((context, hand) => {
         context.clearRect(0, 0, width, height);
-        context.font = `500 ${cellY * .82}px SFMono-Regular, Consolas, monospace`;
+        context.font = `${glyphWeight} ${cellY * .82}px SFMono-Regular, Consolas, monospace`;
         context.textAlign = 'center';context.textBaseline = 'middle';
         context.fillStyle = handColors[hand];
         for (const point of fields[hand]) {
           const wave = Math.sin(point.x * .012 - clock * .8) * Math.sin(point.y * .014 + clock * .4);
           const light = Math.max(0, Math.min(1, point.light + wave * .045));
           const index = Math.min(chars.length - 1, Math.floor(light * chars.length));
-          context.globalAlpha = Math.min(.98, .18 + Math.pow(light, .75) * .8);
+          context.globalAlpha = Math.min(.98, opacityFloor + Math.pow(light, .75) * (.98 - opacityFloor));
           context.fillText(chars[index], point.x + Math.sin(clock * .6 + point.phase) * .5, point.y + wave * .6);
         }
         context.globalAlpha = 1;
@@ -66,6 +66,8 @@ function useAsciiHands(ref, left, right, progress) {
     function updateTheme() {
       const styles = getComputedStyle(document.documentElement);
       handColors = ['--color-hand-human', '--color-hand-machine'].map(token => styles.getPropertyValue(token).trim());
+      glyphWeight = styles.getPropertyValue('--hand-glyph-weight').trim() || 500;
+      opacityFloor = parseFloat(styles.getPropertyValue('--hand-opacity-floor')) || .18;
       if (loaded) draw();
     }
     const themeObserver = new MutationObserver(updateTheme);
