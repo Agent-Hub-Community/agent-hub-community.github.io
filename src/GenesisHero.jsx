@@ -5,6 +5,15 @@ import './genesis.css';
 
 const HANDS_SOURCE = 'assets/human-machine-creation.png';
 const HANDS_SPLIT = .495;
+// Similar visual densities preserve shading without turning flat areas into
+// long strings of the same character. Every glyph is printable ASCII.
+const GLYPH_BANDS = [".,:'`", ':;!|il', 'irslt/\\', 'vxzc+=*', 'aeknu235', 'AXYhHZ4', 'GMODU69', 'SW%Q8B&', '@#MWB8&'];
+
+function cellNoise(seed) {
+  let value = Math.imul(seed ^ (seed >>> 16), 0x21f0aaad);
+  value = Math.imul(value ^ (value >>> 15), 0x735a2d97);
+  return ((value ^ (value >>> 15)) >>> 0) / 4294967296;
+}
 
 // Sample one grayscale plate into two independent character fields. Animation
 // changes the glyphs and their positions; the raster never appears over them.
@@ -20,9 +29,19 @@ function useAsciiHands(ref, left, right, progress) {
     const preference = matchMedia('(prefers-reduced-motion: reduce)');
     let fields = [[], []], width = 0, height = 0, cellX = 0, cellY = 0;
     let handColors = [], glyphWeight = 500, opacityFloor = .18;
-    let frame = 0, clock = 0, last = 0, loaded = false, visible = true;
+    let frame = 0, clock = 0, last = 0, lastDraw = 0, loaded = false, visible = true;
     let paused = preference.matches, active = progress.get() < .72;
-    const chars = ' .,:;irsXA253hMHGS#9B&@';
+    function breathe() {
+      const amplitude = Math.min(8, Math.max(3, width * .004));
+      canvases.forEach((canvas, hand) => {
+        // The inner canvas breathes independently of its parent's scroll motion.
+        // A slight phase offset keeps the two hands from moving in lockstep.
+        const phase = clock * Math.PI * 2 / 7.8 + hand * .42;
+        const breath = paused ? 0 : Math.sin(phase);
+        const turn = breath * (hand ? -.24 : .28);
+        canvas.style.transform = `translate3d(0, ${-breath * amplitude}px, 0) rotate(${turn}deg)`;
+      });
+    }
     function draw() {
       contexts.forEach((context, hand) => {
         context.clearRect(0, 0, width, height);
@@ -30,11 +49,16 @@ function useAsciiHands(ref, left, right, progress) {
         context.textAlign = 'center';context.textBaseline = 'middle';
         context.fillStyle = handColors[hand];
         for (const point of fields[hand]) {
+          if (!paused && clock >= point.nextChange) {
+            point.revision += 1;
+            const random = cellNoise(point.seed + point.revision * 104729);
+            point.glyph = (point.glyph + 1 + Math.floor(random * (point.pool.length - 1))) % point.pool.length;
+            point.nextChange = clock + 3.5 + cellNoise(point.seed + point.revision * 130363) * 5;
+          }
           const wave = Math.sin(point.x * .012 - clock * .8) * Math.sin(point.y * .014 + clock * .4);
-          const light = Math.max(0, Math.min(1, point.light + wave * .045));
-          const index = Math.min(chars.length - 1, Math.floor(light * chars.length));
+          const light = Math.max(0, Math.min(1, point.light + wave * .025));
           context.globalAlpha = Math.min(.98, opacityFloor + Math.pow(light, .75) * (.98 - opacityFloor));
-          context.fillText(chars[index], point.x + Math.sin(clock * .6 + point.phase) * .5, point.y + wave * .6);
+          context.fillText(point.pool[point.glyph], point.x + Math.sin(clock * .6 + point.phase) * .3, point.y + wave * .35);
         }
         context.globalAlpha = 1;
       });
@@ -55,17 +79,29 @@ function useAsciiHands(ref, left, right, progress) {
         const i = (y * columns + x) * 4;
         const light = (pixels[i] * .2126 + pixels[i + 1] * .7152 + pixels[i + 2] * .0722) / 255;
         if (light < .055) continue;
-        fields[(x + .5) / columns < HANDS_SPLIT ? 0 : 1].push({ x: (x + .5) * cellX, y: (y + .5) * cellY, light: Math.pow(light, .82), phase: x * .7 + y * .3 });
+        const shade = Math.pow(light, .82);
+        const pool = GLYPH_BANDS[Math.min(GLYPH_BANDS.length - 1, Math.floor(shade * GLYPH_BANDS.length))];
+        const seed = x + y * columns + 1;
+        fields[(x + .5) / columns < HANDS_SPLIT ? 0 : 1].push({
+          x: (x + .5) * cellX, y: (y + .5) * cellY, light: shade,
+          phase: cellNoise(seed + 3571) * Math.PI * 2, pool, seed,
+          glyph: Math.floor(cellNoise(seed) * pool.length), revision: 0,
+          nextChange: clock + .5 + cellNoise(seed + 7919) * 8,
+        });
       }
-      draw();host.classList.add('is-ready');
+      breathe();draw();host.classList.add('is-ready');
     }
     function tick(now) {
       frame = 0;
       if (!visible || !active || paused || document.hidden || !loaded) return;
-      if (now - last > 48) { clock += Math.min(now - (last || now), 100) / 1000;last = now;draw(); }
+      clock += Math.min(now - (last || now), 100) / 1000;last = now;
+      breathe();
+      // Smooth whole-hand motion at display refresh rate; redraw the characters
+      // at about 20 fps to avoid rasterizing two large canvases on every frame.
+      if (now - lastDraw > 48) { lastDraw = now;draw(); }
       frame = requestAnimationFrame(tick);
     }
-    function sync() { cancelAnimationFrame(frame);last = 0;if (loaded) {draw();if (!paused && active && visible && !document.hidden) frame = requestAnimationFrame(tick);} }
+    function sync() { cancelAnimationFrame(frame);last = 0;lastDraw = 0;if (loaded) {breathe();draw();if (!paused && active && visible && !document.hidden) frame = requestAnimationFrame(tick);} }
     function updateTheme() {
       const styles = getComputedStyle(document.documentElement);
       handColors = ['--color-hand-machine', '--color-hand-human'].map(token => styles.getPropertyValue(token).trim());

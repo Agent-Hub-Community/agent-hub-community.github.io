@@ -9,6 +9,8 @@
 .js .hands-fallback, .hands-field.is-ready .hands-fallback { visibility: hidden; }
 .left-hand { transform-origin: 0 60%; }
 .right-hand { transform-origin: 100% 30%; }
+.left-hand canvas { transform-origin: 20% 45%; }
+.right-hand canvas { transform-origin: 80% 45%; }
 .genesis-logo { position: absolute; width: min(70svh, 64vw, 760px); aspect-ratio: 1; left: 50%; top: 43%; margin-left: calc(min(70svh, 64vw, 760px) / -2); margin-top: calc(min(70svh, 64vw, 760px) / -2); z-index: 1; }
 .genesis-logo .ascii-figure { inset: 0; width: 100%; max-width: none; animation: none; }
 .genesis-wordmark { position: absolute; left: 0; right: 0; top: 43%; z-index: 4; pointer-events: none; }
