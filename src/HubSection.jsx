@@ -66,7 +66,7 @@ function AgentPrompt({ text }) {
   </div>;
 }
 
-// What the groups are discussing now, laid out like a front page: the issue's date as a masthead, one lead story,
+// What the groups are discussing now, laid out like a front page: a dateline under two rules, one lead story,
 // the other groups in a compact list, then the weekly review, the site's figures and the ways in. The static page
 // carries the section links; the newspaper's summary, fetched after hydration, adds headlines and figures. If it
 // cannot load, the links still work.
@@ -98,7 +98,10 @@ export default function HubSection() {
   const lead = pages.find(page => !page.quiet && page.id.startsWith('group-')) || pages.find(page => !page.quiet);
   const others = pages.filter(page => page !== lead);
   const day = hub?.daily?.date ? new Date(hub.daily.date + 'T12:00:00+08:00') : null;
-  const weekday = day?.toLocaleDateString(locale, { weekday: 'long', timeZone: 'Asia/Shanghai' });
+  // Date and weekday apart: Chinese reads 2026年11月7日 星期六 rather than running them together, English
+  // Saturday, November 7, 2026.
+  const dateline = day && (language === 'en' ? ['weekday', 'date'] : ['date', 'weekday']).map(part => day.toLocaleDateString(locale, part === 'date'
+    ? { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Shanghai' } : { weekday: 'long', timeZone: 'Asia/Shanghai' })).join(language === 'en' ? ', ' : ' ');
   const stats = [
     { id: 'library', value: hub?.library?.count },
     { id: 'glossary', value: hub?.glossary?.count },
@@ -111,18 +114,15 @@ export default function HubSection() {
       <div className="hub-lead">
         <h2 id="hub-title">{text.heading[0]}<br/>{text.heading[1]}</h2>
         <p className="hub-intro">{text.intro}</p>
-        {/* The masthead: the issue's date, large, with its weekday and a live mark. Dropped if the issue fails to load. */}
-        {status !== 'error' && <div className={'hub-masthead' + (hub?.daily ? '' : ' is-empty')}>
-          <time dateTime={hub?.daily?.date}>{hub?.daily ? dotted(hub.daily.date).slice(5) : '00.00'}</time>
-          <span className="hub-masthead-meta">
-            <span className="hub-live">{text.latest}</span>
-            <span>{hub?.daily ? `${dotted(hub.daily.date).slice(0, 4)} · ${weekday}` : ' '}</span>
-          </span>
-        </div>}
+        {/* The dateline, as a newspaper prints it under its rules: issue number, then the date. */}
+        {status !== 'error' && <p className="hub-dateline">
+          <span>{hub?.issues?.daily ? fill(text.issueNumber, { n: hub.issues.daily }) : '\u00a0'}</span>
+          {hub?.daily && <time dateTime={hub.daily.date}>{dateline}</time>}
+        </p>}
         {status === 'ready'
           ? <>
             {lead && <a className="hub-story" href={lead.path} lang="zh-CN">
-              <span className="hub-story-meta"><span className="hub-story-tag">{text.lead}</span><span lang={groupLang(lead)}>{groupName(lead)}</span></span>
+              <span className="hub-story-meta" lang={groupLang(lead)}>{groupName(lead)}</span>
               <span className="hub-story-title">{lead.title}</span>
               <ArrowUpRight size={20} aria-hidden="true"/>
             </a>}
