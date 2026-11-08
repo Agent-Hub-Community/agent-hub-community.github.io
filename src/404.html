@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#000000">
+  <title>页面不存在 · Agent Hub</title>
+  <link rel="icon" type="image/webp" href="/assets/agenthub-icon.webp">
+  <!-- GitHub Pages serves this file for any missing path outside /newspaper/ (which has its own), at any depth,
+       so it is self-contained and links by root-relative path. scripts/build.mjs fills in the wordmark. -->
+  <style>
+    * { box-sizing: border-box; }
+    html { background: #000; }
+    body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; color: #f4f5f6; -webkit-font-smoothing: antialiased;
+      font: 16px/1.8 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      background: radial-gradient(80% 60% at 82% 0%, #0d1d31 0%, #050a11 48%, #000 80%); }
+    body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .45;
+      background-image: radial-gradient(#ffffff26 1px, transparent 1.4px); background-size: 34px 34px; mask-image: linear-gradient(180deg, #000, transparent 75%); }
+    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid #8fbbe0; outline-offset: 4px; }
+    .wrap { width: min(100% - 48px, 1200px); margin-inline: auto; }
+    header { display: flex; align-items: center; min-height: 88px; }
+    header svg { display: block; width: 140px; height: auto; }
+    main { flex: 1; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 112px); align-items: center; padding-block: 64px 96px; }
+    .code { margin: 0; font-size: 12px; letter-spacing: .14em; color: #8fbbe0; }
+    h1 { margin: 18px 0 0; font-size: clamp(36px, 4.4vw, 56px); font-weight: 500; line-height: 1.2; letter-spacing: -.04em; }
+    .note { max-width: 30em; margin: 22px 0 0; font-size: 15px; line-height: 1.95; color: #c8d0d8; }
+    .home { display: inline-flex; align-items: center; min-height: 48px; margin-top: 36px; padding: 0 28px; border: 1px solid #ffffff52; font-size: 14px; transition: background .25s, color .25s, border-color .25s; }
+    .home:hover { background: #f4f5f6; border-color: #f4f5f6; color: #000; }
+    ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid #ffffff1f; }
+    li a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid #ffffff1f; transition: transform .35s cubic-bezier(.2, .7, .2, 1); }
+    li a:hover { transform: translateX(6px); }
+    li strong { font-size: 16px; font-weight: 500; }
+    li span { font-size: 12px; color: #929ba5; }
+    li small { grid-column: 1 / -1; font-size: 13px; color: #a7afb8; }
+    footer { padding-block: 22px 28px; border-top: 1px solid #ffffff14; font-size: 12px; color: #7d8690; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 40px, 1200px); }
+      header { min-height: 72px; }
+      header svg { width: 112px; }
+      main { grid-template-columns: minmax(0, 1fr); align-items: start; padding-block: 40px 64px; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <header class="wrap"><a href="/" aria-label="Agent Hub 首页"><!--wordmark--></a></header>
+  <main class="wrap">
+    <div>
+      <p class="code">404</p>
+      <h1>这一页不存在</h1>
+      <p class="note">链接可能输错了，也可能页面已经搬走。可以回到首页，或者从下面这些地方继续。</p>
+      <a class="home" href="/">回到 Agent Hub 首页</a>
+    </div>
+    <ul>
+      <li><a href="/newspaper/"><strong>日报</strong><span>Daily</span><small>每天整理各群的讨论</small></a></li>
+      <li><a href="/community.html"><strong>社群资料</strong><span>Community</span><small>研究方向、讨论摘录与加入方式</small></a></li>
+      <li><a href="/newspaper/library/"><strong>资料库</strong><span>Library</span><small>群里分享过的论文、代码、数据与工具</small></a></li>
+      <li><a href="/newspaper/search/"><strong>搜索</strong><span>Search</span><small>检索全部日报、周报和资料</small></a></li>
+    </ul>
+  </main>
+  <footer class="wrap">Agent Hub · Human × Agent</footer>
+</body>
+</html>
