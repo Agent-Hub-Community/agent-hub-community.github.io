@@ -1,8 +1,9 @@
 // Points of light in the dark around Mars, one for each discussion in the archive, named by its direction (the
-// discussion's tag). Every few seconds the lights that share a direction reach for each other along faint arcs, and
-// its name appears: people working on the same thing finding each other. Hovering a light names its direction and
+// discussion's tag). Several directions at a time, the lights that share one reach for each other along faint arcs
+// and its name appears: people working on the same thing finding each other. Hovering a light names its direction and
 // joins it to the others. Lights are placed only where the poster is dark, away from the planet and the text.
-const FRAME_MS = 33, ARC_MS = 4200, LINE = '#8fbbe0', TINTS = ['#ffffff', '#eef3ff', '#fff1dc', '#dfe9ff'];
+// Up to three directions link at once; a new one starts every SPAWN_MS and each lasts ARC_MS.
+const FRAME_MS = 33, ARC_MS = 3000, SPAWN_MS = 900, MAX_ARCS = 3, LINE = '#8fbbe0', TINTS = ['#ffffff', '#eef3ff', '#fff1dc', '#dfe9ff'];
 
 function noise(seed) {
   let value = Math.imul(seed ^ (seed >>> 16), 0x21f0aaad);
@@ -19,7 +20,7 @@ export function createPlanetLights(canvas, image, { tags, avoid }) {
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
   const sampler = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
   let width = 0, height = 0, lights = [], groups = new Map(), frame = 0, clock = 0, last = 0, visible = false, still = preference.matches;
-  let arc = null, arcStart = 0, arcTurn = 0, hovered = null;
+  let arcs = [], lastSpawn = 0, arcTurn = 0, hovered = null;
 
   // How bright the poster is at a canvas point, after the same "cover" fit the page gives it.
   function darkness() {
@@ -81,17 +82,17 @@ export function createPlanetLights(canvas, image, { tags, avoid }) {
       lights.push({ x, y, tag: tags[index], r: .7 + Math.pow(noise(seed), 2) * 1.1, phase: noise(seed + 1) * Math.PI * 2,
         speed: .5 + noise(seed + 2) * 1.2, tint: TINTS[Math.floor(noise(seed + 3) * TINTS.length)], glow: 0 });
     }
-    groups = new Map();
+    groups = new Map(); arcs = []; hovered = null;
     for (const light of lights) groups.set(light.tag, [...(groups.get(light.tag) || []), light]);
     return true;
   }
 
-  // Directions with more than one light take turns drawing their arcs.
-  function nextArc() {
-    const shared = [...groups.entries()].filter(([, members]) => members.length > 1);
+  // Directions with more than one light take turns drawing their arcs, never one that is already showing.
+  function nextArc(now) {
+    const shared = [...groups.entries()].filter(([tag, members]) => members.length > 1 && !arcs.some(arc => arc.tag === tag));
     if (!shared.length) return null;
     const [tag, members] = shared[Math.floor(noise(++arcTurn * 104729) * shared.length)];
-    return { tag, members };
+    return { tag, members, from: members[Math.floor(noise(arcTurn * 7919) * members.length)], start: now };
   }
   function curve(a, b, progress) {
     const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, dx = b.x - a.x, dy = b.y - a.y;
@@ -118,20 +119,20 @@ export function createPlanetLights(canvas, image, { tags, avoid }) {
 
   function draw(now) {
     context.clearRect(0, 0, width, height);
-    // The direction being shown: the hovered one, or the arc in turn.
-    let shown = null, progress = 1, fade = 1;
-    if (hovered) shown = { tag: hovered.tag, members: groups.get(hovered.tag), from: hovered };
+    // The directions being shown: the hovered one alone, or the arcs in progress.
+    let shown = [];
+    if (hovered) shown = [{ tag: hovered.tag, members: groups.get(hovered.tag), from: hovered, progress: 1, fade: 1, label: 1 }];
     else if (!still) {
-      if (!arc || now - arcStart > ARC_MS) { arc = nextArc(); arcStart = now; }
-      if (arc) {
-        const t = (now - arcStart) / ARC_MS;
-        progress = clamp(t / .35, 0, 1); fade = t < .75 ? 1 : 1 - (t - .75) / .25;
-        shown = { ...arc, from: arc.members[0] };
-      }
+      arcs = arcs.filter(arc => now - arc.start < ARC_MS);
+      if (arcs.length < MAX_ARCS && now - lastSpawn > SPAWN_MS) { const arc = nextArc(now); if (arc) arcs.push(arc); lastSpawn = now; }
+      shown = arcs.map(arc => {
+        const t = (now - arc.start) / ARC_MS, progress = clamp(t / .3, 0, 1);
+        return { ...arc, progress, fade: t < .7 ? 1 : 1 - (t - .7) / .3, label: clamp((progress - .4) / .6, 0, 1) };
+      });
     }
-    if (shown) link(shown.members, shown.from, 1 - Math.pow(1 - progress, 3), .55 * fade);
+    for (const item of shown) link(item.members, item.from, 1 - Math.pow(1 - item.progress, 3), .55 * item.fade);
     for (const light of lights) {
-      const lit = shown?.tag === light.tag;
+      const lit = shown.some(item => item.tag === light.tag);
       light.glow += ((lit ? 1 : 0) - light.glow) * (still ? 1 : .15);
       const twinkle = still ? .85 : .6 + .4 * Math.pow(.5 + .5 * Math.sin(clock * light.speed + light.phase), 2);
       const r = light.r + light.glow * 1.1, alpha = Math.min(1, twinkle * (.55 + light.r * .25) + light.glow * .5);
@@ -140,7 +141,7 @@ export function createPlanetLights(canvas, image, { tags, avoid }) {
       context.globalAlpha = alpha;
       context.beginPath(); context.arc(light.x, light.y, r, 0, Math.PI * 2); context.fill();
     }
-    if (shown) name(shown.from, (hovered ? 1 : clamp((progress - .4) / .6, 0, 1)) * fade);
+    for (const item of shown) name(item.from, item.label * item.fade);
     context.globalAlpha = 1;
   }
 
