@@ -17,6 +17,9 @@
 .hub-group { font-size: 11px; letter-spacing: .06em; color: #8fbbe0; }
 .hub-headline { font-size: 15px; line-height: 1.62; }
 .hub-headlines svg { align-self: center; color: #5f6973; transition: color .25s; }
+.hub-quiet { display: block; font-size: 13px; color: #929ba5; }
+.hub-last { display: block; margin-top: 2px; font-size: 13px; line-height: 1.7; color: #7d8690; }
+.hub-headlines .is-quiet a:is(:hover, :focus-visible) .hub-last { color: #c8d0d8; }
 .hub-skeleton li { padding: 22px 0; }
 .hub-skeleton span { display: block; height: 13px; width: 78%; border-radius: 3px; background: linear-gradient(90deg, #ffffff0d 0%, #ffffff1f 50%, #ffffff0d 100%) 0 0 / 200% 100%; animation: hub-shimmer 1.6s linear infinite; }
 .hub-skeleton li:nth-child(2n) span { width: 62%; }

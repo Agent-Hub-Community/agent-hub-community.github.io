@@ -49,8 +49,13 @@ export default function HubSection() {
         <h2 id="hub-title">{text.heading[0]}<br/>{text.heading[1]}</h2>
         <p className="hub-intro">{text.intro}</p>
         {status === 'ready'
-          ? <ol className="hub-headlines" lang="zh-CN">{hub.daily.pages.map(page => <li key={page.id}><a href={page.path}>
-              <span className="hub-group" lang={text.groups?.[page.id] ? 'en' : 'zh-CN'}>{groupName(page)}</span><span className="hub-headline">{page.title}</span><ArrowUpRight size={16} aria-hidden="true"/>
+          ? <ol className="hub-headlines" lang="zh-CN">{hub.daily.pages.map(page => <li key={page.id} className={page.quiet ? 'is-quiet' : undefined}><a href={page.quiet ? page.last.path : page.path}>
+              <span className="hub-group" lang={text.groups?.[page.id] ? 'en' : 'zh-CN'}>{groupName(page)}</span>
+              {/* A group with nothing new today keeps its row and leads to its most recent page. */}
+              {page.quiet
+                ? <span className="hub-headline"><span className="hub-quiet" lang={language === 'en' ? 'en' : 'zh-CN'}>{text.quietNote}</span><span className="hub-last"><span lang={language === 'en' ? 'en' : 'zh-CN'}>{fill(text.quietLast, { date: dotted(page.last.date).slice(5) })}</span>{page.last.title}</span></span>
+                : <span className="hub-headline">{page.title}</span>}
+              <ArrowUpRight size={16} aria-hidden="true"/>
             </a></li>)}</ol>
           : status === 'loading'
             ? <ol className="hub-headlines hub-skeleton" aria-hidden="true">{[0, 1, 2, 3, 4].map(index => <li key={index}><span/></li>)}</ol>
