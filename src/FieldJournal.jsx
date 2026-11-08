@@ -214,8 +214,12 @@ function Join() {
       <div><h2 id="join-title">带着你的问题，<br/>来聊聊。</h2></div>
       <div className="fj-join-copy">
         <p>如果你也在研究 Agent、做产品，<br/>或想认真探索它能做什么，欢迎加入。</p>
-        <p>社群采用成员邀请制，可通过现有成员推荐加入。论文分享、活动合作与内容共建，也欢迎通过 GitHub 联系我们。</p>
-        <div className="fj-join-actions"><a href={GITHUB} className="fj-button">在 GitHub 找到我们<ArrowUpRight size={17} aria-hidden="true"/></a></div>
+        <p>社群采用成员邀请制：可以填写入群申请，也可以请现有成员推荐。论文分享、活动合作与内容共建，也欢迎通过 GitHub 联系我们。</p>
+        {/* As on the live site: the application form is its own page (join-example.html, copied by the build). */}
+        <div className="fj-join-actions">
+          <a href="join-example.html" className="fj-button">填写入群申请<ArrowRight size={17} aria-hidden="true"/></a>
+          <a href={GITHUB} className="fj-text-link" data-direction="external"><span>在 GitHub 找到我们</span><ArrowUpRight size={15} aria-hidden="true"/></a>
+        </div>
       </div>
     </div>
   </section>;
