@@ -63,9 +63,11 @@ html:not(.js) .planet-lights { display: none; }
 .js .institution-group[aria-hidden] { display: flex; }
 .js .institution-track { animation: institution-drift calc(var(--item-count) * 6s) linear infinite; }
 .js .institution-track[data-reverse='true'] { animation-direction: reverse; }
-.institution-marquee[data-paused='true'] .institution-track, .institution-marquee:focus-within .institution-track { animation-play-state: paused; }
-.institution-row:focus .institution-track { animation: none; transform: none; }
-.institution-row:focus .institution-group[aria-hidden] { display: none; }
+/* Only keyboard focus stops the rows: a row reached with Tab holds still so its logos can be read and scrolled with
+   the arrow keys. A mouse click never focuses a row (see InstitutionWall), and :focus-visible keeps it that way. */
+.institution-marquee[data-paused='true'] .institution-track, .institution-marquee:has(.institution-row:focus-visible) .institution-track { animation-play-state: paused; }
+.institution-row:focus-visible .institution-track { animation: none; transform: none; }
+.institution-row:focus-visible .institution-group[aria-hidden] { display: none; }
 .institution-row:focus-visible { outline-offset: -4px; }
 @keyframes institution-drift { to { transform: translateX(-50%); } }
 .institution-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 24px; max-width: 1120px; }

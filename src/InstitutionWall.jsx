@@ -34,7 +34,9 @@ export default function InstitutionWall() {
       <p>{copy.memberIntro[0]}<br className="mobile-break"/>{language === 'en' && ' '}{copy.memberIntro[1]}</p>
     </div>
     <div className="institution-marquee" data-paused={paused || !active} aria-label={copy.memberLabel}>
-      {rows.map((row, index) => <div className="institution-row" key={index} style={{ '--item-count': row.length }} tabIndex={0} role="group" aria-label={copy.groups[index < 2 ? 0 : 1] + ', ' + copy.browseRow} onBlur={event => { event.currentTarget.scrollLeft = 0; }}>
+      {/* Rows take focus from the keyboard only; a mouse press is kept from focusing them, so clicking never stops the wall. */}
+      {rows.map((row, index) => <div className="institution-row" key={index} style={{ '--item-count': row.length }} tabIndex={0} role="group" aria-label={copy.groups[index < 2 ? 0 : 1] + ', ' + copy.browseRow}
+        onMouseDown={event => event.preventDefault()} onBlur={event => { event.currentTarget.scrollLeft = 0; }}>
         <div className="institution-track" data-reverse={index % 2 === 1}>
           {[false, true].map(duplicate => <ul className="institution-group" key={String(duplicate)} aria-label={duplicate ? undefined : copy.groups[index < 2 ? 0 : 1]} aria-hidden={duplicate || undefined} inert={duplicate || undefined}>
             {row.map(item => <li key={item.title} title={name(item)}><MemberLogo item={item}/><span className="institution-name">{name(item)}</span></li>)}
