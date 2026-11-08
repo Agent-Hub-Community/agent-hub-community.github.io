@@ -4,14 +4,14 @@ import BrandWordmark from './BrandWordmark';
 import { LanguageSwitch, useHomeLanguage } from './HomeLanguage';
 import { PRIMARY, sitePath } from './site-map';
 
-export default function SiteHeader({ reading = false }) {
+export default function SiteHeader() {
   const { copy } = useHomeLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const header = useRef(null), menu = useRef(null);
-  // The same sections, in the same order, on every page of the site; the community page marks its own entry.
-  const navigation = PRIMARY.map((item, index) => [item.id === 'community' && reading ? '#about' : item.path, copy.nav[index], item.id === 'community' && reading]);
-  const join = reading ? '#join' : sitePath('join');
+  // The same sections, in the same order, as the newspaper's masthead.
+  const navigation = PRIMARY.map((item, index) => [item.path, copy.nav[index]]);
+  const join = sitePath('join');
   useEffect(() => {
     const desktop = matchMedia('(min-width: 901px)');
     const resize = () => { if (desktop.matches) setOpen(false); };
@@ -36,16 +36,16 @@ export default function SiteHeader({ reading = false }) {
     document.addEventListener('focusin', dismiss);
     return () => { document.removeEventListener('keydown', dismiss); document.removeEventListener('pointerdown', dismiss); document.removeEventListener('focusin', dismiss); };
   }, [open]);
-  return <header ref={header} className={'site-header module-header is-visible ' + (reading ? 'journal-header' : 'cinema-header') + (scrolled ? ' is-scrolled' : '') + (open ? ' menu-open' : '')}>
+  return <header ref={header} className={'site-header module-header is-visible ' + 'cinema-header' + (scrolled ? ' is-scrolled' : '') + (open ? ' menu-open' : '')}>
     <div className="header-inner cinema-wrap">
-      <a className="brand" href={reading ? './' : '#cover'} aria-label={copy.home}><img src="assets/agenthub-icon.webp" alt="" width="28" height="28"/><BrandWordmark/></a>
+      <a className="brand" href="#cover" aria-label={copy.home}><img src="assets/agenthub-icon.webp" alt="" width="28" height="28"/><BrandWordmark/></a>
       <nav id="site-navigation" className={'nav' + (open ? ' is-open' : '')} aria-label={copy.navigation}>
-        {navigation.map(([href, label, current]) => <a key={href} href={href} aria-current={current ? 'page' : undefined} onClick={() => setOpen(false)}>{label}</a>)}
-        {!reading && <a className="nav-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>}
+        {navigation.map(([href, label]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
+        <a className="nav-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>
       </nav>
       <div className="header-actions">
         <a className="header-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>
-        {!reading && <LanguageSwitch/>}
+        <LanguageSwitch/>
         <button ref={menu} className="menu-toggle" type="button" aria-label={open ? copy.menuClose : copy.menuOpen} aria-controls="site-navigation" aria-expanded={open} onClick={() => setOpen(value => !value)}>{open ? <X size={21}/> : <Menu size={21}/>}</button>
       </div>
     </div>

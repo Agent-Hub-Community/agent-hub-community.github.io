@@ -89,7 +89,8 @@ html:not(.js) .commons-nav button { display: none; }
    and the sky fills what is left. The panel never scrolls; a discussion with many ideas makes the section a little
    taller instead. */
 @media (min-width: 962px) and (min-height: 520px) {
-  .community-identity { display: flex; flex-direction: column; min-height: max(100svh, 520px); padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(16px, 3vh, 36px); }
+  /* The padding already clears the header, so an anchor puts the screen's top at the window's top. */
+  .community-identity { display: flex; flex-direction: column; min-height: max(100svh, 520px); padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(16px, 3vh, 36px); scroll-margin-top: calc(-1 * (var(--header-height) + var(--space-lg))); }
   .community-identity > .cinema-wrap { flex: 1; display: flex; flex-direction: column; }
   .commons-head h2 { font-size: clamp(30px, 4.6vh, 52px); }
   .commons-lead > p { line-height: 1.8; }

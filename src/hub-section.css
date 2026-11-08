@@ -117,7 +117,8 @@
 /* On desktop windows the panel fills exactly one screen below the header: spacing and type follow the window's
    height, and the extras give way first when it is short. */
 @media (min-width: 962px) and (min-height: 520px) {
-  .hub-section { min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(20px, 3.5vh, 44px); }
+  /* The padding already clears the header, so an anchor puts the screen's top at the window's top. */
+  .hub-section { min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(20px, 3.5vh, 44px); scroll-margin-top: calc(-1 * (var(--header-height) + var(--space-lg))); }
   .hub-inner { width: 100%; }
   .hub-lead h2 { font-size: clamp(28px, 4.5vh, 48px); }
   .hub-intro { margin-top: clamp(10px, 1.8vh, 18px); }

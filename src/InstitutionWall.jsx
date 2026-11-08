@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Pause, Play, Plus } from 'lucide-react';
+import { ArrowUpRight, Pause, Play, Plus } from 'lucide-react';
 import institutions from 'agenthub:institutions';
 import MemberLogo from './MemberLogo';
 import { useHomeLanguage } from './HomeLanguage';
 import { INSTITUTION_NAMES_EN } from './home-copy';
+import { JOIN_FORM } from './site-map';
 
 // Four equally paced tracks retain every institution in the source. Separating
 // teams from universities makes the complete directory useful as well.
@@ -28,7 +29,7 @@ export default function InstitutionWall() {
     document.addEventListener('visibilitychange', sync);
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
   }, []);
-  return <section className="institution-section" id="members" ref={ref} aria-labelledby="members-title">
+  return <section className="institution-section" id="join" ref={ref} aria-labelledby="members-title">
     <div className="institution-heading cinema-wrap">
       <h2 id="members-title"><span>{copy.memberHeading[0]}</span><span>{copy.memberHeading[1]}</span></h2>
       <p>{copy.memberIntro[0]}<br className="mobile-break"/>{language === 'en' && ' '}{copy.memberIntro[1]}</p>
@@ -45,6 +46,10 @@ export default function InstitutionWall() {
       </div>)}
     </div>
     <div className="institution-bottom cinema-wrap">
+      <div className="institution-join">
+        <p>{copy.joinLead}</p>
+        <a className="scene-button" href={JOIN_FORM} target="_blank" rel="noopener">{copy.joinForm}<ArrowUpRight size={14} aria-hidden="true"/></a>
+      </div>
       <button className="institution-pause" type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>
         {paused ? <Play size={14} aria-hidden="true"/> : <Pause size={14} aria-hidden="true"/>}<span>{paused ? copy.resumeScroll : copy.pauseScroll}</span>
       </button>

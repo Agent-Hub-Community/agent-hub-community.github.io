@@ -70,7 +70,10 @@ html:not(.js) .planet-lights { display: none; }
 .institution-row:focus-visible .institution-group[aria-hidden] { display: none; }
 .institution-row:focus-visible { outline-offset: -4px; }
 @keyframes institution-drift { to { transform: translateX(-50%); } }
-.institution-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 24px; max-width: 1120px; }
+.institution-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1120px; }
+.institution-join { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 28px; }
+.institution-join p { margin: 0; color: #cad1d8; font-size: 13px; }
+.institution-join .scene-button { gap: 8px; }
 .institution-pause { display: none; align-items: center; gap: 9px; min-height: 44px; padding: 0; color: #b8c1ca; font-size: 11px; white-space: nowrap; }
 .js .institution-pause { display: inline-flex; }
 .institution-directory { max-width: 1120px; margin-top: 12px; }
@@ -82,8 +85,6 @@ html:not(.js) .planet-lights { display: none; }
 .institution-directory-groups ul { display: flex; flex-wrap: wrap; gap: 12px 22px; margin: 20px 0 12px; padding: 0; list-style: none; }
 .institution-directory-groups li { color: #a7afb8; font-size: 12px; }
 /* The footer and its site map: site-map.css. */
-.legacy-entry { display: none; margin: 40px auto; padding: 30px; }
-.legacy-entry:target { display: block; }
 @media (max-width: 900px) {
   :root[data-page='home'] { --header-height: 72px; }
   .cinema-wrap { padding-inline: 28px; }

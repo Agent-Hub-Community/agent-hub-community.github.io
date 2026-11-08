@@ -44,7 +44,7 @@ def main():
     parser.add_argument('source', type=Path)
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'src/brand')
     args = parser.parse_args()
-    sources = ['src/FieldJournal.jsx', 'src/CommunityIdentity.jsx', 'src/commons-stories.js', 'src/main.jsx', 'src/GenesisHero.jsx', 'src/SiteHeader.jsx', 'src/CinematicHome.jsx', 'src/InstitutionWall.jsx', 'src/PlanetScene.jsx', 'src/HomeLanguage.jsx', 'src/home-copy.js', 'src/community.jsx', 'src/journal-content.json']
+    sources = ['src/CommunityIdentity.jsx', 'src/commons-stories.js', 'src/main.jsx', 'src/GenesisHero.jsx', 'src/SiteHeader.jsx', 'src/CinematicHome.jsx', 'src/InstitutionWall.jsx', 'src/PlanetScene.jsx', 'src/HomeLanguage.jsx', 'src/home-copy.js']
     core = characters(''.join((ROOT / name).read_text() for name in sources))
     data_text = (ROOT / 'src/community-data.json').read_text()
     data = json.loads(data_text)
