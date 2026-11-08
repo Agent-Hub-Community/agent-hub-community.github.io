@@ -113,3 +113,40 @@
   .hub-skeleton span { animation: none; }
   .hub-headlines a, .hub-story > svg, .hub-panel-title svg, .hub-stat-label svg { transition: none; }
 }
+
+/* On desktop windows the panel fills exactly one screen below the header: spacing and type follow the window's
+   height, and the extras give way first when it is short. */
+@media (min-width: 962px) and (min-height: 520px) {
+  .hub-section { min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(20px, 3.5vh, 44px); }
+  .hub-inner { width: 100%; }
+  .hub-lead h2 { font-size: clamp(28px, 4.5vh, 48px); }
+  .hub-intro { margin-top: clamp(10px, 1.8vh, 18px); }
+  .hub-dateline { margin-top: clamp(14px, 2.8vh, 40px); }
+  .hub-story { padding-block: clamp(14px, 2.4vh, 24px); gap: 8px; }
+  .hub-story-title { font-size: clamp(20px, 3.3vh, 32px); }
+  .hub-headlines a { padding-block: clamp(9px, 1.5vh, 15px); }
+  .hub-actions { margin-top: clamp(16px, 3vh, 32px); }
+  .hub-side { gap: clamp(10px, 1.6vh, 18px); }
+  .hub-weekly, .hub-agents { gap: clamp(8px, 1.4vh, 14px); padding: clamp(14px, 2.2vh, 22px) 22px; }
+  .hub-stats a { padding-block: clamp(10px, 1.8vh, 18px); }
+  .hub-recent li:nth-child(n + 4) { display: none; }
+}
+@media (min-width: 962px) and (max-height: 920px) {
+  .hub-headline { -webkit-line-clamp: 1; }
+  .hub-weekly li:nth-child(n + 4) { display: none; }
+}
+@media (min-width: 962px) and (max-height: 860px) {
+  .hub-recent { display: none; }
+}
+@media (min-width: 962px) and (max-height: 760px) {
+  .hub-headlines a { padding-block: 7px; gap: 3px; }
+  .hub-intro { line-height: 1.7; }
+}
+@media (min-width: 962px) and (max-height: 640px) {
+  .hub-intro, .hub-agents-lead { display: none; }
+  .hub-weekly li:nth-child(n + 3) { display: none; }
+  .hub-dateline { margin-top: 12px; }
+  .hub-actions { margin-top: 12px; }
+  .hub-section { padding-bottom: 8px; }
+  .hub-story { padding-block: 10px; }
+}

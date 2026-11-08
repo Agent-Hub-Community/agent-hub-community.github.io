@@ -3,7 +3,7 @@
 // and its name appears: people working on the same thing finding each other. Hovering a light names its direction and
 // joins it to the others. Lights are placed only where the poster is dark, away from the planet and the text.
 // Up to three directions link at once; a new one starts every SPAWN_MS and each lasts ARC_MS.
-const FRAME_MS = 33, ARC_MS = 3000, SPAWN_MS = 900, MAX_ARCS = 3, LINE = '#8fbbe0', TINTS = ['#ffffff', '#eef3ff', '#fff1dc', '#dfe9ff'];
+const FRAME_MS = 33, ARC_MS = 3800, SPAWN_MS = 1200, MAX_ARCS = 3, LINE = '#8fbbe0', TINTS = ['#ffffff', '#eef3ff', '#fff1dc', '#dfe9ff'];
 
 function noise(seed) {
   let value = Math.imul(seed ^ (seed >>> 16), 0x21f0aaad);
@@ -126,7 +126,7 @@ export function createPlanetLights(canvas, image, { tags, avoid }) {
       arcs = arcs.filter(arc => now - arc.start < ARC_MS);
       if (arcs.length < MAX_ARCS && now - lastSpawn > SPAWN_MS) { const arc = nextArc(now); if (arc) arcs.push(arc); lastSpawn = now; }
       shown = arcs.map(arc => {
-        const t = (now - arc.start) / ARC_MS, progress = clamp(t / .3, 0, 1);
+        const t = (now - arc.start) / ARC_MS, progress = clamp(t / .36, 0, 1);
         return { ...arc, progress, fade: t < .7 ? 1 : 1 - (t - .7) / .3, label: clamp((progress - .4) / .6, 0, 1) };
       });
     }
