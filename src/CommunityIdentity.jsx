@@ -4,8 +4,13 @@ import community from 'agenthub:homepage-community';
 import { DISCUSSION_TRANSLATIONS } from './commons-stories';
 import { createSky } from './commons-sky';
 import { useHomeLanguage } from './HomeLanguage';
+import { sitePath } from './site-map';
+import SOURCES from './discussion-sources.json';
 
 const DISCUSSIONS = community.discussions;
+// Where each discussion was written up in the newspaper, keyed by archive number (see discussion-sources.json).
+// Without a verified source, the link opens the newspaper's search for the question instead.
+const sourceOf = index => SOURCES[index + 1];
 const FIRST = 59 - 1;
 const sentences = text => (text.match(/[^。！？；]+[。！？；]?/g) || []).map(part => part.trim()).filter(Boolean);
 const longest = Math.max(...DISCUSSIONS.map(item => item.detail.length));
@@ -86,7 +91,8 @@ export default function CommunityIdentity() {
             <button type="button" onClick={() => step(-1)} aria-label={copy.previousDiscussion}><ChevronLeft size={17} aria-hidden="true"/></button>
             <button type="button" className="commons-shuffle" onClick={shuffle}><Shuffle size={15} aria-hidden="true"/>{copy.randomDiscussion}</button>
             <button type="button" onClick={() => step(1)} aria-label={copy.nextDiscussion}><ChevronRight size={17} aria-hidden="true"/></button>
-            <a className="commons-record" href={'community.html#discussion-' + (selected + 1)}>{copy.discussionRecord}<ArrowUpRight size={14} aria-hidden="true"/></a>
+            <a className="commons-record" href={sourceOf(selected)?.path || sitePath('search') + '?q=' + encodeURIComponent(DISCUSSIONS[selected].question)}>
+              {sourceOf(selected) ? copy.sourceRecord[sourceOf(selected).kind] : copy.searchRecord}<ArrowUpRight size={14} aria-hidden="true"/></a>
           </div>
         </div>
         <div className="commons-detail-ideas">
