@@ -72,6 +72,7 @@ lucide-react/dist/esm/icons/pause.js:
 lucide-react/dist/esm/icons/play.js:
 lucide-react/dist/esm/icons/plus.js:
 lucide-react/dist/esm/icons/search.js:
+lucide-react/dist/esm/icons/shuffle.js:
 lucide-react/dist/esm/icons/sun.js:
 lucide-react/dist/esm/icons/x.js:
 lucide-react/dist/esm/lucide-react.js:

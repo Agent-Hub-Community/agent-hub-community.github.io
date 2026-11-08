@@ -1,47 +1,49 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Shuffle } from 'lucide-react';
 import community from 'agenthub:homepage-community';
-import { COMMONS_STORIES } from './commons-stories';
+import { DISCUSSION_TRANSLATIONS } from './commons-stories';
 import { createSky } from './commons-sky';
 import { useHomeLanguage } from './HomeLanguage';
 
-const pad = number => String(number).padStart(2, '0');
+const DISCUSSIONS = community.discussions;
+const FIRST = 59 - 1;
+const sentences = text => (text.match(/[^。！？；]+[。！？；]?/g) || []).map(part => part.trim()).filter(Boolean);
+const longest = Math.max(...DISCUSSIONS.map(item => item.detail.length));
+const WEIGHTS = DISCUSSIONS.map(item => item.detail.length / longest);
 
-// Three real discussions, each read as a short exchange that ends on what is still open. Above them, each discussion
-// is a constellation in a night sky; a card and its constellation light up together.
+// One discussion as the page shows it: the archive's Chinese, or an English reading where one exists.
+function read(index, language) {
+  const item = DISCUSSIONS[index], english = language === 'en' && DISCUSSION_TRANSLATIONS[index + 1];
+  return english
+    ? { ...english, quote: '', lang: 'en' }
+    : { tag: item.tag, question: item.question, quote: item.quote, ideas: sentences(item.detail), conclusion: item.conclusion, lang: 'zh-CN' };
+}
+
+// Every archived discussion is a star. Hovering one previews its question; clicking it opens the discussion below,
+// where each idea matches a numbered star around it.
 export default function CommunityIdentity() {
   const { copy, language } = useHomeLanguage();
-  const surface = useRef(null), list = useRef(null), sky = useRef(null);
-  const [active, setActive] = useState(null);
-  const stories = COMMONS_STORIES.map(item => {
-    const discussion = community.discussions[item.discussionId - 1];
-    const text = language === 'en' ? { ...item, ...item.en } : item;
-    return { ...text, question: text.question || discussion.question, conclusion: text.conclusion || discussion.conclusion };
-  });
+  const surface = useRef(null), sky = useRef(null);
+  const [selected, setSelected] = useState(FIRST);
+  const [peek, setPeek] = useState(null);
+  const [idea, setIdea] = useState(null);
+  const discussion = read(selected, language);
+  const preview = peek && read(peek.index, language);
 
   useEffect(() => {
-    const canvas = surface.current;
-    const targets = () => {
-      const origin = canvas.getBoundingClientRect();
-      const cards = [...list.current.children].map(card => card.getBoundingClientRect());
-      // Side by side, each constellation hangs over its card; stacked, they share the width.
-      const sideBySide = cards.length > 1 && Math.abs(cards[0].top - cards[1].top) < 2;
-      return cards.map((card, index) => sideBySide
-        ? { x: card.left - origin.left + card.width / 2, width: card.width }
-        : { x: origin.width * (index * 2 + 1) / (cards.length * 2), width: origin.width / cards.length });
-    };
-    const select = index => {
-      const card = list.current.children[index];
-      card.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
-      card.querySelector('.commons-record')?.focus({ preventScroll: true });
-    };
-    sky.current = createSky(canvas, { targets, onHover: setActive, onSelect: select });
+    sky.current = createSky(surface.current, {
+      groups: DISCUSSIONS.map(item => item.tag), weights: WEIGHTS,
+      onHover: (index, x, y) => setPeek(index === null ? null : { index, x, y }),
+      onSelect: index => setSelected(index),
+    });
     return () => { sky.current?.dispose(); sky.current = null; };
   }, []);
-  useEffect(() => { sky.current?.setActive(active); }, [active]);
-  useEffect(() => {
-    sky.current?.setLabels(stories.map((story, index) => ({ number: pad(index + 1), topic: story.label, turns: story.turns.map(turn => turn.label), open: copy.stillOpen })));
-  }, [language]);
+  useEffect(() => { sky.current?.select(selected, discussion.ideas.length); setIdea(null); }, [selected, discussion.ideas.length]);
+  useEffect(() => { sky.current?.focusIdea(idea); }, [idea]);
+
+  const step = offset => setSelected(index => (index + offset + DISCUSSIONS.length) % DISCUSSIONS.length);
+  const shuffle = () => setSelected(index => (index + 1 + Math.floor(Math.random() * (DISCUSSIONS.length - 1))) % DISCUSSIONS.length);
+  const peekSide = peek && surface.current ? (peek.x < 180 ? 'is-start' : peek.x > surface.current.clientWidth - 180 ? 'is-end' : '') : '';
 
   return <section className="community-identity" id="collaborate" aria-labelledby="collaborate-title">
     <div className="cinema-wrap">
@@ -55,20 +57,38 @@ export default function CommunityIdentity() {
           </div>
         </div>
       </header>
+      {/* The sky is a pointer shortcut; the buttons below reach every discussion from the keyboard. */}
       <div className="commons-sky" aria-hidden="true">
         <canvas ref={surface}/>
-        <p className="commons-legend"><span>{copy.skyLegend[0]}</span><span className="is-star">{copy.skyLegend[1]}</span><span className="is-open">{copy.skyLegend[2]}</span></p>
+        <p className="commons-hint">{copy.skyHint}</p>
+        {preview && <div className={'commons-peek ' + peekSide} style={{ left: peek.x, top: peek.y }}>
+          <span className="commons-peek-tag" lang={preview.lang}>{preview.tag}</span>
+          <span className="commons-peek-question" lang={preview.lang}>{preview.question}</span>
+          <span className="commons-peek-action">{peek.index === selected ? copy.skyOpened : copy.skyOpen}</span>
+        </div>}
       </div>
-      <ol className="commons-threads" ref={list}>{stories.map((story, index) => <li key={story.id} className={active === index ? 'is-active' : undefined}
-        onPointerEnter={() => setActive(index)} onPointerLeave={() => setActive(null)} onFocus={() => setActive(index)} onBlur={() => setActive(null)}>
-        <article className="commons-thread" aria-labelledby={'commons-' + story.id}>
-          <p className="commons-topic"><span>{pad(index + 1)}</span>{story.label}</p>
-          <h3 id={'commons-' + story.id}>{story.question}</h3>
-          <ol className="commons-turns">{story.turns.map(turn => <li key={turn.label}><span>{turn.label}</span><p>{turn.text}</p></li>)}</ol>
-          <div className="commons-open"><span>{copy.stillOpen}</span><p>{story.conclusion}</p></div>
-          <a className="commons-record" href={'community.html#discussion-' + story.discussionId}>{copy.discussionRecord}<ArrowUpRight size={14} aria-hidden="true"/></a>
-        </article>
-      </li>)}</ol>
+      <article className="commons-detail" aria-labelledby="commons-question" aria-live="polite">
+        <div className="commons-detail-main">
+          <p className="commons-meta"><span>{copy.discussionNumber.replace('{n}', selected + 1).replace('{total}', DISCUSSIONS.length)}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span></p>
+          <h3 id="commons-question" lang={discussion.lang}>{discussion.question}</h3>
+          {discussion.quote && <blockquote lang={discussion.lang}><span>{copy.quoteLabel}</span>{discussion.quote}</blockquote>}
+          <div className="commons-nav" role="group" aria-label={copy.browseDiscussions}>
+            <button type="button" onClick={() => step(-1)} aria-label={copy.previousDiscussion}><ChevronLeft size={17} aria-hidden="true"/></button>
+            <button type="button" className="commons-shuffle" onClick={shuffle}><Shuffle size={15} aria-hidden="true"/>{copy.randomDiscussion}</button>
+            <button type="button" onClick={() => step(1)} aria-label={copy.nextDiscussion}><ChevronRight size={17} aria-hidden="true"/></button>
+            <a className="commons-record" href={'community.html#discussion-' + (selected + 1)}>{copy.discussionRecord}<ArrowUpRight size={14} aria-hidden="true"/></a>
+          </div>
+        </div>
+        <div className="commons-detail-ideas">
+          <p className="commons-ideas-label">{copy.ideasLabel}</p>
+          <ol className="commons-ideas" lang={discussion.lang}>{discussion.ideas.map((text, index) => <li key={selected + '-' + index}
+            onPointerEnter={() => setIdea(index)} onPointerLeave={() => setIdea(null)}><span aria-hidden="true">{index + 1}</span><p>{text}</p></li>)}</ol>
+          <div className="commons-open" onPointerEnter={() => setIdea(discussion.ideas.length)} onPointerLeave={() => setIdea(null)}>
+            <span>{copy.stillOpen}</span><p lang={discussion.lang}>{discussion.conclusion}</p>
+          </div>
+          {language === 'en' && discussion.lang !== 'en' && <p className="commons-language">{copy.archiveLanguage}</p>}
+        </div>
+      </article>
       <p className="commons-note">{copy.provenance}</p>
     </div>
   </section>;

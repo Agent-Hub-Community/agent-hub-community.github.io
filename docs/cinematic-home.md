@@ -7,7 +7,7 @@
 - `src/main.jsx`、`src/CinematicHome.jsx`：四段首页与页脚。
 - `src/GenesisHero.jsx`、`src/genesis.css`：保留原有双手分开、星系展开、字标出现的滚动映射，只翻译文字与辅助标签。
 - `src/PlanetScene.jsx`、`src/cinematic-home.css`：火星、简介、日报和资料库入口。
-- `src/CommunityIdentity.jsx`、`src/community-identity.css`、`src/commons-sky.js`：三组讨论并排展示，每组是问题、双方观点、还在讨论的部分和讨论记录链接。上方夜空里每组讨论是一个星座，星的角色与卡片一一对应（主星为问题、两颗星为观点、琥珀色虚线星为还在讨论）；星座形状在 `SHAPES` 中手工排布。卡片与星座双向联动，点星座跳到卡片。星空按约 30 fps 闪烁并随滚动轻微视差，离屏或后台时停止；减少动态效果时为静态画面且不画连线动画；无脚本时不显示。V86 的 3D 社群场景已移除。
+- `src/CommunityIdentity.jsx`、`src/community-identity.css`、`src/commons-sky.js`：讨论档案里的每个问题是夜空中的一颗星，同一标签聚成星团。悬停预览问题，点击展开；展开时想法（档案 `detail` 按句拆分）以扇形围绕该星，开口朝向夜空中心，编号与下方面板一致，琥珀色虚线星对应还在讨论的部分。面板提供上一个、下一个、随机按钮，键盘也能浏览全部问题；英文页对 59、47、7 使用 `commons-stories.js` 的译文，其余标明为中文原文。星空约 30 fps 闪烁并随滚动轻微视差，离屏或后台时停止；减少动态效果时静止；无脚本时不显示星空，面板显示默认问题与讨论记录链接。V86 的 3D 社群场景已移除。
 - `src/HomeLanguage.jsx`、`src/home-copy.js`：首页中英文本。第一次访问始终用中文；明确选择后，通过 `agenthub-language` 保存偏好。切换同时更新文档语言、标题和说明。
 - `src/SiteHeader.jsx`、`src/module-header.css`：共享模块导航与移动端菜单，支持 Escape 关闭与焦点返回。
 - `src/community.jsx`、`src/community.html`：独立中文资料页，保留日报精选、六个研究方向、66 则讨论、成员目录与邀请方式。
