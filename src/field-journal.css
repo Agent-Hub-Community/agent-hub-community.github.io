@@ -28,6 +28,8 @@
 .field-journal ::selection { background: var(--fj-accent); color: var(--fj-paper); }
 .fj-wrap { width: calc(100% - 96px); max-width: 1200px; margin-inline: auto; }
 .field-journal section { scroll-margin-top: 0; }
+/* Each section paints its own band, so a jump lands flush under the header instead of showing a strip of the one above. */
+html[data-page="community"] { scroll-padding-top: var(--header-height); }
 .fj-section-tint { background: var(--fj-tint); }
 .fj-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 42px; }
 .fj-section-heading h2 { margin-top: 0; }
