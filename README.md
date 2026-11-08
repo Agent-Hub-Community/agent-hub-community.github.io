@@ -21,7 +21,7 @@ npm run dev
 - `src/SiteHeader.jsx`、`src/module-header.css`：始终可用的模块入口与移动端菜单。
 - `src/InstitutionWall.jsx`、`src/MemberLogo.jsx`：117 个机构的连续滚动、暂停、键盘浏览、完整目录与 SVG 标识去重。
 - `src/community.jsx`、`src/FieldJournal.jsx`：独立资料页、讨论搜索与分页、成员目录、加入说明和页脚。
-- `src/CommunityIdentity.jsx`、`src/community-identity.css`、`src/commons-sky.js`：首页“把想法，一起做出来”一屏。夜空里每颗星是讨论档案中的一个问题（全部 66 个，按标签聚成星团）；悬停一颗星预览标签和问题，点击展开：它周围以扇形长出编号的想法小星，琥珀色虚线星是还在讨论的部分，下方面板同步显示问题、摘录、编号一致的想法、还在讨论的部分和讨论记录链接，并可上一个、下一个、随机浏览。档案新增讨论时星空自动增加。
+- `src/CommunityIdentity.jsx`、`src/community-identity.css`、`src/commons-sky.js`：首页“把想法，一起做出来”一屏。夜空里每颗星是讨论档案中的一个问题（全部 66 个，按标签聚成星团）；悬停一颗星预览标签和问题，点击展开：它周围以扇形长出编号的想法小星，琥珀色虚线星是还在讨论的部分，悬停或点击想法小星也能预览、定位对应的想法。背景是一条斜贯的银河。下方面板同步显示问题、摘录、编号一致的想法、还在讨论的部分和讨论记录链接，并可上一个、下一个、随机浏览。档案新增讨论时星空自动增加。
 - `src/commons-stories.js`：讨论 59、47、7 的英文版，英文页展示这三题时使用；其余讨论保留中文原文。
 - `src/site.css`：共享导航、字标、首屏和基础样式；正文使用 `src/field-journal.css`。
 - `src/journal-search.js`：搜索词的原文位置与匹配句提取，保留原始文字和完整句子。

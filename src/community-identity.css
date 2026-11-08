@@ -24,6 +24,7 @@
 .commons-peek-tag { font-size: 11px; letter-spacing: .04em; color: #8fbbe0; }
 .commons-peek-question { font-size: 14px; line-height: 1.6; color: #fff; }
 .commons-peek-action { font-size: 11px; color: #6f7c8a; }
+.commons-peek.is-open .commons-peek-tag { color: #e0b86e; }
 @keyframes commons-peek { from { opacity: 0; margin-top: 4px; } }
 
 /* The opened discussion: the question and how to move on at the left, its ideas and open point at the right. */
@@ -51,12 +52,13 @@
 .commons-ideas-label { font-size: 12px; letter-spacing: .04em; color: #6f7c8a; }
 .commons-ideas { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 4px; }
 .commons-ideas li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 10px 12px 10px 0; border-radius: 4px; transition: background .25s; }
-.commons-ideas li:hover { background: #ffffff08; }
+.commons-ideas li:is(:hover, .is-lit) { background: #ffffff0a; }
 .commons-ideas li > span { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-top: 2px; border: 1px solid #8fbbe066; border-radius: 50%;
   font: 500 11px/1 'AgentHub Grotesk', var(--font-body); color: #8fbbe0; transition: background .25s, color .25s; }
-.commons-ideas li:hover > span { background: #8fbbe0; color: #04070b; }
+.commons-ideas li:is(:hover, .is-lit) > span { background: #8fbbe0; color: #04070b; }
 .commons-ideas p { font-size: 14px; line-height: 1.85; color: #d7dee6; }
-.commons-open { margin-top: 20px; padding-top: 18px; border-top: 1px dashed #ffffff26; }
+.commons-open { margin-top: 20px; padding: 18px 12px 4px 0; border-top: 1px dashed #ffffff26; transition: background .25s; }
+.commons-open.is-lit { background: linear-gradient(180deg, #e0b86e0f, transparent); }
 .commons-open span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #e0b86e; }
 .commons-open span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px #e0b86e24; }
 .commons-open p { margin-top: 8px; font-size: 13px; line-height: 1.85; color: #a9b4c0; }

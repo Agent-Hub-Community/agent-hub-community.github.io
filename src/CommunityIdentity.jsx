@@ -20,26 +20,34 @@ function read(index, language) {
 }
 
 // Every archived discussion is a star. Hovering one previews its question; clicking it opens the discussion below,
-// where each idea matches a numbered star around it.
+// where each idea matches a numbered star around it. Those idea stars preview their idea on hover, and clicking one
+// brings the matching idea in the list into view.
 export default function CommunityIdentity() {
   const { copy, language } = useHomeLanguage();
-  const surface = useRef(null), sky = useRef(null);
+  const surface = useRef(null), sky = useRef(null), ideaList = useRef(null), openPoint = useRef(null);
   const [selected, setSelected] = useState(FIRST);
   const [peek, setPeek] = useState(null);
-  const [idea, setIdea] = useState(null);
+  const [idea, setIdea] = useState(null), [pinned, setPinned] = useState(null);
+  const lit = idea ?? pinned;
   const discussion = read(selected, language);
-  const preview = peek && read(peek.index, language);
+  const preview = peek && (peek.kind === 'question' ? read(peek.index, language) : null);
+  const ideaText = index => index < discussion.ideas.length ? discussion.ideas[index] : discussion.conclusion;
 
   useEffect(() => {
     sky.current = createSky(surface.current, {
       groups: DISCUSSIONS.map(item => item.tag), weights: WEIGHTS,
-      onHover: (index, x, y) => setPeek(index === null ? null : { index, x, y }),
-      onSelect: index => setSelected(index),
+      onHover: target => { setPeek(target); setIdea(target?.kind === 'idea' ? target.index : null); },
+      onSelect: target => {
+        if (target.kind === 'question') { setSelected(target.index); return; }
+        setPinned(target.index);
+        const item = ideaList.current?.children[target.index] || openPoint.current;
+        item?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+      },
     });
     return () => { sky.current?.dispose(); sky.current = null; };
   }, []);
-  useEffect(() => { sky.current?.select(selected, discussion.ideas.length); setIdea(null); }, [selected, discussion.ideas.length]);
-  useEffect(() => { sky.current?.focusIdea(idea); }, [idea]);
+  useEffect(() => { sky.current?.select(selected, discussion.ideas.length); setIdea(null); setPinned(null); }, [selected, discussion.ideas.length]);
+  useEffect(() => { sky.current?.focusIdea(lit); }, [lit]);
 
   const step = offset => setSelected(index => (index + offset + DISCUSSIONS.length) % DISCUSSIONS.length);
   const shuffle = () => setSelected(index => (index + 1 + Math.floor(Math.random() * (DISCUSSIONS.length - 1))) % DISCUSSIONS.length);
@@ -61,10 +69,14 @@ export default function CommunityIdentity() {
       <div className="commons-sky" aria-hidden="true">
         <canvas ref={surface}/>
         <p className="commons-hint">{copy.skyHint}</p>
-        {preview && <div className={'commons-peek ' + peekSide} style={{ left: peek.x, top: peek.y }}>
-          <span className="commons-peek-tag" lang={preview.lang}>{preview.tag}</span>
-          <span className="commons-peek-question" lang={preview.lang}>{preview.question}</span>
-          <span className="commons-peek-action">{peek.index === selected ? copy.skyOpened : copy.skyOpen}</span>
+        {peek && <div className={'commons-peek ' + peekSide + (peek.kind === 'idea' && peek.index === discussion.ideas.length ? ' is-open' : '')} style={{ left: peek.x, top: peek.y }}>
+          {preview
+            ? <><span className="commons-peek-tag" lang={preview.lang}>{preview.tag}</span>
+              <span className="commons-peek-question" lang={preview.lang}>{preview.question}</span>
+              <span className="commons-peek-action">{peek.index === selected ? copy.skyOpened : copy.skyOpen}</span></>
+            : <><span className="commons-peek-tag">{peek.index < discussion.ideas.length ? copy.ideaNumber.replace('{n}', peek.index + 1) : copy.stillOpen}</span>
+              <span className="commons-peek-question" lang={discussion.lang}>{ideaText(peek.index)}</span>
+              <span className="commons-peek-action">{copy.ideaShow}</span></>}
         </div>}
       </div>
       <article className="commons-detail" aria-labelledby="commons-question" aria-live="polite">
@@ -81,9 +93,9 @@ export default function CommunityIdentity() {
         </div>
         <div className="commons-detail-ideas">
           <p className="commons-ideas-label">{copy.ideasLabel}</p>
-          <ol className="commons-ideas" lang={discussion.lang}>{discussion.ideas.map((text, index) => <li key={selected + '-' + index}
+          <ol className="commons-ideas" ref={ideaList} lang={discussion.lang}>{discussion.ideas.map((text, index) => <li key={selected + '-' + index} className={lit === index ? 'is-lit' : undefined}
             onPointerEnter={() => setIdea(index)} onPointerLeave={() => setIdea(null)}><span aria-hidden="true">{index + 1}</span><p>{text}</p></li>)}</ol>
-          <div className="commons-open" onPointerEnter={() => setIdea(discussion.ideas.length)} onPointerLeave={() => setIdea(null)}>
+          <div className={'commons-open' + (lit === discussion.ideas.length ? ' is-lit' : '')} ref={openPoint} onPointerEnter={() => setIdea(discussion.ideas.length)} onPointerLeave={() => setIdea(null)}>
             <span>{copy.stillOpen}</span><p lang={discussion.lang}>{discussion.conclusion}</p>
           </div>
           {language === 'en' && discussion.lang !== 'en' && <p className="commons-language">{copy.archiveLanguage}</p>}
