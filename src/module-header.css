@@ -1,6 +1,7 @@
 .cinema-wrap { width: 100%; max-width: 1680px; margin-inline: auto; padding-inline: clamp(28px, 5.5vw, 96px); }
 .module-header { --header-height: 88px; height: var(--header-height); font-family: 'Inter Variable', 'AgentHub Sans SC', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
-.module-header .header-inner { max-width: 1680px; padding-inline: clamp(28px, 5.5vw, 96px); gap: 44px; }
+/* The community page's header keeps its own reading width and gutters (field-journal.css). */
+.module-header:not(.journal-header) .header-inner { max-width: 1680px; padding-inline: clamp(28px, 5.5vw, 96px); gap: 44px; }
 .module-header .brand { gap: 10px; }
 .module-header .brand img { width: 24px; height: 24px; }
 .module-header .brand .brand-wordmark { width: 142px; }
@@ -22,7 +23,6 @@
 .cinema-header { background: linear-gradient(#000b, transparent); color: #f4f5f6; transition: background-color .35s; }
 .cinema-header.is-scrolled, .cinema-header.menu-open { background-color: #000d; backdrop-filter: blur(12px); }
 .module-header .menu-toggle { display: none; }
-.module-header.journal-header .header-inner { padding-right: max(96px, calc(5.5vw + 52px)); }
 
 @media (max-width: 1100px) {
   .module-header .header-inner { gap: 26px; }
@@ -32,7 +32,7 @@
 }
 @media (max-width: 900px) {
   .module-header { --header-height: 72px; }
-  .module-header .header-inner { padding-inline: 28px; gap: 20px; }
+  .module-header:not(.journal-header) .header-inner { padding-inline: 28px; gap: 20px; }
   .module-header .header-actions { margin-left: auto; gap: 20px; }
   .module-header .brand .brand-wordmark { width: 122px; }
   .module-header .menu-toggle { display: grid; }
@@ -42,7 +42,6 @@
   .module-header .nav a::after { display: none; }
   .module-header.journal-header .nav { background: var(--color-paper); color: var(--color-ink); }
   .module-header.journal-header .nav a { border-color: var(--color-rule); }
-  .module-header.journal-header .header-inner { padding-right: 84px; }
   html:not(.js) .module-header { position: relative; height: auto; }
   html:not(.js) .module-header .header-inner { flex-wrap: wrap; min-height: 72px; padding-block: 12px; gap: 8px 20px; }
   html:not(.js) .module-header .nav { display: flex; flex-wrap: wrap; position: static; order: 3; width: 100%; max-height: none; padding: 0; gap: 4px 20px; }
@@ -50,7 +49,7 @@
   html:not(.js) .module-header .menu-toggle { display: none; }
 }
 @media (max-width: 400px) {
-  .module-header .header-inner { padding-inline: 22px; }
+  .module-header:not(.journal-header) .header-inner { padding-inline: 22px; }
   .module-header .header-actions { gap: 12px; }
   .module-header .brand img { width: 20px; height: 20px; }
   .module-header .brand .brand-wordmark { width: 104px; }
