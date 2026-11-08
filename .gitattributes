@@ -1,0 +1,2 @@
+# Preserve upstream GLSL strings embedded verbatim by esbuild.
+assets/chunks/*.js whitespace=-blank-at-eol

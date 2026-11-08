@@ -1,8 +1,8 @@
 # Agent Hub Community
 
-Agent Hub 社群主页。以开放式文字版面组织社群介绍、研究话题、讨论摘录和日报入口，提供深色夜间与暖白日间两套主题。开场结束后可在右上角切换，首次访问跟随系统设置，手动选择会保存在本机；示例申请页沿用相同主题。保留社区 logo 的 ASCII 向心旋转动画，并使用 React Bits 的 ScrollReveal、ScrollFloat、LogoLoop 和 WarmTooltip。
+Agent Hub 是一个围绕 LLM Agent 进行技术分享、讨论与共建的社群。这里有基模研究员、高校教授与青年硕博，也持续邀请自然科学领域的同行，一起交流 LLM Agent、RSI、AI4Science、AI 安全与物理 AI。
 
-首屏以《创造亚当》的指尖姿态呈现左侧机器手与右侧人手，分别对应亚当与上帝，两只手均由实时 ASCII 字符组成。向下滚动时，两手向两侧分开，社区星系标志从中间出现并放大，接着显示字标与社群介绍；向上滚动可回看。字标采用 Space Grotesk 字形，完整字母随滚动逐渐清晰、收拢归位，没有裁切揭幕。页面不显示滚动提示、播放控制或跳过开场选项。减少动态效果的系统设置会直接显示最终封面。正文依次呈现社群介绍、研究方向、讨论摘录、交流活动、成员机构、日报和加入方式。
+V86 首页由四段展示组成：原有 ASCII 双手、星系与字标开场；SpaceX 火星视频背景与社群简介；人和 Agent 交流的 3D 社群场景；「不同的来处，共同的好奇」机构滚动页。顶部提供模块入口和中英文切换，首次访问默认为中文。117 个机构标志连续滚动，支持暂停、键盘浏览与完整目录。日报精选、研究方向、66 则真实讨论和加入方式保留在独立的 `community.html` 中。布局、素材和维护说明见 [四屏首页](docs/cinematic-home.md)。
 
 ## 本地开发
 
@@ -11,27 +11,43 @@ npm ci
 npm run dev
 ```
 
-另开一个终端运行 `npm run preview`，在 http://127.0.0.1:8000/ 预览。修改后刷新浏览器。
+另开终端运行 `npm run preview`，打开 http://127.0.0.1:8000/ 。`dev` 监听源码并重新构建，修改后刷新页面。
 
 ## 修改入口
 
-- `src/main.jsx`：页面结构、讨论摘录与其他正文。
-- `src/GenesisHero.jsx`、`src/genesis.css`：ASCII 双手开场与滚动分镜；造型底稿及生成提示见 `src/genesis-art.md`。
-- `src/amicro/`：图标切换、磁吸回弹等微交互及上游许可。
-- `src/EditorialSections.jsx`、`src/editorial.css`：研究方向的滚动章节、活动横向画廊、讨论版面与章节过渡。
-- `src/site.css`：字体排版、配色、布局与响应式样式。
-- `src/tokens.css`：统一颜色、字体、间距、字号与动效变量。
-- `src/theme-init.js`、`src/ThemeToggle.jsx`、`src/theme.css`：首次绘制前应用主题、日夜切换与本机偏好保存；ASCII 双手和星系同步换色。
-- `src/CameraScene.jsx`、`src/camera.css`：正文随滚动推进的镜头、轨道装饰和图片透视效果。
-- `src/base.css`：基础排版、键盘焦点与减少动态效果支持。
-- `src/BrandWordmark.jsx`：Space Grotesk 轮廓字标及逐字归位动效，首屏、导航与页脚共用。
-- `src/media-content.json`：研究话题和社群活动的图片配置；当前 `src` 留空，填入图片路径即可替换。
-- `src/join-example.html`：入群申请示例页，构建时复制到根目录；不会提交或保存表单内容。正式表单链接在 `src/main.jsx` 的 `JOIN_FORM` 中替换。
-- `src/MediaPanel.jsx`、`src/media-panel.css`：图片叠层切换、指针倾斜、反光与缓慢推进效果。
-- `src/community-data.json`：成员机构标识与原主页讨论内容。
-- `src/index.html`：HTML 模板；根目录 `index.html` 在构建时自动生成。
-- `assets/ascii-logo.js`：ASCII 星系的字符与动画逻辑。
-- `logo/`：社区提供的原始 SVG 标识。
+- `src/CinematicHome.jsx`、`src/cinematic-home.css`：火星、社群场景与机构区组合、版式和页脚。
+- `src/PlanetScene.jsx`：响应式火星视频、海报、按需加载、暂停和离屏停止。
+- `src/HomeLanguage.jsx`、`src/home-copy.js`：首页中英文文案、语言切换和 `agenthub-language` 偏好；资料页与日报仍保留中文原始资料。
+- `src/SiteHeader.jsx`、`src/module-header.css`：始终可用的模块入口与移动端菜单。
+- `src/InstitutionWall.jsx`、`src/MemberLogo.jsx`：117 个机构的连续滚动、暂停、键盘浏览、完整目录与 SVG 标识去重。
+- `src/community.jsx`、`src/FieldJournal.jsx`：独立资料页、讨论搜索与分页、成员目录、加入说明和页脚。
+- `src/CommunityIdentity.jsx`、`src/CyberCommons.jsx`、`src/community-world.js`：首页 3D 社群场景、交互与稳定的机器人姿态；维护说明见 [社群场景](docs/cyber-commons.md)。
+- `src/commons-stories.js`：根据原始讨论 59、47、7 整理的三组对话及英文翻译，结论保留原讨论中的不确定性。
+- `scripts/render-community-world.py`：从实际场景生成无 WebGL 或无脚本时显示的横竖 WebP。
+- `src/site.css`：共享导航、字标、首屏和基础样式；正文使用 `src/field-journal.css`。
+- `src/journal-search.js`：搜索词的原文位置与匹配句提取，保留原始文字和完整句子。
+- `src/ResearchPlate.jsx`：三张原创 SVG 研究插图。
+- `src/field-journal.css`：统一排版、色彩、响应式与主题样式。
+- `src/brand/noto-sans-sc.css`：正文与导航的本地中文字体，按页面与完整摘录分包。更新方式见 [字体说明](src/brand/README.md#chinese-body-typography)。
+- `src/journal-content.json`：附日期和原文链接的日报精选、六个研究方向引用的讨论编号 `discussionId`、首页优先呈现的讨论编号 `discussionHighlights`，以及展示图标的机构名称 `featuredInstitutions`。精选由人工维护，不自动追踪最新一期。
+- `src/community-data.json`：完整保留的 66 则讨论与成员机构资料。
+- `scripts/homepage-community.mjs`：首页读取完整机构标志，资料页读取全部讨论、机构名称及精选标志；共同使用原始 JSON。
+- `src/main.jsx`：首页组合；`src/home-routing.js`：保留旧首页讨论与内容锚点，跳转至资料页。
+- `src/GenesisHero.jsx`、`src/genesis.css`：当前首页的原有 ASCII 开场动画。
+- `assets/human-machine-creation.png`：ASCII 开场的采样原图，对应逐像素一致的无损 WebP。需要更新原图时，可用 Pillow 运行 `python -I scripts/optimize-hands.py` 后重新构建。
+- `src/BrandWordmark.jsx`、`src/brand/wordmark.json`：原有自绘字标。
+- `src/theme-init.js`、`src/ThemeToggle.jsx`、`src/theme.css`：主题偏好与切换。
+- `src/join-example.html`：独立保留的入群申请设计示例，不提交或保存表单内容，不在首页推广。社群仍采用现有成员邀请制。
+- `src/index.html`、`src/community.html`：首页与资料页的 HTML 模板、分享信息与日报 Atom 订阅声明；根目录中的同名文件为构建产物。
+- `src/brand/social-card.html`：链接分享封面，与原有字标共用源数据；输出为 `assets/social-card.png`，生成方式见 [字体与品牌说明](src/brand/README.md#sharing-cover)。
+
+日报插图是原创 SVG，分别对应接口选择、内核对齐和机器人实践，不代表实验测量数据。更换精选文章时，检查插图是否仍与主题一致。研究方向直接引用原始讨论的问题，点击后打开对应摘录；`discussionId` 与 `#discussion-N` 使用相同的原始编号。讨论列表直接展示问题与一句原有摘录，展开后阅读完整上下文，支持直达、自动翻页与展开。调整展示顺序不会改变链接。更换研究方向引用的问题或首页优先呈现的讨论后，按字体说明重新生成中文字体子集。
+
+精选说明中的多词英文项目名可用 JSON 的 `\u00a0` 表示名称内部的不间断空格，避免在窄屏中拆开；当前仅用于 Hybrid Computer Use。它与普通空格的字距相同，浏览器仍能用普通空格查找名称。不要用这种方式锁住整段中文。
+
+页脚提供社群日报、[资料库](https://agent-hub-community.github.io/newspaper/library/)、RSS 与 GitHub 入口。资料库呈现群友分享过的论文、代码与工具；首页不维护它的实时数量。
+
+视觉参考、内容出处与设计取舍见 [设计说明](docs/design-direction.md)。
 
 ## 构建与部署
 
@@ -39,20 +55,18 @@ npm run dev
 npm run build
 ```
 
-构建会预渲染 HTML，并写入 `index.html`、`assets/site.js`、`assets/site.css`、`assets/theme.js` 和 `assets/fonts/`。这些文件保留在版本库中，因此现有 GitHub Pages 的 `main` 分支根目录部署方式仍然适用。部署前先构建，再提交源码及构建产物。
+构建通过 esbuild 同时打包并预渲染首页与资料页，写入根目录 `index.html`、`community.html`、`join-example.html`、对应的 JS/CSS、`assets/theme.js`、`assets/home-routing.js`、共享模块与字体。3D 模块在场景接近视口时才加载，火星视频仅在该屏可见且允许播放时加载。GitHub Pages 使用 `main` 分支根目录；提交时应同时包含源码与构建产物，包括当前 JS 分包、字体、模型、视频与海报。
 
-React Bits 的固定来源版本与修改记录见 `src/react-bits/README.md`，许可证保存在该目录和 `assets/licenses/` 中。Inter 字体采用 OFL 许可证。
+资料页的六个研究方向始终可见。讨论支持全文搜索、话题筛选和分页，通过原生 `details` 展开。禁用脚本后，全部 66 则讨论与成员目录仍可阅读。首页滚动展示全部 117 个机构，可暂停或展开名称目录；复制轨道对辅助技术隐藏。机构区离屏或页面进入后台时停止自动滚动。
 
-## 设计记录
+搜索会以浅色背景标出原文中的匹配词。命中内容只在折叠正文中时，列表预览显示对应的完整原句；展开后仍保留原引用、正文和小结。清空搜索后恢复原有摘录。匹配句由已有资料截取，不另外维护搜索摘要。
 
-本地设计记录与截图保存在 `.hallmark/`，不提交到仓库。页面保留全部 66 则讨论、原有成员机构资料与链接。活动列表表达待组织的方向，没有新增虚构活动日期或成员背书。
+`featuredInstitutions` 的两组名称分别取自原始资料中的团队与科研机构、高校，名称需完全一致。客户端和 HTML 预渲染共用 `agenthub:homepage-community` 构建模块；`npm run dev` 会监听原始资料和精选配置，修改后自动更新。没有额外的数据生成步骤，也不修改完整原始资料。
 
-图片区域按后续要求预留了空位，没有使用库存照片。将图片放进 `assets/media/`，在 `src/media-content.json` 填入如 `"src": "assets/media/rsi.webp"` 并补充 `alt`，再运行构建。研究方向图片建议 6:5（至少 1200×1000），活动图片建议 2:1（至少 1800×900），手机端按 5:4 居中裁切。桌面研究区固定图文画面，随滚动切换六个章节，也可点击编号或前后按钮切换。活动区将纵向滚动转换为横向画廊，支持直接选项和左右键；手机端使用原生横向滑动。系统减少动态效果设置及较矮的窗口会使用普通文档与可滚动画廊，不固定整屏。
+首页固定为深色展示，并保留已有阅读偏好。资料页跟随系统并保存手动选择，与同源 newspaper 共用 `agenthub-theme`。减少动态效果时，原开场显示完整静态封面，火星视频默认不加载，3D 场景停止动画，机构行保留原生横向浏览。禁用脚本时海报、场景图、模块入口、机构目录和资料仍可使用。
 
-页面介绍、话题说明、活动、日报和加入文案经过 Humanizer 润色，采用简短、客观的官网口吻。章节标题使用 ScrollFloat 随滚动逐字显现，讨论条目附有悬停划线及展开反馈；图片切换带叠层位移和镜头推进，指针移动会产生倾斜与反光。减少动态效果设置会关闭这些位移与透视动画；禁用脚本时仍可阅读正文。原有 66 则讨论摘录与机构资料保留。AGI House 仅作为内容类别的参考，没有采用它的布局、视觉元素或动效设计。
+## 许可
 
-本轮正文采用章节式图文布局：研究区的图片与说明同步翻页，活动区横向展开，讨论区为主摘录搭配两篇短摘录的非对称版面。讨论直接呈现问题、观点及小结，完整交流内容可展开阅读；保留原有筛选和分页。研究区与讨论区之间的描边字随滚动横移。
+Inter、Space Grotesk、Noto Sans SC、Noto Serif SC、Three.js 的上游许可位于 `assets/licenses/`。火星页使用 SpaceX 官网公开提供的原始视频与海报，具体来源和哈希见 `assets/environment/mars-sources.json`，权利说明见 `assets/licenses/spacex-mars.txt`；这些素材不是 CC0 或 Agent Hub 原创。场景使用有出处记录的 Quaternius CC0 人物与 Poly Haven CC0 环境光。没有引入 SpaceX 网站的 JavaScript 或品牌字标。
 
-研究区的图文随滚动推进并转正，图片切换以轻微透视和局部推近衔接。活动画廊的相邻画面带有角度和缩放差异，图片内部缓慢横移；讨论摘录按不同距离错层移动。正文介绍和日报使用细线轨道与轻微推进。手机端减少大幅透视，保留图片切换和原生横向浏览。日夜主题覆盖正文、图片空位、机构标识、ASCII 双手与星系，十个图片位置继续留空。
-
-小交互参考 Amicro：菜单使用弹簧图标切换，分页图标有轻微磁吸回弹，链接使用箭头滑入与文字滚动。上游来源、适配说明及 MIT 许可保留在 `src/amicro/`，公开许可同时随构建导出。字标来源及 SIL Open Font License 保留在 `src/brand/`。
+本地检查、截图及早期设计备份保存在忽略目录 `.hallmark/`，不随站点发布。

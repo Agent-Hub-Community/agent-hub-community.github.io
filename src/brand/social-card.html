@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Agent Hub · 分享封面</title>
+  <style>
+    @font-face { font-family: 'Inter'; src: url('{{FONT_INTER}}') format('woff2'); font-weight: 100 900; }
+    @font-face { font-family: 'Noto Sans SC'; src: url('{{FONT_CJK}}') format('woff2'); font-weight: 400 600; }
+    @font-face { font-family: 'Space Grotesk'; src: url('{{FONT_GROTESK}}') format('woff'); font-weight: 450; }
+    * { box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; margin: 0; overflow: hidden; }
+    body { --paper: #f7f9fc; --ink: #152235; --muted: #596a81; --line: #d9e1eb; --accent: #315c99; background: var(--paper); color: var(--ink); font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    body[data-theme='dark'] { --paper: #0c1320; --ink: #eef3fa; --muted: #99aac2; --line: #293952; --accent: #9bc7ef; }
+    .edition { position: absolute; left: 72px; top: 66px; font-size: 13px; font-weight: 500; letter-spacing: .13em; color: var(--muted); }
+    .motto { position: absolute; right: 72px; top: 54px; display: flex; align-items: baseline; gap: 14px; font: 450 29px/1.5 'Space Grotesk', sans-serif; }
+    .motto em { font: italic 400 32px/1.5 Georgia, serif; color: var(--accent); }
+    .motto span { font: 400 22px/1.5 'Inter', sans-serif; color: var(--muted); }
+    .wordmark { position: absolute; left: 72px; top: 219px; width: 1056px; }
+    .wordmark svg { display: block; width: 100%; height: auto; }
+    .caption { position: absolute; left: 72px; right: 72px; bottom: 59px; display: flex; justify-content: space-between; align-items: baseline; gap: 40px; border-top: 1px solid var(--line); padding-top: 27px; }
+    .caption p { margin: 0; font-size: 29px; font-weight: 440; line-height: 1.6; letter-spacing: -.025em; }
+    .caption span { color: var(--muted); font-size: 12px; letter-spacing: .005em; }
+  </style>
+</head>
+<body data-theme="{{THEME}}">
+  <div class="edition" lang="en">A COMMUNITY FOR AGENT RESEARCH</div>
+  <div class="motto" lang="en"><em>Human</em><span>×</span>Agent</div>
+  <div class="wordmark">{{WORDMARK}}</div>
+  <div class="caption"><p>做 Agent 的人，在这里相遇。</p><span>agent-hub-community.github.io</span></div>
+</body>
+</html>
