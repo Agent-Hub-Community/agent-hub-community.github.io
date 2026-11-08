@@ -24,7 +24,12 @@ export default function HubSection() {
 
   const weeklyRange = hub?.weekly ? `${dotted(hub.weekly.start)} – ${dotted(hub.weekly.end).slice(5)}` : '';
   const count = value => value > 0 ? value.toLocaleString(language === 'en' ? 'en-US' : 'zh-CN') : null;
-  const openings = kinds => Object.entries(text.kinds).filter(([kind]) => kinds?.[kind]).map(([kind, label]) => language === 'en' ? `${kinds[kind]} ${label}` : `${label} ${kinds[kind]}`).join(' · ');
+  // English counts take a singular or plural noun; Chinese reads 招聘 7.
+  const openings = kinds => Object.entries(text.kinds).filter(([kind]) => kinds?.[kind]).map(([kind, label]) =>
+    Array.isArray(label) ? `${kinds[kind]} ${label[kinds[kind] === 1 ? 0 : 1]}` : `${label} ${kinds[kind]}`).join(' · ');
+  // Digests are written in Chinese; the English page names groups and resource types in English.
+  const groupName = page => text.groups?.[page.id] || page.label;
+  const typeName = item => text.types?.[item.kind] || item.type;
   const tiles = [
     { id: 'weekly', href: hub?.weekly?.path || sitePath('weekly'), quote: hub?.weekly?.pages?.[0]?.title,
       note: hub?.weekly ? fill(text.weeklyNote, { range: weeklyRange, pages: hub.weekly.pages.length }) : text.weeklyFallback },
@@ -45,7 +50,7 @@ export default function HubSection() {
         <p className="hub-intro">{text.intro}</p>
         {status === 'ready'
           ? <ol className="hub-headlines" lang="zh-CN">{hub.daily.pages.map(page => <li key={page.id}><a href={page.path}>
-              <span className="hub-group">{page.label}</span><span className="hub-headline">{page.title}</span><ArrowUpRight size={16} aria-hidden="true"/>
+              <span className="hub-group" lang={text.groups?.[page.id] ? 'en' : 'zh-CN'}>{groupName(page)}</span><span className="hub-headline">{page.title}</span><ArrowUpRight size={16} aria-hidden="true"/>
             </a></li>)}</ol>
           : status === 'loading'
             ? <ol className="hub-headlines hub-skeleton" aria-hidden="true">{[0, 1, 2, 3, 4].map(index => <li key={index}><span/></li>)}</ol>
@@ -75,7 +80,7 @@ export default function HubSection() {
         </a></li>)}</ul>
         {hub?.library?.recent?.length > 0 && <div className="hub-recent">
           <p>{text.recent}</p>
-          <ul lang="zh-CN">{hub.library.recent.map(item => <li key={item.path}><a href={item.path}><span>{item.type}</span>{item.title}</a></li>)}</ul>
+          <ul lang="zh-CN">{hub.library.recent.map(item => <li key={item.path}><a href={item.path}><span lang={text.types?.[item.kind] ? 'en' : 'zh-CN'}>{typeName(item)}</span>{item.title}</a></li>)}</ul>
         </div>}
       </div>
     </div>
