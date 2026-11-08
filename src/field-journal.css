@@ -492,7 +492,7 @@
   .fj-secondary-story .fj-story-category { font-size: 11px; }
   .fj-secondary-story .fj-story-cta { font-size: 11px; margin-top: 12px; }
   .fj-daily-foot { border: 0; padding: 0; margin-top: 17px; }
-  .fj-daily-foot > span { font-size: 10px; }
+  .fj-daily-foot > span { font-size: 11px; }
   .fj-research { padding-block: 64px 46px; }
   .fj-research .fj-section-heading { margin-bottom: 34px; }
   .fj-research .fj-section-heading h2 { font-size: 38px; }
@@ -507,7 +507,7 @@
   .fj-search { max-width: none; }
   .fj-filters button { min-width: 44px; min-height: 44px; padding-inline: 12px; font-size: 11px; }
   .fj-archive-tools { gap: 16px; }
-  .fj-archive-status { padding-block: 20px 14px; font-size: 10px; }
+  .fj-archive-status { padding-block: 20px 14px; font-size: 11px; }
   .fj-discussion summary { grid-template-columns: minmax(0, 1fr) 22px; gap: 9px 21px; padding-block: 23px; }
   .fj-discussion-tag { grid-column: 1; font-size: 11px; }
   .fj-discussion h3 { grid-column: 1; font-size: 17px; line-height: 1.65; }
@@ -516,7 +516,7 @@
   .fj-discussion-detail { padding: 10px 0 32px; }
   .fj-discussion-detail > p, .fj-discussion-conclusion p, .fj-discussion-original-quote { font-size: 15px; line-height: 1.9; }
   .fj-archive-bottom { gap: 15px; }
-  .fj-archive-bottom > p { font-size: 10px; }
+  .fj-archive-bottom > p { font-size: 11px; }
   .fj-pagination { gap: 5px; }
   .fj-pagination > span { padding-right: 6px; font-size: 11px; }
   .fj-pagination button { min-width: 44px; min-height: 44px; }
@@ -544,7 +544,7 @@
   .field-journal .member-logo img, .field-journal .member-logo svg { max-width: 93px; max-height: 26px; }
   .field-journal .member-logo.chip img { height: 27px; }
   .field-journal .member-logo.round img { height: 30px; max-height: 30px; }
-  .fj-member-name { font-size: 10px; }
+  .fj-member-name { font-size: 11px; }
   .fj-member-directory summary { font-size: 11px; }
   .fj-directory-columns { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-bottom: 24px; }
   .fj-directory-columns h4 { font-size: 16px; margin-bottom: 13px; }
@@ -560,7 +560,7 @@
   .fj-footer-main { align-items: flex-start; flex-direction: column; gap: 15px; }
   .fj-footer-brand { margin-block: 36px 30px; }
   .fj-footer-main p { font-size: 13px; }
-  .fj-footer-bottom { padding-top: 10px; font-size: 10px; }
+  .fj-footer-bottom { padding-top: 10px; font-size: 11px; }
   .fj-footer-motto { font-size: 13px; }
   .fj-footer-motto em { font-size: 15px; }
 }

@@ -32,9 +32,9 @@
 .scene-link { display: inline-flex; align-items: center; min-height: 48px; font-size: 13px; text-decoration: underline; text-underline-offset: 7px; text-decoration-color: #ffffff60; transition: text-decoration-color .2s; }
 .scene-link:hover { text-decoration-color: #fff; }
 .planet-bottom { position: absolute; bottom: 14px; left: 36px; right: 36px; display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
-.planet-credit { display: inline-flex; align-items: center; min-height: 44px; color: #92989f; font-size: 10px; }
+.planet-credit { display: inline-flex; align-items: center; min-height: 44px; color: #92989f; font-size: 11px; }
 .planet-next { display: grid; place-items: center; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 48px; height: 44px; }
-.planet-motion { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 44px; padding: 0; color: #a6aeb7; font-size: 10px; }
+.planet-motion { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; min-width: 44px; padding: 0; color: #a6aeb7; font-size: 11px; }
 .planet-motion:hover, .planet-credit:hover { color: #fff; }
 
 .institution-section { min-height: 100svh; padding-block: 120px 48px; background: #000; display: flex; flex-direction: column; justify-content: center; }
@@ -50,7 +50,7 @@
 .institution-group[aria-hidden] { display: none; }
 .institution-group li { width: var(--cell-width); height: 98px; display: flex; align-items: center; justify-content: center; gap: 14px; flex-direction: column; }
 .institution-name { color: #a7afb8; font-size: 11px; line-height: 1.35; white-space: nowrap; }
-:lang(en) .institution-name { max-width: 100%; white-space: normal; text-align: center; font-size: 10px; }
+:lang(en) .institution-name { max-width: 100%; white-space: normal; text-align: center; font-size: 11px; }
 :lang(en) .planet-copy > p { font-size: 15px; line-height: 1.8; }
 :lang(en) .institution-bottom p { max-width: 50em; }
 .institution-section .member-logo, .institution-section .member-logo > span { display: flex; align-items: center; justify-content: center; height: 36px; opacity: 1; }
@@ -111,9 +111,9 @@
   .institution-section .member-logo img, .institution-section .member-logo svg { max-width: 116px; height: 26px; }
   .institution-section .member-logo.chip img { height: 29px; }
   .institution-section .member-logo.round img { height: 31px; }
-  .institution-name { font-size: 10px; }
+  .institution-name { font-size: 11px; }
   .institution-bottom { align-items: flex-start; gap: 14px; }
-  .institution-bottom p { max-width: 19em; font-size: 10px; padding-top: 11px; }
+  .institution-bottom p { max-width: 19em; font-size: 11px; padding-top: 11px; }
   .institution-directory { margin-top: 16px; }
   .institution-directory summary { font-size: 11px; }
   .institution-directory-groups { grid-template-columns: 1fr; gap: 26px; }
