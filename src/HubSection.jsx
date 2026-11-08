@@ -62,8 +62,7 @@ function AgentPrompt({ text }) {
       </button>
     </div>
     <div className="hub-prompt" id="hub-install-prompt" hidden={!open}><p ref={body}>{prompt}</p></div>
-    <p className="hub-stat-note" aria-live="polite">{state === 'selected' ? text.promptSelected : text.agentsAfter}</p>
-    <p className="hub-agents-links"><a href={sitePath('skills-repo')}>{text.skillsRepo}<ArrowUpRight size={13} aria-hidden="true"/></a><a href={sitePath('llms')}>llms.txt<ArrowUpRight size={13} aria-hidden="true"/></a></p>
+    {state === 'selected' && <p className="hub-stat-note" aria-live="polite">{text.promptSelected}</p>}
   </div>;
 }
 
@@ -93,8 +92,6 @@ export default function HubSection() {
   const groupName = page => text.groups?.[page.id] || page.label;
   const groupLang = page => text.groups?.[page.id] ? 'en' : 'zh-CN';
   const typeName = item => text.types?.[item.kind] || item.type;
-  const openings = kinds => Object.entries(text.kinds).filter(([kind]) => kinds?.[kind]).map(([kind, label]) =>
-    Array.isArray(label) ? `${kinds[kind]} ${label[kinds[kind] === 1 ? 0 : 1]}` : `${label} ${kinds[kind]}`).join(' · ');
   const label = id => SITE.read.find(item => item.id === id)?.[language];
   const pages = hub?.daily?.pages || [];
   // The lead is the first group with something new; the rest follow in the newspaper's order.
@@ -103,16 +100,15 @@ export default function HubSection() {
   const day = hub?.daily?.date ? new Date(hub.daily.date + 'T12:00:00+08:00') : null;
   const weekday = day?.toLocaleDateString(locale, { weekday: 'long', timeZone: 'Asia/Shanghai' });
   const stats = [
-    { id: 'library', value: hub?.library?.count, note: text.libraryNote },
-    { id: 'glossary', value: hub?.glossary?.count, note: text.glossaryNote },
-    { id: 'rank', value: hub?.rank?.groups, note: text.rankNote },
-    { id: 'opportunities', value: hub?.opportunities?.open, note: hub?.opportunities?.open ? `${text.opportunitiesOpen} · ${openings(hub.opportunities.kinds)}` : text.opportunitiesNote },
+    { id: 'library', value: hub?.library?.count },
+    { id: 'glossary', value: hub?.glossary?.count },
+    { id: 'rank', value: hub?.rank?.groups },
+    { id: 'opportunities', value: hub?.opportunities?.open },
   ];
 
   return <section className="hub-section" id="today" ref={section} aria-labelledby="hub-title">
     <div className="cinema-wrap hub-inner">
       <div className="hub-lead">
-        <p className="hub-eyebrow">{text.eyebrow}</p>
         <h2 id="hub-title">{text.heading[0]}<br/>{text.heading[1]}</h2>
         <p className="hub-intro">{text.intro}</p>
         {/* The masthead: the issue's date, large, with its weekday and a live mark. Dropped if the issue fails to load. */}
@@ -143,15 +139,13 @@ export default function HubSection() {
             : <p className="hub-note">{text.unavailable}</p>}
         <div className="scene-actions hub-actions">
           <a className="scene-button" href={hub?.daily?.path || sitePath('daily')}>{text.readIssue}</a>
-          {hub && <span className="hub-count">{fill(text.issues, hub.issues)}</span>}
         </div>
-        {language === 'en' && status === 'ready' && <p className="hub-language">{text.contentLanguage}</p>}
       </div>
 
       <div className="hub-side">
         {/* A plain GET form: it reaches the newspaper's search page with ?q= even before scripts load. */}
         <form className="hub-search" action={sitePath('search')} method="get" role="search">
-          <label className="hub-search-label" htmlFor="hub-search-input">{text.searchLabel}{hub?.search?.count > 0 && <span>{fill(text.searchScope, { count: hub.search.count.toLocaleString(locale) })}</span>}</label>
+          <label className="hub-search-label" htmlFor="hub-search-input">{text.searchLabel}</label>
           <div className="hub-search-field">
             <Search size={17} aria-hidden="true"/>
             <input id="hub-search-input" name="q" type="search" placeholder={text.searchPlaceholder} enterKeyHint="search" autoComplete="off"/>
@@ -162,13 +156,11 @@ export default function HubSection() {
         <a className="hub-weekly" href={hub?.weekly?.path || sitePath('weekly')}>
           <span className="hub-panel-title">{label('weekly')}<span>{hub?.weekly ? `${dotted(hub.weekly.start).slice(5)} – ${dotted(hub.weekly.end).slice(5)}` : text.weeklyFallback}</span><ArrowUpRight size={15} aria-hidden="true"/></span>
           {hub?.weekly?.pages?.length > 0 && <ol lang="zh-CN">{hub.weekly.pages.slice(0, 4).map(page => <li key={page.id}><span lang={groupLang(page)}>{groupName(page)}</span>{page.title}</li>)}</ol>}
-          {hub?.weekly?.pages?.length > 4 && <span className="hub-weekly-more">{fill(text.weeklyMore, { count: hub.weekly.pages.length - 4 })}</span>}
         </a>
 
         <ul className="hub-stats" aria-label={text.statsLabel}>{stats.map(item => <li key={item.id}><a href={sitePath(item.id)}>
           <span className="hub-figure"><Figure value={item.value > 0 ? item.value : null} run={seen} locale={locale}/></span>
           <span className="hub-stat-label">{item.id === 'opportunities' ? text.opportunities : label(item.id)}<ArrowUpRight size={13} aria-hidden="true"/></span>
-          <span className="hub-stat-note">{item.note}</span>
         </a></li>)}</ul>
 
         <div className="hub-bottom">

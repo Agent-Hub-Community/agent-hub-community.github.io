@@ -23,7 +23,6 @@
 .commons-peek.is-end { transform: translate(calc(-100% + 16px), calc(-100% - 16px)); }
 .commons-peek-tag { font-size: 11px; letter-spacing: .04em; color: #8fbbe0; }
 .commons-peek-question { font-size: 14px; line-height: 1.6; color: #fff; }
-.commons-peek-action { font-size: 11px; color: #6f7c8a; }
 .commons-peek.is-open .commons-peek-tag { color: #e0b86e; }
 @keyframes commons-peek { from { opacity: 0; margin-top: 4px; } }
 
@@ -37,7 +36,6 @@
 .commons-tag { padding: 3px 9px; border: 1px solid #8fbbe044; border-radius: 999px; color: #8fbbe0; letter-spacing: .03em; }
 .commons-detail h3 { margin: 18px 0 0; font: 500 clamp(22px, 2vw, 30px)/1.45 var(--font-body); letter-spacing: -.025em; color: #fff; text-wrap: pretty; }
 .commons-detail blockquote { margin: 24px 0 0; padding-left: 16px; border-left: 1px solid #ffffff2e; font-size: 14px; line-height: 1.85; color: #b5c2d1; }
-.commons-detail blockquote span { display: block; margin-bottom: 4px; font-size: 11px; letter-spacing: .04em; color: #6f7c8a; }
 .commons-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: auto; padding-top: 32px; }
 .commons-nav button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0 12px;
   border: 1px solid #ffffff2b; border-radius: 4px; background: transparent; color: #dfe4e9; font: 500 13px var(--font-body); cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
@@ -49,8 +47,7 @@
 .commons-record:is(:hover, :focus-visible) { color: #fff; }
 .commons-record:is(:hover, :focus-visible) svg { color: #fff; transform: translate(2px, -2px); }
 
-.commons-ideas-label { font-size: 12px; letter-spacing: .04em; color: #6f7c8a; }
-.commons-ideas { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 4px; }
+.commons-ideas { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
 .commons-ideas li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 10px 12px 10px 0; border-radius: 4px; transition: background .25s; }
 .commons-ideas li:is(:hover, .is-lit) { background: #ffffff0a; }
 .commons-ideas li > span { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-top: 2px; border: 1px solid #8fbbe066; border-radius: 50%;
@@ -62,11 +59,9 @@
 .commons-open span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #e0b86e; }
 .commons-open span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px #e0b86e24; }
 .commons-open p { margin-top: 8px; font-size: 13px; line-height: 1.85; color: #a9b4c0; }
-.commons-language { margin-top: 16px; font-size: 12px; color: #6f7c8a; }
 /* Without scripts the buttons cannot change the discussion, so only the record link remains. */
 html:not(.js) .commons-nav button { display: none; }
 
-.commons-note { margin-top: 18px; font-size: 12px; color: #7d8690; }
 :lang(en) .commons-ideas p { line-height: 1.7; }
 
 @media (max-width: 960px) {

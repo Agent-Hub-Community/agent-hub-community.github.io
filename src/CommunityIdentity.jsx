@@ -72,18 +72,16 @@ export default function CommunityIdentity() {
         {peek && <div className={'commons-peek ' + peekSide + (peek.kind === 'idea' && peek.index === discussion.ideas.length ? ' is-open' : '')} style={{ left: peek.x, top: peek.y }}>
           {preview
             ? <><span className="commons-peek-tag" lang={preview.lang}>{preview.tag}</span>
-              <span className="commons-peek-question" lang={preview.lang}>{preview.question}</span>
-              <span className="commons-peek-action">{peek.index === selected ? copy.skyOpened : copy.skyOpen}</span></>
+              <span className="commons-peek-question" lang={preview.lang}>{preview.question}</span></>
             : <><span className="commons-peek-tag">{peek.index < discussion.ideas.length ? copy.ideaNumber.replace('{n}', peek.index + 1) : copy.stillOpen}</span>
-              <span className="commons-peek-question" lang={discussion.lang}>{ideaText(peek.index)}</span>
-              <span className="commons-peek-action">{copy.ideaShow}</span></>}
+              <span className="commons-peek-question" lang={discussion.lang}>{ideaText(peek.index)}</span></>}
         </div>}
       </div>
       <article className="commons-detail" aria-labelledby="commons-question" aria-live="polite">
         <div className="commons-detail-main">
-          <p className="commons-meta"><span>{copy.discussionNumber.replace('{n}', selected + 1).replace('{total}', DISCUSSIONS.length)}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span></p>
+          <p className="commons-meta"><span>{selected + 1} / {DISCUSSIONS.length}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span></p>
           <h3 id="commons-question" lang={discussion.lang}>{discussion.question}</h3>
-          {discussion.quote && <blockquote lang={discussion.lang}><span>{copy.quoteLabel}</span>{discussion.quote}</blockquote>}
+          {discussion.quote && <blockquote lang={discussion.lang}>{discussion.quote}</blockquote>}
           <div className="commons-nav" role="group" aria-label={copy.browseDiscussions}>
             <button type="button" onClick={() => step(-1)} aria-label={copy.previousDiscussion}><ChevronLeft size={17} aria-hidden="true"/></button>
             <button type="button" className="commons-shuffle" onClick={shuffle}><Shuffle size={15} aria-hidden="true"/>{copy.randomDiscussion}</button>
@@ -92,16 +90,13 @@ export default function CommunityIdentity() {
           </div>
         </div>
         <div className="commons-detail-ideas">
-          <p className="commons-ideas-label">{copy.ideasLabel}</p>
           <ol className="commons-ideas" ref={ideaList} lang={discussion.lang}>{discussion.ideas.map((text, index) => <li key={selected + '-' + index} className={lit === index ? 'is-lit' : undefined}
             onPointerEnter={() => setIdea(index)} onPointerLeave={() => setIdea(null)}><span aria-hidden="true">{index + 1}</span><p>{text}</p></li>)}</ol>
           <div className={'commons-open' + (lit === discussion.ideas.length ? ' is-lit' : '')} ref={openPoint} onPointerEnter={() => setIdea(discussion.ideas.length)} onPointerLeave={() => setIdea(null)}>
             <span>{copy.stillOpen}</span><p lang={discussion.lang}>{discussion.conclusion}</p>
           </div>
-          {language === 'en' && discussion.lang !== 'en' && <p className="commons-language">{copy.archiveLanguage}</p>}
         </div>
       </article>
-      <p className="commons-note">{copy.provenance}</p>
     </div>
   </section>;
 }

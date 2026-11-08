@@ -43,7 +43,6 @@ export default function InstitutionWall() {
       </div>)}
     </div>
     <div className="institution-bottom cinema-wrap">
-      <p>{copy.affiliation}</p>
       <button className="institution-pause" type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>
         {paused ? <Play size={14} aria-hidden="true"/> : <Pause size={14} aria-hidden="true"/>}<span>{paused ? copy.resumeScroll : copy.pauseScroll}</span>
       </button>
