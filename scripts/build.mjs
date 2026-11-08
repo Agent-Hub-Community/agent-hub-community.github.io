@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild';
-import { mkdir, copyFile, readFile, writeFile, rm } from 'node:fs/promises';
+import { mkdir, copyFile, readFile, readdir, writeFile, rm } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-import { resolve } from 'node:path';
+import { join, relative, resolve } from 'node:path';
 import { homepageCommunityPlugin } from './homepage-community.mjs';
 
 await mkdir('assets/licenses', { recursive: true });
@@ -33,8 +33,19 @@ const options = {
   define: { 'process.env.NODE_ENV': '"production"' },
   plugins: [homepageCommunityPlugin],
   legalComments: 'linked',
+  metafile: true,
   logLevel: 'info'
 };
+
+// Chunk and font names carry a content hash, so every change writes new files. Remove the ones this build did not
+// write; otherwise stale bundles accumulate in the repository and get deployed.
+async function pruneOutputs(metafile) {
+  const written = new Set(Object.keys(metafile.outputs).map(file => relative('.', file)));
+  for (const directory of ['assets/chunks', 'assets/fonts']) {
+    const names = await readdir(directory).catch(() => []);
+    await Promise.all(names.map(name => join(directory, name)).filter(file => !written.has(file)).map(file => rm(file)));
+  }
+}
 
 async function renderHTML() {
   const wordmark = JSON.parse(await readFile('src/brand/wordmark.json', 'utf8'));
@@ -59,12 +70,13 @@ async function renderHTML() {
 
 if (process.argv.includes('--watch')) {
   options.plugins.push({ name: 'prerender', setup(build) {
-    build.onEnd(async result => { if (!result.errors.length) await renderHTML(); });
+    build.onEnd(async result => { if (!result.errors.length) { await pruneOutputs(result.metafile); await renderHTML(); } });
   } });
   const context = await esbuild.context(options);
   await context.watch();
   console.log('Watching source files. Preview: http://127.0.0.1:8000/');
 } else {
-  await esbuild.build(options);
+  const result = await esbuild.build(options);
+  await pruneOutputs(result.metafile);
   await renderHTML();
 }

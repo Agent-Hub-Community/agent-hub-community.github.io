@@ -2,18 +2,16 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import BrandWordmark from './BrandWordmark';
 import { LanguageSwitch, useHomeLanguage } from './HomeLanguage';
+import { PRIMARY, sitePath } from './site-map';
 
 export default function SiteHeader({ reading = false }) {
   const { copy } = useHomeLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const header = useRef(null), menu = useRef(null);
-  const community = reading ? '' : 'community.html';
-  const navigation = [
-    ['/newspaper/', copy.nav[0]], ['/newspaper/library/', copy.nav[1]],
-    [community + '#topics', copy.nav[2]], [community + '#discussions', copy.nav[3]],
-    [reading ? '#events' : '#members', copy.nav[4]],
-  ];
+  // The same sections, in the same order, on every page of the site; the community page marks its own entry.
+  const navigation = PRIMARY.map((item, index) => [item.id === 'community' && reading ? '#about' : item.path, copy.nav[index], item.id === 'community' && reading]);
+  const join = reading ? '#join' : sitePath('join');
   useEffect(() => {
     const desktop = matchMedia('(min-width: 901px)');
     const resize = () => { if (desktop.matches) setOpen(false); };
@@ -42,11 +40,11 @@ export default function SiteHeader({ reading = false }) {
     <div className="header-inner cinema-wrap">
       <a className="brand" href={reading ? './' : '#cover'} aria-label={copy.home}><img src="assets/agenthub-icon.webp" alt="" width="28" height="28"/><BrandWordmark/></a>
       <nav id="site-navigation" className={'nav' + (open ? ' is-open' : '')} aria-label={copy.navigation}>
-        {navigation.map(([href, label]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
-        {!reading && <a className="nav-join" href={community + '#join'} onClick={() => setOpen(false)}>{copy.join}</a>}
+        {navigation.map(([href, label, current]) => <a key={href} href={href} aria-current={current ? 'page' : undefined} onClick={() => setOpen(false)}>{label}</a>)}
+        {!reading && <a className="nav-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>}
       </nav>
       <div className="header-actions">
-        <a className="header-join" href={community + '#join'} onClick={() => setOpen(false)}>{copy.join}</a>
+        <a className="header-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>
         {!reading && <LanguageSwitch/>}
         <button ref={menu} className="menu-toggle" type="button" aria-label={open ? copy.menuClose : copy.menuOpen} aria-controls="site-navigation" aria-expanded={open} onClick={() => setOpen(value => !value)}>{open ? <X size={21}/> : <Menu size={21}/>}</button>
       </div>

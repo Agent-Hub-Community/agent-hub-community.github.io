@@ -11,6 +11,8 @@ import './module-header.css';
 import './cinematic-home.css';
 import './community-identity.css';
 import './cyber-commons.css';
+import './hub-section.css';
+import './site-map.css';
 
 const previousFragments = ['daily', 'topics', 'discussions', 'events', 'join', ...Array.from({ length: 66 }, (_, index) => 'discussion-' + (index + 1))];
 

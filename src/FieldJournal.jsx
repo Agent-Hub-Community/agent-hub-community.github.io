@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import SiteMap from './SiteMap';
 import { ArrowRight, ArrowUp, ArrowUpRight, ChevronLeft, ChevronRight, Search, X, createLucideIcon } from 'lucide-react';
 import BrandWordmark from './BrandWordmark';
 import ResearchPlate from './ResearchPlate';
@@ -224,12 +225,7 @@ export function JournalFooter() {
   return <footer className="field-journal fj-footer"><div className="fj-wrap">
     <div className="fj-footer-main">
       <p>让做 Agent 的人彼此找到。</p>
-      <nav aria-label="页脚导航">
-        <a href={DAILY}>社群日报<ArrowUpRight size={14} aria-hidden="true"/></a>
-        <a href={DAILY + 'library/'}>资料库<ArrowUpRight size={14} aria-hidden="true"/></a>
-        <a href={DAILY + 'feed.xml'}>RSS<ArrowUpRight size={14} aria-hidden="true"/></a>
-        <a href={GITHUB}>GitHub<ArrowUpRight size={14} aria-hidden="true"/></a>
-      </nav>
+      <SiteMap headings={['阅读', '社群', '给 Agent 读', '开源']} label="页脚导航"/>
     </div>
     <a href="./" className="fj-footer-brand" aria-label="Agent Hub 首页"><BrandWordmark/></a>
     <div className="fj-footer-bottom">

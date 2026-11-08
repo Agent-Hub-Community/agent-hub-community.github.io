@@ -78,12 +78,7 @@
 .institution-directory-groups h3 { font: 500 15px/1.5 var(--font-body); letter-spacing: 0; }
 .institution-directory-groups ul { display: flex; flex-wrap: wrap; gap: 12px 22px; margin: 20px 0 12px; padding: 0; list-style: none; }
 .institution-directory-groups li { color: #a7afb8; font-size: 12px; }
-.cinema-footer { display: flex; align-items: center; gap: 28px; min-height: 102px; color: #929ba5; font-size: 11px; }
-.cinema-footer > a { color: #f4f5f6; font-weight: 500; }
-.cinema-footer > span { font-family: 'AgentHub Grotesk', var(--font-body); }
-.cinema-footer nav { display: flex; flex-wrap: wrap; gap: 28px; margin-left: auto; }
-.cinema-footer nav a { display: inline-flex; align-items: center; min-height: 44px; }
-.cinema-footer a:hover { color: #fff; }
+/* The footer and its site map: site-map.css. */
 .legacy-entry { display: none; margin: 40px auto; padding: 30px; }
 .legacy-entry:target { display: block; }
 @media (max-width: 900px) {
@@ -122,8 +117,6 @@
   .institution-directory { margin-top: 16px; }
   .institution-directory summary { font-size: 11px; }
   .institution-directory-groups { grid-template-columns: 1fr; gap: 26px; }
-  .cinema-footer { min-height: 100px; flex-wrap: wrap; gap: 2px 22px; padding-block: 20px; }
-  .cinema-footer nav { width: 100%; margin: 0; gap: 28px; }
 }
 @media (max-width: 360px) {
   .cinema-wrap { padding-inline: 22px; }

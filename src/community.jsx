@@ -9,6 +9,7 @@ import './site.css';
 import './field-journal.css';
 import './module-header.css';
 import './community-page.css';
+import './site-map.css';
 
 export function CommunityApp() {
   return <MotionConfig reducedMotion="user">
