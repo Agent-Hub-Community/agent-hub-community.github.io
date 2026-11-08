@@ -1,0 +1,62 @@
+{
+  "credit": "SpaceX",
+  "section": "Making life multiplanetary",
+  "page": "https://www.spacex.com/",
+  "content_record": "https://content.spacex.com/api/spacex-website/homepage-tiles",
+  "record_document_id": "quztib5h1ynk4hknsvzcf763",
+  "retrieved": "2026-11-07",
+  "assets": [
+    {
+      "file": "mars-landscape.mp4",
+      "source": "https://sxcontent9668.azureedge.us/cms-assets/assets/Mars_Rotation_Web_HB_d96299f9de.mp4",
+      "bytes": 11014844,
+      "sha256": "5b37104391c66628c6c980911e966563590b157d744b9ccbed059e7b175738fb",
+      "modifications": "None; original bytes.",
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "133.367000"
+      }
+    },
+    {
+      "file": "mars-portrait.mp4",
+      "source": "https://sxcontent9668.azureedge.us/cms-assets/assets/Mobile_v4_HB_e1d2eda88f.mp4",
+      "bytes": 7838098,
+      "sha256": "02ffc3428680de40d495bdae9c8bd842c92da26a3c72cee12b3e56788288d4ac",
+      "modifications": "None; original bytes.",
+      "programs": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1080,
+          "height": 1080,
+          "r_frame_rate": "30/1"
+        }
+      ],
+      "format": {
+        "duration": "133.367000"
+      }
+    },
+    {
+      "file": "mars-landscape.jpg",
+      "source": "https://sxcontent9668.azureedge.us/cms-assets/assets/Mars_Web_8fafe15a48.jpg",
+      "bytes": 33394,
+      "sha256": "5f9076d83ec905203b4f6756e1b05a7032dbb64170c19c86c4f5645d7a7fb4d9",
+      "modifications": "None; original bytes."
+    },
+    {
+      "file": "mars-portrait.jpg",
+      "source": "https://sxcontent9668.azureedge.us/cms-assets/assets/Mars_Mobile_9924bba7c2.jpg",
+      "bytes": 33445,
+      "sha256": "d556d4f9c2f5a714b4f226181366aeafa8c9ec30dc5b9a16fdd1e1f36403e8b0",
+      "modifications": "None; original bytes."
+    }
+  ]
+}

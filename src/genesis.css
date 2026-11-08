@@ -21,7 +21,9 @@
 .slogan-agent { font-weight: 450; }
 .genesis-introduction { position: absolute; top: 75%; left: 0; right: 0; text-align: center; z-index: 4; }
 .genesis-introduction > p { margin-inline: auto; font: 400 clamp(1.125rem, 1.55vw, 1.375rem)/1.7 var(--font-body); color: var(--color-ink); }
-.genesis-introduction > span { display: block; font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-sm); }
+.genesis-portal { position: absolute; right: var(--gutter); bottom: 20px; z-index: 5; display: inline-flex; align-items: center; gap: 14px; min-height: 44px; color: var(--color-ink-2); font-size: 12px; }
+.genesis-portal svg { transition: transform .25s; }
+.genesis-portal:hover svg { transform: translate(2px,2px); }
 @media (max-width: 45rem) {
   .genesis { height: 270svh; }
   .genesis-stage { min-height: 480px; }
@@ -30,7 +32,7 @@
   .genesis-wordmark { top: 43%; }
   .genesis-introduction { top: 70%; }
   .genesis-introduction > p { font-size: var(--text-md); }
-  .genesis-introduction > span { max-width: 30ch; margin-inline: auto; font-size: var(--text-xs); }
+  .genesis-portal { bottom: 14px; font-size: 11px; }
 }
 html:not(.js) .genesis { height: 100svh; }
 html:not(.js) .hands-field { display: none; }
@@ -38,6 +40,7 @@ html:not(.js) .genesis-logo, html:not(.js) .genesis-wordmark, html:not(.js) .wor
 @media (prefers-reduced-motion: reduce) {
   .genesis { height: 100svh; min-height: 600px; }
   .genesis-stage { position: relative; }
+  .genesis-portal svg { transition: none; }
   .hands-field { display: none; }
   .genesis-logo, .genesis-wordmark, .wordmark-letter, .genesis-slogan, .genesis-introduction { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
@@ -46,5 +49,4 @@ html:not(.js) .genesis-logo, html:not(.js) .genesis-wordmark, html:not(.js) .wor
   .genesis-wordmark { top: 40%; }
   .genesis-introduction { top: 76%; }
   .genesis-introduction > p { font-size: 14px; line-height: 1.6; }
-  .genesis-introduction > span { font-size: 12px; line-height: 1.5; margin-top: 8px; }
 }

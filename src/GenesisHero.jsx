@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
+import { ArrowDownRight } from 'lucide-react';
 import BrandWordmark from './BrandWordmark';
+import { useHomeLanguage } from './HomeLanguage';
 import './genesis.css';
 
-const HANDS_SOURCE = 'assets/human-machine-creation.png';
+const HANDS_SOURCE = 'assets/human-machine-creation.webp';
 const HANDS_SPLIT = .495;
 // Similar visual densities preserve shading without turning flat areas into
 // long strings of the same character. Every glyph is printable ASCII.
@@ -124,6 +126,7 @@ function useAsciiHands(ref, left, right, progress) {
 }
 
 export default function GenesisHero({ onInterfaceChange }) {
+  const { copy } = useHomeLanguage();
   const ref = useRef(null), field = useRef(null), left = useRef(null), right = useRef(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
@@ -136,7 +139,7 @@ export default function GenesisHero({ onInterfaceChange }) {
     let previous;
     const sync = value => {
       const visible = Boolean(reduce || value >= .72);
-      if (visible !== previous) { previous = visible;onInterfaceChange(visible); }
+      if (visible !== previous) { previous = visible;onInterfaceChange?.(visible); }
     };
     sync(progress.get());
     return progress.on('change', sync);
@@ -158,16 +161,17 @@ export default function GenesisHero({ onInterfaceChange }) {
   useEffect(() => { import('../assets/ascii-logo.js'); }, []);
   return <section id="cover" className="genesis" ref={ref} aria-labelledby="hero-title">
     <div className="genesis-stage">
-      <div className="hands-field" ref={field} role="img" aria-label="左侧机器手对应亚当，右侧人手对应上帝，以创造亚当的姿态伸向彼此。两只手由 ASCII 字符组成，随滚动分开，社区标志从中间展开。">
+      <div className="hands-field" ref={field} role="img" aria-label={copy.handsAlt}>
         <img className="hands-fallback" src={HANDS_SOURCE} alt="" width="1536" height="1024" fetchPriority="high"/>
         <motion.div className="ascii-hand machine-hand left-hand" style={reduce ? {} : { x: leftX, rotate: leftRotate, opacity: handsOpacity }}><canvas ref={left} aria-hidden="true"/></motion.div>
         <motion.div className="ascii-hand human-hand right-hand" style={reduce ? {} : { x: rightX, rotate: rightRotate, opacity: handsOpacity }}><canvas ref={right} aria-hidden="true"/></motion.div>
       </div>
       <motion.div className="genesis-logo" style={reduce ? {} : { scale: logoScale, opacity: logoOpacity }}>
-        <figure className="ascii-figure" data-source="assets/agenthub-galaxy.webp" aria-label="Agent Hub 社区的动态 ASCII 星系标志"><img className="ascii-fallback" src="assets/agenthub-galaxy.webp" width="720" height="720" alt=""/><canvas aria-hidden="true"/></figure>
+        <figure className="ascii-figure" data-source="assets/agenthub-galaxy.webp" aria-label={copy.galaxyAlt}><img className="ascii-fallback" src="assets/agenthub-galaxy.webp" width="720" height="720" alt=""/><canvas aria-hidden="true"/></figure>
       </motion.div>
       <motion.div className="genesis-wordmark wrap" style={reduce ? {} : { scale: titleScale }}><h1 id="hero-title" aria-label="Agent Hub"><span className="visually-hidden">Agent Hub</span><BrandWordmark progress={titleProgress}/></h1><motion.p className="genesis-slogan" lang="en" style={reduce ? {} : { opacity: sloganOpacity, y: sloganY }}><span className="slogan-human">Human</span>{' '}<span className="slogan-cross">×</span>{' '}<span className="slogan-agent">Agent</span></motion.p></motion.div>
-      <motion.div className="genesis-introduction wrap" style={reduce ? {} : { y: introY, opacity: introOpacity }}><p>Agent Hub 是一个中文技术社群，<br/>专注 LLM Agent 的研究与应用。</p><span>成员来自基模团队与高校，分享研究进展和工程经验。</span></motion.div>
+      <motion.div className="genesis-introduction wrap" style={reduce ? {} : { y: introY, opacity: introOpacity }}><p>{copy.genesis[0]}<br/>{copy.genesis[1]}</p></motion.div>
+      <a className="genesis-portal" href="#about">{copy.explore}<ArrowDownRight size={17} aria-hidden="true"/></a>
     </div>
   </section>;
 }

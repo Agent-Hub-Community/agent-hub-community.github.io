@@ -1,0 +1,21 @@
+NASA Robonaut production photograph
+
+Source: https://www.nasa.gov/wp-content/uploads/2015/04/471146main_jsc2010e089924_hi.jpg
+Gallery: https://www.nasa.gov/gallery/robonaut-image-gallery/
+Image identifier: JSC2010-E-089924
+Date: June 1, 2010
+
+Embedded IPTC creator: Robert Markowitz - NASA - JSC
+Embedded description: High quality production photos of Robonaut (R2) in
+Building 14 EMI chamber and R1/EMU photos in Building 32 - Robonaut Lab.
+Photographers: Robert Markowitz & Bill Stafford.
+
+NASA images and media guidance:
+https://www.nasa.gov/nasa-brand-center/images-and-media/
+
+The site uses separate responsive crops, mild desaturation and edge fades as
+an illustrative robotics background. This is not a photograph of Agent Hub
+members. NASA is not a sponsor or partner of this community. The NASA insignia
+visible in the original photograph is not used as this site's brand.
+
+Original and derivative hashes are recorded in assets/environment/robot-sources.json.

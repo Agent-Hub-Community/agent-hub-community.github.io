@@ -1,0 +1,31 @@
+{
+  "name": "Robonaut R2 and R1/EMU production photograph, JSC2010-E-089924",
+  "source": "https://www.nasa.gov/wp-content/uploads/2015/04/471146main_jsc2010e089924_hi.jpg",
+  "page": "https://www.nasa.gov/gallery/robonaut-image-gallery/",
+  "credit": "NASA / Robert Markowitz; source IPTC description also credits Bill Stafford",
+  "date": "2010-06-01",
+  "license_url": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+  "source_sha256": "0cc73b0b1507cc634ed68de5726e6308829905ba6f69776a272875920c1a3bb9",
+  "usage": "An illustrative background of NASA robotics. This is not a photograph of Agent Hub members or an endorsement by NASA.",
+  "adaptation": "Separate landscape and portrait crops, mild desaturation and a black edge fade. Made with scripts/prepare-home-robot.py.",
+  "outputs": [
+    {
+      "file": "assets/environment/robot-landscape.webp",
+      "bytes": 239678,
+      "size": [
+        2560,
+        1600
+      ],
+      "sha256": "116cd80200323368163ea108362e992a3edf9d722e3f2564f5c7ce1dfffc7c58"
+    },
+    {
+      "file": "assets/environment/robot-portrait.webp",
+      "bytes": 106316,
+      "size": [
+        1080,
+        1800
+      ],
+      "sha256": "4fc57d1bf76cc89f06caeeceb04460b88b2d9ea41b3956dff2af522ce83e6e17"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "edition": "2026-11-05",
+  "editionLabel": "2026.11.05",
+  "overview": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/overview/",
+  "discussionHighlights": [7, 59, 47],
+  "featuredInstitutions": [
+    ["OpenAI", "Anthropic", "Google DeepMind", "Qwen", "ByteDance Seed", "DeepSeek"],
+    ["清华", "北大", "Stanford", "MIT", "CMU", "Berkeley"]
+  ],
+  "stories": [
+    {
+      "tag": "AGENT INTERFACES",
+      "category": "Agent 接口",
+      "title": "Agent 操作电脑，\n需要几种语言？",
+      "description": "代码、语义树、图形界面。围绕 Hybrid\u00a0Computer\u00a0Use，群友讨论如何让模型按任务选择接口，以及纯 GUI 路线的效率边界。",
+      "sourceLabel": "一群 · Agent 接口",
+      "url": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/group-1/#topic-2",
+      "art": "harness"
+    },
+    {
+      "tag": "TRAINING & EVALUATION",
+      "category": "强化学习",
+      "title": "异步 RL 的稳定性，\n从内核对齐开始。",
+      "description": "REINFORCE Zero 引发的讨论：数值计算路径的差异，如何影响重要性采样与训练稳定性？",
+      "sourceLabel": "一群 · 强化学习",
+      "url": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/group-1/#topic-1",
+      "art": "eval"
+    },
+    {
+      "tag": "EMBODIED INTELLIGENCE",
+      "category": "具身智能",
+      "title": "Loss 一样低，\n机器人为什么做不好？",
+      "description": "从训练指标到真实任务，讨论 VLA 的下游表现，以及接触丰富场景中的泛化问题。",
+      "sourceLabel": "Robot · 模型训练",
+      "url": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/group-7/#topic-1",
+      "art": "embodied"
+    }
+  ],
+  "topics": [
+    { "name": "Agent 系统", "discussionId": 36, "english": "Harness & agents", "art": "harness", "question": "让模型的能力，走进真实任务。", "description": "工具、记忆、环境与多 Agent 协作。拆解系统的设计选择，也检验复杂工作流中的可靠性与成本。", "tags": ["Harness", "Computer use", "Memory"], "source": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/group-1/#topic-2" },
+    { "name": "评估与训练", "discussionId": 3, "english": "Evaluation & learning", "art": "eval", "question": "分数之外，什么值得被测量？", "description": "从 benchmark、数据质量到强化学习。追问评测是否覆盖真实能力，训练中的改进能否稳定复现。", "tags": ["Evaluation", "RL", "Data"], "source": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/group-1/#topic-1" },
+    { "name": "自我改进", "discussionId": 17, "english": "Recursive improvement", "art": "rsi", "question": "改进的循环，如何真正发生？", "description": "讨论自动造数据、环境生成与系统自我改进。沿着实验日志，区分有效变化、评测偏差和偶然收益。", "tags": ["RSI", "Feedback", "Environments"], "source": "https://agent-hub-community.github.io/newspaper/daily/2026-10-31/group-5/" },
+    { "name": "科学研究", "discussionId": 20, "english": "AI for science", "art": "science", "question": "从完成计算，到提出好问题。", "description": "连接数学、物理等学科的研究者，讨论推理、形式化验证与科研工作流，也讨论人的判断在哪些环节不可缺少。", "tags": ["AI4Science", "Mathematics", "Discovery"], "source": "https://agent-hub-community.github.io/newspaper/daily/2026-11-01/group-3/" },
+    { "name": "安全与对齐", "discussionId": 41, "english": "Safety & alignment", "art": "safety", "question": "能力越强，怎样保持可信？", "description": "关注长任务中的行为偏差、过程审计与可控性。讨论可观测的指标，究竟能约束多少不可见的行为。", "tags": ["Alignment", "Interpretability", "Safety"], "source": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/external/#topic-2" },
+    { "name": "具身智能", "discussionId": 35, "english": "Embodied intelligence", "art": "embodied", "question": "当智能触碰物理世界。", "description": "从 VLA、数据采集到真实机器人实验。交流模型训练与硬件实践，追问离线指标和实际成功率之间的距离。", "tags": ["Robotics", "VLA", "Real-world learning"], "source": "https://agent-hub-community.github.io/newspaper/daily/2026-11-05/group-7/" }
+  ]
+}

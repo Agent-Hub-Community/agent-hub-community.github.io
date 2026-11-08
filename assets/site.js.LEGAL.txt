@@ -1,6 +1,3 @@
-/*! Adapted from Amicro by SYED SUBHAN UDDIN. MIT. See LICENSE. */
-/*! React Bits by David Haz. MIT + Commons Clause. License: assets/licenses/react-bits.txt */
-
 Bundled license information:
 
 react/cjs/react.production.js:
@@ -58,45 +55,26 @@ react/cjs/react-jsx-runtime.production.js:
    * LICENSE file in the root directory of this source tree.
    */
 
-gsap/dist/gsap.js:
-  /*!
-   * GSAP 3.15.0
-   * https://gsap.com
-   *
-   * @license Copyright 2008-2026, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */
-
-gsap/dist/ScrollTrigger.js:
-  /*!
-   * Observer 3.15.0
-   * https://gsap.com
-   *
-   * @license Copyright 2008-2026, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */
-  /*!
-   * ScrollTrigger 3.15.0
-   * https://gsap.com
-   *
-   * @license Copyright 2008-2026, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license
-   * @author: Jack Doyle, jack@greensock.com
-  */
-
 lucide-react/dist/esm/shared/src/utils.js:
 lucide-react/dist/esm/defaultAttributes.js:
 lucide-react/dist/esm/Icon.js:
 lucide-react/dist/esm/createLucideIcon.js:
+lucide-react/dist/esm/icons/arrow-down-right.js:
+lucide-react/dist/esm/icons/arrow-right.js:
 lucide-react/dist/esm/icons/arrow-up-right.js:
+lucide-react/dist/esm/icons/arrow-up.js:
 lucide-react/dist/esm/icons/chevron-left.js:
 lucide-react/dist/esm/icons/chevron-right.js:
-lucide-react/dist/esm/icons/github.js:
-lucide-react/dist/esm/icons/image.js:
+lucide-react/dist/esm/icons/maximize-2.js:
 lucide-react/dist/esm/icons/menu.js:
+lucide-react/dist/esm/icons/minimize-2.js:
+lucide-react/dist/esm/icons/minus.js:
 lucide-react/dist/esm/icons/moon.js:
+lucide-react/dist/esm/icons/pause.js:
+lucide-react/dist/esm/icons/play.js:
+lucide-react/dist/esm/icons/plus.js:
+lucide-react/dist/esm/icons/rotate-ccw.js:
+lucide-react/dist/esm/icons/search.js:
 lucide-react/dist/esm/icons/sun.js:
 lucide-react/dist/esm/icons/x.js:
 lucide-react/dist/esm/lucide-react.js:

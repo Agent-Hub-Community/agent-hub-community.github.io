@@ -1,0 +1,23 @@
+Mars background films and posters
+
+Credit: SpaceX.
+Reference page: https://www.spacex.com/
+Section: Making life multiplanetary
+Public content record:
+https://content.spacex.com/api/spacex-website/homepage-tiles
+
+Original desktop video:
+https://sxcontent9668.azureedge.us/cms-assets/assets/Mars_Rotation_Web_HB_d96299f9de.mp4
+Original mobile video:
+https://sxcontent9668.azureedge.us/cms-assets/assets/Mobile_v4_HB_e1d2eda88f.mp4
+Original desktop poster:
+https://sxcontent9668.azureedge.us/cms-assets/assets/Mars_Web_8fafe15a48.jpg
+Original mobile poster:
+https://sxcontent9668.azureedge.us/cms-assets/assets/Mars_Mobile_9924bba7c2.jpg
+
+Retrieved 2026-11-07 for the user-requested local SpaceX section reproduction.
+These four files are byte-identical to the publicly served reference assets.
+Source and output hashes are recorded in ../environment/mars-sources.json.
+They are SpaceX reference media, not original Agent Hub artwork or NASA assets.
+No open license or public-domain status is asserted for these SpaceX materials.
+The Agent Hub layout, React implementation and accompanying copy are separate.

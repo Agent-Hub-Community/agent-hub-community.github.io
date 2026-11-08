@@ -1,0 +1,43 @@
+{
+  "family": "Noto Sans SC",
+  "source": "https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+  "license": "https://github.com/google/fonts/blob/main/ofl/notosanssc/OFL.txt",
+  "upstream_version": "Version 2.004-H2;hotconv 1.0.118;makeotfexe 2.5.65603",
+  "source_sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+  "weight_range": [
+    400,
+    600
+  ],
+  "source_files": [
+    "src/FieldJournal.jsx",
+    "src/CommunityIdentity.jsx",
+    "src/CyberCommons.jsx",
+    "src/commons-stories.js",
+    "src/main.jsx",
+    "src/GenesisHero.jsx",
+    "src/SiteHeader.jsx",
+    "src/CinematicHome.jsx",
+    "src/InstitutionWall.jsx",
+    "src/PlanetScene.jsx",
+    "src/HomeLanguage.jsx",
+    "src/home-copy.js",
+    "src/community.jsx",
+    "src/journal-content.json",
+    "src/community-data.json"
+  ],
+  "notes": "Local WOFF2 subsets with unchanged outlines and a restricted weight axis. Copyright, license and attribution name records retained. Unicode ranges are disjoint. Characters added later retain system fallback until this script is rerun.",
+  "chunks": [
+    {
+      "file": "noto-sans-sc-core.woff2",
+      "bytes": 130364,
+      "sha256": "2d6c49197ad50c99c26a9865d182f235c1666e778500f0c65c442886de636dd4",
+      "characters": "、。一三上下不与世业东两个中丰为主么义之也习书了事于云亚些交产享京人什仅从他代以们件任份优会估伸位低住体何作你侧保信值偏做停偶先兜入全公共关其具内再写减几出击分切则创初判利别到制刷力功加务动势化北区华协单南博卡原厦去参及友发变口另只可台右各合同名后向吗否告员味和品哈响哪器回因团围国图在地场块坦型城域基堆塞境壁处备复外多大天头奇好如始姿子字学它安完定实审家容富对导小少尔就尼屏展山工左差己已师帝带年并广库应建开异式引强当录形影彼径很得循心忆志态怎性恢悉情想意成我或所手才打批找技把护报担拆拖择持指按挥换据授探接控推提搜摘撑播操收改放效教数整文料断新方旋无日旦时明星是显景智暂更最有期本术机杂束条来极构果架查标树校样核根案档检楚榜模欢正此步武歧求汉没沿法泛注津活流测济浏浙海浸深清港游湖源滚滴火点然物特率环现理生用由电画界留疑的益监盖目盯直相看真着知码研硕硬碰示社离种科称移程稳究空竟符第等筛简算篇米系索红约纯线练组细织经结绕给统继绩续维缩缺置群者聊职联聚能脑脚脱自至航色节苏范荐蒙行补表被西要覆见观视览角解触言计认讨让训议记讲论设证评识词试诚话该语说请读质资赛走起超越跑距跨路跳践身转边过迎返还这进连追退选逐通造遇道邀邮部都配采里重量钮链键长闭问间阅队防阿际限院险随难集需青靠面页顶项领题风首验高齐，：；？"
+    },
+    {
+      "file": "noto-sans-sc-archive.woff2",
+      "bytes": 119480,
+      "sha256": "b9bfcd4e57a2b0d178ef3e15479d257f40796a92f3e3bb5cc18d5b538e594e86",
+      "characters": "丁专且丢严举久乎乏九买乱争亏互仍付令仲价企传伤似但使例依便修倍倒候借债倾健储催像充免六兼冒冬冲决况冻准刊划列删刻前剔剩办助励劲包匹十升半卖占即却卷厂厅历压又叉反取受叫史号司叹吃吐吞含周哲售商喂喜嘲噪固圈坏坚垂垒垮填墙增士声够太失夸奖套妙委嫌存守宏宜客宣室害宽密封尖尚尽局层属岗嵌巧巨市布帮常干平幻序底废度座康延张弱归往征待律微必忙忧快怀思总息惊惯感愿慢懂戏截户扒扛执扩扰承抓投折抵抽拉拒招拟拢拦拼拿挂挑挖挡捉捕损掉掌掺描插握揽搭擅攒支攻故敏救敛敢散旁既旧早易映晚普晰暴曾替月朋服未杀权板枉析格框桌棋棒概槛横次死段每毒比毕毛毫气水汇沟河治泄波派消淆混渠湿满漂漏演灵烦烧焦照熟爱片版牌牵状独狱猜珍甚略病痛白百盈盘省督矫短石破础确碍碾禁私秒积稀稿突窄窗立站竞端答策管类精紧累繁纠级纳纵终绑络缓网署美翻考而耐耗聘股胀胆背脉腻腾膨致艺芯花苦落蒸藏虑虚蛋融裁规觉誉订诊误课谁调谈谓谜谱豆负财责败贴贵费赔赖赚足跟轨轮软轴轻较辅辑输达迁迅运近远迟迭述迹适逆递速逻逼遍遭遵避醒释针钟钱销错门阵阶降除隐隔障露非顺顾预频额颠飞餐馅馈馏驳驻骤麻"
+    }
+  ]
+}

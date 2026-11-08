@@ -1,0 +1,33 @@
+[
+  {
+    "author": "Quaternius",
+    "source": "https://quaternius.com/packs/ultimatemodularcharacters.html",
+    "download": "https://static.poly.pizza/90a9e2d4-053f-42f1-99a2-8f5e1180ea7f.glb",
+    "retrievedFrom": "https://cdn.jsdelivr.net/gh/arjolpanci/sTA@main/resources/models/characters/player.glb",
+    "license": "CC0-1.0",
+    "sourceSha256": "fea7e71271203e7073f1a073fa1208de7402df276f87f80e149bf7589b5d46b4",
+    "file": "casual-character.glb",
+    "sha256": "5cba2b79b7a08df8816f2d0e14694d7bd7134e64c3fcc787e9bb869fc4f71deb",
+    "bytes": 804912,
+    "clips": [
+      "Idle_Neutral",
+      "Interact"
+    ],
+    "changes": "Retained only the used animation clips and repacked their buffers. Geometry and skinning data are preserved; materials are recolored at runtime."
+  },
+  {
+    "author": "Quaternius",
+    "source": "https://quaternius.com/packs/animatedwomen.html",
+    "download": "https://static.poly.pizza/51d5abdd-bb87-4b8d-9967-21738ffb8437.glb",
+    "retrievedFrom": "https://cdn.jsdelivr.net/gh/arjolpanci/sTA@main/resources/models/characters/women-0.glb",
+    "license": "CC0-1.0",
+    "sourceSha256": "99c4df0aaabd19022809facc68f5fb5f564d35df3a9893c273a31fdaacf68e96",
+    "file": "community-character.glb",
+    "sha256": "9c480e9c9285604897fcf39b50b27433b85e4e06a016f4423cd3cff9cc1b87f0",
+    "bytes": 335192,
+    "clips": [
+      "Female_Idle"
+    ],
+    "changes": "Retained only the used animation clips and repacked their buffers. Geometry and skinning data are preserved; materials are recolored at runtime."
+  }
+]
