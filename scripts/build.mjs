@@ -51,7 +51,7 @@ async function renderHTML() {
   const wordmark = JSON.parse(await readFile('src/brand/wordmark.json', 'utf8'));
   const paths = wordmark.letters.map(letter => `<path d="${letter.d}"/>`).join('');
   const attributes = `xmlns="http://www.w3.org/2000/svg" viewBox="${wordmark.viewBox}" fill="none" stroke="currentColor" stroke-width="${wordmark.strokeWidth}" stroke-linecap="butt" stroke-linejoin="round"`;
-  await writeFile('assets/agenthub-wordmark.svg', `<svg ${attributes} role="img" aria-labelledby="title"><title id="title">AgentHub</title>${paths}</svg>\n`);
+  await writeFile('assets/agenthub-wordmark.svg', `<svg ${attributes} role="img" aria-labelledby="title"><title id="title">Agent Hub</title>${paths}</svg>\n`);
   // The site-wide 404 page carries the wordmark inline, since it is served at arbitrary paths.
   const notFound = await readFile('src/404.html', 'utf8');
   await writeFile('404.html', notFound.replace('<!--wordmark-->', `<svg ${attributes} aria-hidden="true">${paths}</svg>`));
