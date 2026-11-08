@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Pause, Play } from 'lucide-react';
+import community from 'agenthub:homepage-community';
 import { useHomeLanguage } from './HomeLanguage';
+import { createPlanetLights } from './planet-lights';
+
+// One light per archived discussion, named by its direction.
+const DIRECTIONS = community.discussions.map(item => item.tag);
 
 // The original SpaceX Mars films carry the lighting, framing and rotation.
 // Load only the appropriate film, when motion is wanted and the scene is visible.
 export default function PlanetScene() {
   const { copy } = useHomeLanguage();
-  const section = useRef(null), video = useRef(null), playback = useRef(null);
+  const section = useRef(null), video = useRef(null), playback = useRef(null), poster = useRef(null), sky = useRef(null), copyBlock = useRef(null), bottom = useRef(null);
   const [hydrated, setHydrated] = useState(false);
   const [playing, setPlaying] = useState(false), [hasFrame, setHasFrame] = useState(false);
 
@@ -74,19 +79,27 @@ export default function PlanetScene() {
     };
   }, []);
 
+  useEffect(() => {
+    const lights = createPlanetLights(sky.current, poster.current, {
+      tags: DIRECTIONS, avoid: () => [copyBlock.current, bottom.current].map(element => element.getBoundingClientRect()),
+    });
+    return () => lights?.dispose();
+  }, []);
+
   return <section ref={section} id="about" className="planet-scene" aria-labelledby="planet-title">
     <div className="planet-media" aria-hidden="true">
-      <picture><source media="(max-width: 961px)" srcSet="assets/environment/mars-portrait.jpg"/><img src="assets/environment/mars-landscape.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async"/></picture>
+      <picture><source media="(max-width: 961px)" srcSet="assets/environment/mars-portrait.jpg"/><img ref={poster} src="assets/environment/mars-landscape.jpg" alt="" width="1920" height="1080" loading="lazy" decoding="async"/></picture>
       <video ref={video} muted playsInline loop preload="none" tabIndex={-1} className={hasFrame ? 'has-frame' : ''}/>
+      <canvas ref={sky} className="planet-lights"/>
     </div>
     <div className="planet-content">
-      <div className="planet-copy">
+      <div className="planet-copy" ref={copyBlock}>
         <h2 id="planet-title">{copy.planetHeading[0]}<br/>{copy.planetHeading[1]}</h2>
         <p>{copy.intro}</p>
         <div className="scene-actions"><a className="scene-button" href="/newspaper/">{copy.readDaily}</a><a className="scene-link" href="/newspaper/library/">{copy.library}</a></div>
       </div>
     </div>
-    <div className="planet-bottom">
+    <div className="planet-bottom" ref={bottom}>
       <a className="planet-credit" href="assets/licenses/spacex-mars.txt" target="_blank" rel="noreferrer">Mars · SpaceX</a>
       <a className="planet-next" href="#collaborate" aria-label={copy.planetNext}><ChevronDown size={23} strokeWidth={1.3} aria-hidden="true"/></a>
       {hydrated && <button type="button" className="planet-motion" onClick={() => playback.current?.()} aria-label={playing ? copy.marsPause : copy.marsPlay} aria-pressed={!playing}>{playing ? <Pause size={13} aria-hidden="true"/> : <Play size={13} aria-hidden="true"/>}<span>{playing ? copy.pauseAnimation : copy.playAnimation}</span></button>}

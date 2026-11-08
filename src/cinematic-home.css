@@ -20,6 +20,10 @@
 .planet-media img, .planet-media video { object-fit: cover; object-position: center; }
 .planet-media video { position: absolute; inset: 0; opacity: 0; }
 .planet-media video.has-frame { opacity: 1; }
+/* Directions as points of light in the dark sky; the media layer sits under the text, so pointers reach it
+   everywhere except over the copy. */
+.planet-lights { position: absolute; inset: 0; width: 100%; height: 100%; }
+html:not(.js) .planet-lights { display: none; }
 .planet-content { position: relative; height: 100%; max-width: 1700px; margin-inline: auto; pointer-events: none; }
 .planet-copy { position: absolute; left: 100px; top: 50%; transform: translateY(-50%); width: 450px; pointer-events: auto; }
 .planet-copy h2 { max-width: none; font: 500 48px/1.22 var(--font-body); letter-spacing: -.04em; text-wrap: wrap; }
