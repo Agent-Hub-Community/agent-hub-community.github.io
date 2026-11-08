@@ -21,7 +21,7 @@ npm run dev
 - `src/SiteHeader.jsx`、`src/module-header.css`：始终可用的模块入口与移动端菜单。
 - `src/InstitutionWall.jsx`、`src/MemberLogo.jsx`：117 个机构的连续滚动、暂停、键盘浏览、完整目录与 SVG 标识去重。
 - `src/community.jsx`、`src/FieldJournal.jsx`：独立资料页、讨论搜索与分页、成员目录、加入说明和页脚。
-- `src/CommunityIdentity.jsx`、`src/community-identity.css`：首页“把想法，一起做出来”一屏，三组讨论并排展示问题、双方观点、仍未解决的部分和讨论记录链接。
+- `src/CommunityIdentity.jsx`、`src/community-identity.css`、`src/commons-loom.js`：首页“把想法，一起做出来”一屏。上方是沿用开场字形与配色的 ASCII 编织动画：各组讨论里的词落下并溶进对应的辫子，人（暖白）与 Agent（蓝）两股交织后收拢到下方卡片；悬停或聚焦卡片时点亮对应的辫子，手机上合成一股。下方三张卡片展示问题、双方观点、还在讨论的部分和讨论记录链接。
 - `src/commons-stories.js`：根据原始讨论 59、47、7 整理的三组对话及英文翻译，结论保留原讨论中的不确定性。
 - `src/site.css`：共享导航、字标、首屏和基础样式；正文使用 `src/field-journal.css`。
 - `src/journal-search.js`：搜索词的原文位置与匹配句提取，保留原始文字和完整句子。

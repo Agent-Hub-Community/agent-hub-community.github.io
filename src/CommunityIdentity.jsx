@@ -1,14 +1,34 @@
+import { useEffect, useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import community from 'agenthub:homepage-community';
 import { COMMONS_STORIES } from './commons-stories';
+import { createLoom } from './commons-loom';
 import { useHomeLanguage } from './HomeLanguage';
 
 const pad = number => String(number).padStart(2, '0');
 
-// Three real discussions, each read as a short exchange that ends on what is still open. Everything is visible at
-// once: no selection, no scene to explore.
+// Three real discussions, each read as a short exchange that ends on what is still open. Above them, the loom
+// weaves loose ideas into one braid per discussion; hovering or focusing a card brightens its braid.
 export default function CommunityIdentity() {
   const { copy, language } = useHomeLanguage();
+  const surface = useRef(null), list = useRef(null), loom = useRef(null);
+  useEffect(() => {
+    const canvas = surface.current;
+    const targets = () => {
+      const origin = canvas.getBoundingClientRect();
+      const cards = [...list.current.children].map(card => card.getBoundingClientRect());
+      // Stacked cards share one column, so the braids spread across it instead of landing on each card; on a
+      // phone there is room for only one braid.
+      const sideBySide = cards.length > 1 && Math.abs(cards[0].top - cards[1].top) < 2;
+      if (!sideBySide && origin.width < 600) return [{ x: origin.width / 2, width: origin.width }];
+      return cards.map((card, index) => sideBySide
+        ? { x: card.left - origin.left + card.width / 2, width: card.width }
+        : { x: origin.width * (index * 2 + 1) / (cards.length * 2), width: origin.width / cards.length });
+    };
+    loom.current = createLoom(canvas, targets, COMMONS_STORIES.map(story => story.terms));
+    return () => { loom.current?.dispose(); loom.current = null; };
+  }, []);
+  const highlight = index => loom.current?.highlight(index);
   const stories = COMMONS_STORIES.map(item => {
     const discussion = community.discussions[item.discussionId - 1];
     const text = language === 'en' ? { ...item, ...item.en } : item;
@@ -26,7 +46,9 @@ export default function CommunityIdentity() {
           </div>
         </div>
       </header>
-      <ol className="commons-threads">{stories.map((story, index) => <li key={story.id}>
+      <div className="commons-loom" aria-hidden="true"><canvas ref={surface}/></div>
+      <ol className="commons-threads" ref={list}>{stories.map((story, index) => <li key={story.id}
+        onPointerEnter={() => highlight(index)} onPointerLeave={() => highlight(null)} onFocus={() => highlight(index)} onBlur={() => highlight(null)}>
         <article className="commons-thread" aria-labelledby={'commons-' + story.id}>
           <p className="commons-topic"><span>{pad(index + 1)}</span>{story.label}</p>
           <h3 id={'commons-' + story.id}>{story.question}</h3>

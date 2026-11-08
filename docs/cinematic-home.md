@@ -7,7 +7,7 @@
 - `src/main.jsx`、`src/CinematicHome.jsx`：四段首页与页脚。
 - `src/GenesisHero.jsx`、`src/genesis.css`：保留原有双手分开、星系展开、字标出现的滚动映射，只翻译文字与辅助标签。
 - `src/PlanetScene.jsx`、`src/cinematic-home.css`：火星、简介、日报和资料库入口。
-- `src/CommunityIdentity.jsx`、`src/community-identity.css`：三组讨论并排展示，每组是问题、双方观点、还在讨论的部分和讨论记录链接。V86 的 3D 社群场景已移除。
+- `src/CommunityIdentity.jsx`、`src/community-identity.css`、`src/commons-loom.js`：三组讨论并排展示，每组是问题、双方观点、还在讨论的部分和讨论记录链接。上方的 ASCII 编织动画沿用开场的字形分档和等宽字体，讨论里的词（`commons-stories.js` 的 `terms`）落下后溶进对应的辫子；约 24 fps 绘制，离屏或后台时停止，减少动态效果时只画一帧，无脚本时不显示。V86 的 3D 社群场景已移除。
 - `src/HomeLanguage.jsx`、`src/home-copy.js`：首页中英文本。第一次访问始终用中文；明确选择后，通过 `agenthub-language` 保存偏好。切换同时更新文档语言、标题和说明。
 - `src/SiteHeader.jsx`、`src/module-header.css`：共享模块导航与移动端菜单，支持 Escape 关闭与焦点返回。
 - `src/community.jsx`、`src/community.html`：独立中文资料页，保留日报精选、六个研究方向、66 则讨论、成员目录与邀请方式。
