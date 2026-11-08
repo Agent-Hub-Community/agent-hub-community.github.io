@@ -9,6 +9,7 @@ export const SITE = {
     { id: 'glossary', path: '/newspaper/glossary/', zh: '黑话', en: 'Glossary' },
     { id: 'rank', path: '/newspaper/rank/week/', zh: '活跃榜', en: 'Activity' },
     { id: 'search', path: '/newspaper/search/', zh: '搜索', en: 'Search' },
+    { id: 'opportunities', path: '/newspaper/library/#opportunities', zh: '机会', en: 'Openings' },
   ],
   community: [
     { id: 'community', path: '/community.html', zh: '社群资料', en: 'Community' },

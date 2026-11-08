@@ -27,6 +27,17 @@
 .hub-language { margin-top: 14px; font-size: 12px; color: #7d8690; }
 
 .hub-side { display: grid; gap: 28px; }
+.hub-search { display: grid; gap: 10px; }
+.hub-search-label { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; letter-spacing: .04em; color: #a7afb8; }
+.hub-search-label span { font-family: 'AgentHub Grotesk', var(--font-body); color: #7d8690; font-variant-numeric: tabular-nums; }
+.hub-search-field { display: flex; align-items: center; min-height: 54px; border: 1px solid #ffffff2b; border-radius: 6px; background: #04070b; transition: border-color .25s, box-shadow .25s; }
+.hub-search-field:focus-within { border-color: #8fbbe0; box-shadow: 0 0 0 3px #8fbbe024; }
+.hub-search-field > svg { flex: none; margin-left: 18px; color: #7d8690; }
+.hub-search-field input { flex: 1; min-width: 0; height: 52px; padding: 0 14px; border: 0; outline: 0; background: transparent; color: #f4f5f6; font: 15px/1 var(--font-body); }
+.hub-search-field input::placeholder { color: #6f7882; }
+.hub-search-field input::-webkit-search-cancel-button { filter: invert(1) opacity(.5); }
+.hub-search-field button { flex: none; align-self: stretch; padding: 0 22px; border: 0; border-left: 1px solid #ffffff1c; border-radius: 0 5px 5px 0; background: transparent; color: #dfe4e9; font: 500 14px var(--font-body); cursor: pointer; transition: background .25s, color .25s; }
+.hub-search-field button:is(:hover, :focus-visible) { background: #f4f5f6; color: #000; }
 .hub-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid #ffffff1c; border-radius: 6px; background: #ffffff1c; }
 .hub-tiles li { min-width: 0; background: #04070b; }
 .hub-tiles a { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; min-height: 168px; padding: 24px 24px 22px; transition: background .35s; }
@@ -60,6 +71,9 @@
   .hub-quote { font-size: 13px; -webkit-line-clamp: 4; }
   .hub-code { font-size: 13px; }
   .hub-recent a span { width: 5em; }
+  .hub-search-field > svg { margin-left: 14px; }
+  .hub-search-field input { padding: 0 10px; font-size: 16px; }
+  .hub-search-field button { padding: 0 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hub-skeleton span { animation: none; }

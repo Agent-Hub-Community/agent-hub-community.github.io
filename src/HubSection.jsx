@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Search } from 'lucide-react';
 import { useHomeLanguage } from './HomeLanguage';
 import { HUB_SUMMARY, SITE, sitePath } from './site-map';
 
@@ -24,16 +24,18 @@ export default function HubSection() {
 
   const weeklyRange = hub?.weekly ? `${dotted(hub.weekly.start)} – ${dotted(hub.weekly.end).slice(5)}` : '';
   const count = value => value > 0 ? value.toLocaleString(language === 'en' ? 'en-US' : 'zh-CN') : null;
+  const openings = kinds => Object.entries(text.kinds).filter(([kind]) => kinds?.[kind]).map(([kind, label]) => language === 'en' ? `${kinds[kind]} ${label}` : `${label} ${kinds[kind]}`).join(' · ');
   const tiles = [
     { id: 'weekly', href: hub?.weekly?.path || sitePath('weekly'), quote: hub?.weekly?.pages?.[0]?.title,
       note: hub?.weekly ? fill(text.weeklyNote, { range: weeklyRange, pages: hub.weekly.pages.length }) : text.weeklyFallback },
     { id: 'library', href: sitePath('library'), figure: count(hub?.library?.count), note: text.libraryNote },
     { id: 'glossary', href: sitePath('glossary'), figure: count(hub?.glossary?.count), note: text.glossaryNote },
     { id: 'rank', href: sitePath('rank'), figure: count(hub?.rank?.groups), note: hub?.rank?.groups ? text.rankCount : text.rankNote },
-    { id: 'search', href: sitePath('search'), figure: count(hub?.search?.count), note: hub?.search?.count ? text.searchCount : text.searchNote },
+    { id: 'opportunities', href: sitePath('opportunities'), figure: count(hub?.opportunities?.open),
+      note: hub?.opportunities?.open ? `${text.opportunitiesOpen} · ${openings(hub.opportunities.kinds)}` : text.opportunitiesNote },
     { id: 'agents', href: sitePath('llms'), code: text.agentsCode, note: text.agentsCodeNote },
   ];
-  const label = id => id === 'agents' ? text.agents : SITE.read.find(item => item.id === id)?.[language];
+  const label = id => id === 'agents' ? text.agents : id === 'opportunities' ? text.opportunities : SITE.read.find(item => item.id === id)?.[language];
 
   return <section className="hub-section" id="today" aria-labelledby="hub-title">
     <div className="cinema-wrap hub-inner">
@@ -55,6 +57,15 @@ export default function HubSection() {
         {language === 'en' && status === 'ready' && <p className="hub-language">{text.contentLanguage}</p>}
       </div>
       <div className="hub-side">
+        {/* A plain GET form: it reaches the newspaper's search page with ?q= even before scripts load. */}
+        <form className="hub-search" action={sitePath('search')} method="get" role="search">
+          <label className="hub-search-label" htmlFor="hub-search-input">{text.searchLabel}{hub?.search?.count > 0 && <span>{fill(text.searchScope, { count: count(hub.search.count) })}</span>}</label>
+          <div className="hub-search-field">
+            <Search size={17} aria-hidden="true"/>
+            <input id="hub-search-input" name="q" type="search" placeholder={text.searchPlaceholder} enterKeyHint="search" autoComplete="off"/>
+            <button type="submit">{text.searchButton}</button>
+          </div>
+        </form>
         <ul className="hub-tiles">{tiles.map(tile => <li key={tile.id}><a href={tile.href}>
           <span className="hub-tile-title">{label(tile.id)}<ArrowUpRight size={15} aria-hidden="true"/></span>
           {tile.figure != null && <span className="hub-figure">{tile.figure}</span>}
