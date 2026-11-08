@@ -6,8 +6,6 @@ import { homepageCommunityPlugin } from './homepage-community.mjs';
 
 await mkdir('assets/licenses', { recursive: true });
 await Promise.all([
-  copyFile('src/react-bits/LICENSE.md', 'assets/licenses/react-bits.txt'),
-  copyFile('src/amicro/LICENSE', 'assets/licenses/amicro.txt'),
   copyFile('src/brand/space-grotesk-LICENSE.txt', 'assets/licenses/space-grotesk.txt'),
   copyFile('src/brand/noto-serif-sc-OFL.txt', 'assets/licenses/noto-serif-sc.txt'),
   copyFile('src/brand/noto-sans-sc-OFL.txt', 'assets/licenses/noto-sans-sc.txt'),
