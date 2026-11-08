@@ -64,8 +64,8 @@
 .hub-panel-title > span { font: 12px 'AgentHub Grotesk', var(--font-body); color: #7d8690; font-variant-numeric: tabular-nums; }
 .hub-panel-title svg { margin-left: auto; color: #5f6973; transition: color .25s, transform .35s; }
 .hub-weekly, .hub-agents { display: grid; gap: 14px; padding: 22px 24px; border: 1px solid #ffffff1c; border-radius: 6px; background: #04070bcc; transition: background .35s, border-color .35s; }
-.hub-weekly:is(:hover, :focus-visible), .hub-agents:is(:hover, :focus-visible) { background: #0a1420; border-color: #ffffff2e; }
-.hub-weekly:is(:hover, :focus-visible) .hub-panel-title svg, .hub-agents:is(:hover, :focus-visible) .hub-panel-title svg { color: #fff; transform: translate(2px, -2px); }
+.hub-weekly:is(:hover, :focus-visible) { background: #0a1420; border-color: #ffffff2e; }
+.hub-weekly:is(:hover, :focus-visible) .hub-panel-title svg { color: #fff; transform: translate(2px, -2px); }
 .hub-weekly ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: weekly; }
 .hub-weekly li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: baseline; font-size: 14px; line-height: 1.55; color: #e8ebee; }
 .hub-weekly li:first-child { font-size: 16px; color: #fff; }
@@ -83,21 +83,32 @@
 .hub-stats a:is(:hover, :focus-visible) .hub-stat-label svg { color: #fff; transform: translate(2px, -2px); }
 .hub-stat-note { font-size: 11px; line-height: 1.6; color: #7d8690; }
 
-.hub-bottom { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px; align-items: start; }
-.hub-bottom > :only-child { grid-column: 1 / -1; }
+.hub-bottom { display: grid; gap: 20px; }
 .hub-recent p { font-size: 11px; letter-spacing: .06em; color: #7d8690; }
 .hub-recent ul { list-style: none; margin: 10px 0 0; padding: 0; }
 .hub-recent a { display: flex; align-items: baseline; gap: 12px; min-height: 40px; padding: 9px 0; border-bottom: 1px solid #ffffff14; font-size: 13px; line-height: 1.55; color: #c8d0d8; transition: color .25s; }
 .hub-recent a:is(:hover, :focus-visible) { color: #fff; }
 .hub-recent a span { flex: none; width: 4.6em; font-size: 11px; color: #8fbbe0; }
-.hub-agents code { display: block; padding: 10px 12px; border-radius: 4px; background: #000; border: 1px solid #ffffff14; font: 12px/1.5 ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; color: #9fb4c6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hub-agents code b { font-weight: 500; color: #cfe3f5; }
-.hub-agents code span { color: #7fd1a6; }
+/* For agents: pick a prompt, read it whole, copy it. */
+.hub-agents-lead { font-size: 13px; line-height: 1.75; color: #a7afb8; }
+.hub-agents-links { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.hub-agents-links a { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: #a7afb8; transition: color .25s; }
+.hub-agents-links a:is(:hover, :focus-visible) { color: #fff; }
+.hub-agents-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.hub-reveal { display: inline-flex; align-items: center; gap: 4px; min-height: 34px; padding: 0 2px; border: 0; background: none; color: #a7afb8; font: 12px var(--font-body); cursor: pointer; transition: color .25s; }
+.hub-reveal:is(:hover, :focus-visible) { color: #fff; }
+.hub-reveal svg { transition: transform .25s; }
+.hub-agents.is-open .hub-reveal svg { transform: rotate(180deg); }
+.hub-reveal:focus-visible { outline: 2px solid #afd2e6; outline-offset: 2px; }
+.hub-prompt[hidden] { display: none; }
+.hub-prompt { position: relative; padding: 14px 14px 14px 16px; border: 1px solid #ffffff14; border-left: 2px solid #7fd1a6; border-radius: 4px; background: #000; }
+.hub-prompt p { font: 13px/1.75 ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'AgentHub Sans SC', monospace; color: #cfe3f5; word-break: break-all; user-select: all; }
+.hub-copy { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px; border: 1px solid #ffffff2b; border-radius: 4px; background: #0a1420; color: #dfe4e9; font: 500 12px var(--font-body); cursor: pointer; white-space: nowrap; transition: background .25s, color .25s, border-color .25s; }
+.hub-copy:is(:hover, :focus-visible) { background: #f4f5f6; border-color: #f4f5f6; color: #000; }
+.hub-copy.is-done { border-color: #7fd1a666; color: #7fd1a6; background: transparent; }
+.hub-copy:focus-visible { outline: 2px solid #afd2e6; outline-offset: 2px; }
 :lang(en) .hub-intro { font-size: 15px; line-height: 1.8; }
 
-@media (max-width: 1180px) {
-  .hub-bottom { grid-template-columns: minmax(0, 1fr); }
-}
 @media (max-width: 961px) {
   .hub-inner { grid-template-columns: minmax(0, 1fr); }
 }

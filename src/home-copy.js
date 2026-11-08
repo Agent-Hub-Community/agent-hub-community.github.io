@@ -37,7 +37,12 @@ export const HOME_COPY = {
       rankNote: '各群日榜与全社区周榜、月榜', recent: '资料库最近收录', quietLast: '最近一期 {date}：',
       searchLabel: '搜索全站', searchPlaceholder: '搜日报、周报、资料与黑话', searchButton: '搜索', searchScope: '{count} 条内容',
       opportunities: '机会', opportunitiesNote: '群里分享的招聘、活动与征稿', opportunitiesOpen: '开放中',
-      kinds: { hiring: '招聘', event: '活动', cfp: '征稿' }, agentsCodeNote: 'Agent Skill、Atom 与 JSON 订阅源',
+      kinds: { hiring: '招聘', event: '活动', cfp: '征稿' },
+      agentsLead: '把这句话发给 Claude Code、Codex 或其他能读写本机文件的 Agent，它会把 agenthub skill 装好。',
+      agentsAfter: '装好后可以直接问它：“AgentHub 群里这周在聊什么？”', copyPrompt: '复制安装 prompt', showPrompt: '查看内容', hidePrompt: '收起', promptCopied: '已复制', promptSelected: '已选中，按 ⌘C 或 Ctrl+C 复制',
+      skillsRepo: 'skills 仓库',
+      // The same sentence as "方式 A" in the skills repository's README.
+      installPrompt: '把 AgentHub 装成你的 skill：下载 {skill} ，原样保存为你的用户级 skills 目录下的 agenthub/SKILL.md（Claude Code 是 ~/.claude/skills/agenthub/SKILL.md，Codex 是 ~/.agents/skills/agenthub/SKILL.md）。目录不存在就新建，已有旧版就覆盖。',
     },
   },
   en: {
@@ -81,7 +86,11 @@ export const HOME_COPY = {
       opportunities: 'Openings', opportunitiesNote: 'Roles, events and calls for papers shared in the groups', opportunitiesOpen: 'open now',
       kinds: { hiring: ['role', 'roles'], event: ['event', 'events'], cfp: ['call', 'calls'] },
       groups: { 'group-1': 'Group 1', 'group-2': 'Group 2', 'group-3': 'Group 3', 'group-4': 'Group 4', 'group-5': 'Group 5', external: 'External' },
-      types: { paper: 'Paper', benchmark: 'Benchmark', dataset: 'Dataset', code: 'Repo', model: 'Model', tool: 'Tool', article: 'Article', video: 'Video' }, agentsCodeNote: 'An agent skill, plus Atom and JSON feeds',
+      types: { paper: 'Paper', benchmark: 'Benchmark', dataset: 'Dataset', code: 'Repo', model: 'Model', tool: 'Tool', article: 'Article', video: 'Video' },
+      agentsLead: 'Send this to Claude Code, Codex or any agent that can write files on your machine, and it installs the agenthub skill.',
+      agentsAfter: 'Then ask it things like “What are the Agent Hub groups discussing this week?”', copyPrompt: 'Copy install prompt', showPrompt: 'Show it', hidePrompt: 'Hide', promptCopied: 'Copied', promptSelected: 'Selected. Press ⌘C or Ctrl+C to copy.',
+      skillsRepo: 'Skills repo',
+      installPrompt: 'Install Agent Hub as a skill: download {skill} and save it unchanged as agenthub/SKILL.md in your user-level skills directory (Claude Code: ~/.claude/skills/agenthub/SKILL.md; Codex: ~/.agents/skills/agenthub/SKILL.md). Create the directory if it does not exist, and overwrite any older version.',
     },
   },
 };

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Search } from 'lucide-react';
+import { ArrowUpRight, Check, ChevronDown, Copy, Search } from 'lucide-react';
 import { useHomeLanguage } from './HomeLanguage';
-import { HUB_SUMMARY, SITE, sitePath } from './site-map';
+import { HUB_SUMMARY, SITE, SKILL_SOURCE, sitePath } from './site-map';
 
 const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? '');
 const dotted = date => (date || '').replaceAll('-', '.');
@@ -26,6 +26,45 @@ function Figure({ value, run, locale }) {
     return () => { cancelAnimationFrame(frame); clearTimeout(settle); };
   }, [value, run]);
   return value == null ? '—' : (shown ?? value).toLocaleString(locale);
+}
+
+// The sentence that has a reader's own agent install the agenthub skill. It is collapsed by default: the card says
+// what it does and copies it in one click, and the full text opens on request. Where the clipboard is refused, the
+// text opens and is selected for copying by hand.
+function AgentPrompt({ text }) {
+  const [state, setState] = useState('idle');
+  const [open, setOpen] = useState(false);
+  const body = useRef(null);
+  const prompt = fill(text.installPrompt, { skill: SKILL_SOURCE });
+  useEffect(() => {
+    if (state !== 'copied') return;
+    const reset = setTimeout(() => setState('idle'), 2400);
+    return () => clearTimeout(reset);
+  }, [state]);
+  useEffect(() => {
+    if (state !== 'selected' || !body.current) return;
+    const range = document.createRange(); range.selectNodeContents(body.current);
+    const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+  }, [state, open]);
+  async function copy() {
+    try { await navigator.clipboard.writeText(prompt); setState('copied'); }
+    catch { setOpen(true); setState('selected'); }
+  }
+  return <div className={'hub-agents' + (open ? ' is-open' : '')}>
+    <span className="hub-panel-title">{text.agents}</span>
+    <p className="hub-agents-lead">{text.agentsLead}</p>
+    <div className="hub-agents-actions">
+      <button type="button" className={'hub-copy' + (state === 'copied' ? ' is-done' : '')} onClick={copy}>
+        {state === 'copied' ? <Check size={14} aria-hidden="true"/> : <Copy size={14} aria-hidden="true"/>}{state === 'copied' ? text.promptCopied : text.copyPrompt}
+      </button>
+      <button type="button" className="hub-reveal" aria-expanded={open} aria-controls="hub-install-prompt" onClick={() => { if (open) setState('idle'); setOpen(!open); }}>
+        {open ? text.hidePrompt : text.showPrompt}<ChevronDown size={14} aria-hidden="true"/>
+      </button>
+    </div>
+    <div className="hub-prompt" id="hub-install-prompt" hidden={!open}><p ref={body}>{prompt}</p></div>
+    <p className="hub-stat-note" aria-live="polite">{state === 'selected' ? text.promptSelected : text.agentsAfter}</p>
+    <p className="hub-agents-links"><a href={sitePath('skills-repo')}>{text.skillsRepo}<ArrowUpRight size={13} aria-hidden="true"/></a><a href={sitePath('llms')}>llms.txt<ArrowUpRight size={13} aria-hidden="true"/></a></p>
+  </div>;
 }
 
 // What the groups are discussing now, laid out like a front page: the issue's date as a masthead, one lead story,
@@ -137,12 +176,7 @@ export default function HubSection() {
             <p>{text.recent}</p>
             <ul lang="zh-CN">{hub.library.recent.map(item => <li key={item.path}><a href={item.path}><span lang={text.types?.[item.kind] ? 'en' : 'zh-CN'}>{typeName(item)}</span>{item.title}</a></li>)}</ul>
           </div>}
-          {/* For agents: the one request an agent needs, shown as a terminal line. */}
-          <a className="hub-agents" href={sitePath('llms')}>
-            <span className="hub-panel-title">{text.agents}<ArrowUpRight size={15} aria-hidden="true"/></span>
-            <code><span aria-hidden="true">$ </span>curl <b>/newspaper/llms.txt</b></code>
-            <span className="hub-stat-note">{text.agentsCodeNote}</span>
-          </a>
+          <AgentPrompt text={text}/>
         </div>
       </div>
     </div>

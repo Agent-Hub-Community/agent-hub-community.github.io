@@ -63,9 +63,11 @@ lucide-react/dist/esm/icons/arrow-down-right.js:
 lucide-react/dist/esm/icons/arrow-right.js:
 lucide-react/dist/esm/icons/arrow-up-right.js:
 lucide-react/dist/esm/icons/arrow-up.js:
+lucide-react/dist/esm/icons/check.js:
 lucide-react/dist/esm/icons/chevron-down.js:
 lucide-react/dist/esm/icons/chevron-left.js:
 lucide-react/dist/esm/icons/chevron-right.js:
+lucide-react/dist/esm/icons/copy.js:
 lucide-react/dist/esm/icons/menu.js:
 lucide-react/dist/esm/icons/moon.js:
 lucide-react/dist/esm/icons/pause.js:
