@@ -1,18 +1,26 @@
 /* Three real discussions: a question, two positions, and what is still open. */
 .community-identity { position: relative; isolation: isolate; overflow: clip; padding-block: clamp(96px, 11vw, 168px) clamp(72px, 8vw, 120px);
-  background: linear-gradient(180deg, #000 0%, #070b13 22%, #070b13 78%, #000 100%); color: #edf3fa; scroll-margin-top: var(--header-height);
-  --color-commons-agent: #8fbbe0; }
+  background: linear-gradient(180deg, #000 0%, #070b13 22%, #070b13 78%, #000 100%); color: #edf3fa; scroll-margin-top: var(--header-height); }
 
 .commons-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 112px); align-items: end; }
 .commons-head h2 { margin: 0; font: 500 clamp(40px, 4.2vw, 62px)/1.22 var(--font-body); letter-spacing: -.045em; }
 .commons-lead > p { max-width: 30em; font-size: 14px; line-height: 1.95; color: #b5c2d1; }
 .commons-actions { margin-top: 28px; }
 
-/* The loom only exists with scripts; without them the cards follow the heading directly. */
-.commons-loom { display: none; }
-.js .commons-loom { display: block; position: relative; height: clamp(220px, 24vw, 340px); margin-top: clamp(32px, 4vw, 56px); }
-.commons-loom canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.js .commons-loom + .commons-threads { margin-top: 0; }
+/* The sky spans the full width and fades into the section at both edges. It only exists with scripts; without
+   them the cards follow the heading directly. */
+.commons-sky { display: none; }
+.js .commons-sky { display: block; position: relative; height: clamp(300px, 30vw, 440px); margin: clamp(8px, 2vw, 24px) calc(50% - 50vw) 0;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 16%, #000 86%, transparent); mask-image: linear-gradient(180deg, transparent, #000 16%, #000 86%, transparent); }
+.commons-sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
+.js .commons-sky + .commons-threads { margin-top: 0; }
+/* The legend lines up with the page content, not the full-width sky. */
+.commons-legend { position: absolute; z-index: 1; top: 13%; left: max(clamp(28px, 5.5vw, 96px), calc((100vw - 1680px) / 2 + clamp(28px, 5.5vw, 96px)));
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; font-size: 11px; letter-spacing: .03em; color: #6f7c8a; pointer-events: none; }
+.commons-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.commons-legend .is-star::before, .commons-legend .is-open::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #eeedf0; box-shadow: 0 0 6px #eeedf0aa; }
+.commons-legend .is-open { color: #a88a55; }
+.commons-legend .is-open::before { background: #e0b86e; box-shadow: 0 0 6px #e0b86eaa; }
 
 .commons-threads { list-style: none; margin: clamp(56px, 6vw, 88px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px;
   overflow: hidden; border: 1px solid #ffffff1c; border-radius: 6px; background: #ffffff1c; }
@@ -40,7 +48,7 @@
 .commons-record svg { color: #5f6973; transition: color .25s, transform .35s cubic-bezier(.2, .7, .2, 1); }
 .commons-record:is(:hover, :focus-visible) { color: #fff; }
 .commons-record:is(:hover, :focus-visible) svg { color: #fff; transform: translate(2px, -2px); }
-.commons-threads > li:is(:hover, :focus-within) { background: #08111c; }
+.commons-threads > li:is(:hover, :focus-within, .is-active) { background: #08111c; }
 .commons-threads > li { transition: background .35s; }
 
 .commons-note { margin-top: 18px; font-size: 12px; color: #7d8690; }
