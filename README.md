@@ -24,7 +24,6 @@ npm run dev
 - `src/CommunityIdentity.jsx`、`src/CyberCommons.jsx`、`src/community-world.js`：首页 3D 社群场景、交互与稳定的机器人姿态；维护说明见 [社群场景](docs/cyber-commons.md)。
 - `src/commons-stories.js`：根据原始讨论 59、47、7 整理的三组对话及英文翻译，结论保留原讨论中的不确定性。
 - `scripts/render-community-world.py`：从实际场景生成无 WebGL 或无脚本时显示的横竖 WebP。
-- `src/community-earth.js`、`scripts/render-home-earth.py`、`scripts/prepare-home-robot.py`：保留的 V85 地球与 Robonaut 背景生成工具，当前火星页不使用这些静态背景。
 - `src/site.css`：共享导航、字标、首屏和基础样式；正文使用 `src/field-journal.css`。
 - `src/journal-search.js`：搜索词的原文位置与匹配句提取，保留原始文字和完整句子。
 - `src/ResearchPlate.jsx`：三张原创 SVG 研究插图。
@@ -68,6 +67,6 @@ npm run build
 
 ## 许可
 
-Inter、Space Grotesk、Noto Sans SC、Noto Serif SC、Three.js 的上游许可位于 `assets/licenses/`。火星页使用 SpaceX 官网公开提供的原始视频与海报，具体来源和哈希见 `assets/environment/mars-sources.json`，权利说明见 `assets/licenses/spacex-mars.txt`；这些素材不是 CC0 或 Agent Hub 原创。场景使用有出处记录的 Quaternius CC0 人物与 Poly Haven CC0 环境光；旧 NASA 地球与 Robonaut 素材仅供历史设计维护。没有引入 SpaceX 网站的 JavaScript 或品牌字标。
+Inter、Space Grotesk、Noto Sans SC、Noto Serif SC、Three.js 的上游许可位于 `assets/licenses/`。火星页使用 SpaceX 官网公开提供的原始视频与海报，具体来源和哈希见 `assets/environment/mars-sources.json`，权利说明见 `assets/licenses/spacex-mars.txt`；这些素材不是 CC0 或 Agent Hub 原创。场景使用有出处记录的 Quaternius CC0 人物与 Poly Haven CC0 环境光。没有引入 SpaceX 网站的 JavaScript 或品牌字标。
 
 本地检查、截图及早期设计备份保存在忽略目录 `.hallmark/`，不随站点发布。
