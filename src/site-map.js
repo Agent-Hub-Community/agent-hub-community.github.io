@@ -12,10 +12,8 @@ export const SITE = {
     { id: 'opportunities', path: '/newspaper/library/#opportunities', zh: '机会', en: 'Openings' },
   ],
   community: [
-    { id: 'community', path: '/community.html', zh: '社群资料', en: 'Community' },
-    { id: 'topics', path: '/community.html#topics', zh: '研究方向', en: 'Research' },
-    { id: 'discussions', path: '/community.html#discussions', zh: '讨论摘录', en: 'Discussions' },
-    { id: 'join', path: '/community.html#join', zh: '加入社群', en: 'Join' },
+    { id: 'community', path: '/#collaborate', zh: '讨论', en: 'Discussions' },
+    { id: 'join', path: '/#join', zh: '加入社群', en: 'Join' },
   ],
   agents: [
     { id: 'llms', path: '/newspaper/llms.txt', zh: 'llms.txt', en: 'llms.txt' },
@@ -32,11 +30,15 @@ export const SITE = {
 
 export const sitePath = id => Object.values(SITE).flat().find(item => item.id === id)?.path;
 
-// The primary header: the five reading sections, then the community page.
+// The primary header: the five reading sections, then the homepage's discussions.
 export const PRIMARY = [...SITE.read.slice(0, 5), SITE.community[0]];
 
 // The agenthub skill as published in the skills repository; the homepage's install prompt points agents here.
 export const SKILL_SOURCE = 'https://raw.githubusercontent.com/Agent-Hub-Community/skills/main/skills/agenthub/SKILL.md';
+
+// The application form behind "Join": a Feishu Base form, open to anyone without signing in. Each submission is a
+// row in the Base "Agent Hub 入群申请", where the team reviews and counts applications.
+export const JOIN_FORM = 'https://my.feishu.cn/share/base/form/shrcnF9LRoxGd0iNMpUTfsVVihh';
 
 // The newspaper writes this summary on every daily rebuild (newspaper/lib/hub.mjs).
 export const HUB_SUMMARY = '/newspaper/hub.json';

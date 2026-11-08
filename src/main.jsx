@@ -13,8 +13,6 @@ import './community-identity.css';
 import './hub-section.css';
 import './site-map.css';
 
-const previousFragments = ['daily', 'topics', 'discussions', 'events', 'join', ...Array.from({ length: 66 }, (_, index) => 'discussion-' + (index + 1))];
-
 function HomeContent() {
   const { copy } = useHomeLanguage();
   return <>
@@ -22,7 +20,6 @@ function HomeContent() {
     <SiteHeader/>
     <main><GenesisHero/><CinematicHome/></main>
     <HomeFooter/>
-    <noscript>{previousFragments.map(id => <p className="legacy-entry" id={id} key={id}><a href={'community.html#' + id}>这部分内容已移至社群资料页，点击继续阅读。</a></p>)}</noscript>
   </>;
 }
 

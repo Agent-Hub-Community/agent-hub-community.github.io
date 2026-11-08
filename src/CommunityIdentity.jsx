@@ -51,6 +51,18 @@ export default function CommunityIdentity() {
     });
     return () => { sky.current?.dispose(); sky.current = null; };
   }, []);
+  // Links to #discussion-N (the retired community page's anchors) open discussion N here.
+  useEffect(() => {
+    const open = () => {
+      const number = Number(location.hash.match(/^#discussion-(\d+)$/)?.[1]);
+      if (!(number >= 1 && number <= DISCUSSIONS.length)) return;
+      setSelected(number - 1);
+      document.getElementById('collaborate')?.scrollIntoView();
+    };
+    open();
+    window.addEventListener('hashchange', open);
+    return () => window.removeEventListener('hashchange', open);
+  }, []);
   useEffect(() => { sky.current?.select(selected, discussion.ideas.length); setIdea(null); setPinned(null); }, [selected, discussion.ideas.length]);
   useEffect(() => { sky.current?.focusIdea(lit); }, [lit]);
 
@@ -65,7 +77,7 @@ export default function CommunityIdentity() {
         <div className="commons-lead">
           <p>{copy.worldIntro[0]}<br/>{copy.worldIntro[1]}</p>
           <div className="scene-actions commons-actions">
-            <a className="scene-button" href="community.html#discussions">{copy.discussionEntry}</a>
+            <a className="scene-button" href="#join">{copy.join}</a>
             <a className="scene-link" href="https://github.com/Agent-Hub-Community">{copy.projectEntry}</a>
           </div>
         </div>

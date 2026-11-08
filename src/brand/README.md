@@ -8,11 +8,9 @@ During the opening, complete letters soften into focus and settle toward their f
 
 The separate “Human × Agent” slogan still pairs italic Georgia with Space Grotesk. `space-grotesk-latin-450.woff` is a static weight-450 subset covering basic Latin and the multiplication sign, bundled locally through the stylesheet. Its source is Florian Karsten's [Space Grotesk](https://github.com/floriankarsten/space-grotesk/tree/03507d024a01282884232081fc6011c09ff4e849), `fonts/ttf/SpaceGrotesk[wght].ttf`. The SIL Open Font License 1.1 is retained in `space-grotesk-LICENSE.txt` and copied to `assets/licenses/space-grotesk.txt` by the build. This font is not used by the custom wordmark.
 
-The community's featured discussion excerpt uses [Noto Serif SC](https://fonts.google.com/noto/specimen/Noto+Serif+SC), weight 400. `noto-serif-sc-quote.woff2` is a 5.2 KB subset provided by Google Fonts for that excerpt and converted to WOFF2 without altering the outlines. It loads from this site, with a system serif fallback. The SIL Open Font License is retained in `noto-serif-sc-OFL.txt` and copied to `assets/licenses/noto-serif-sc.txt` during the build. The source request and character coverage are recorded in `noto-serif-sc-source.json`; update the subset if the featured excerpt changes.
-
 ## Chinese body typography
 
-The journal and navigation pair Inter with locally served [Noto Sans SC](https://fonts.google.com/noto/specimen/Noto+Sans+SC). The opening continues to use its original typography. The Noto subset preserves the 400–600 weight range, allowing a lighter display weight and distinct article headings without synthesized bold strokes.
+The homepage and navigation pair Inter with locally served [Noto Sans SC](https://fonts.google.com/noto/specimen/Noto+Sans+SC). The opening continues to use its original typography. The Noto subset preserves the 400–600 weight range, allowing a lighter display weight and distinct article headings without synthesized bold strokes.
 
 Journal `h2` and `h3` headings enable the font's `palt` positioning feature for proportional CJK punctuation. The subset script preserves layout features, including the GPOS adjustments used by commas, full stops and question marks. Body prose keeps the font's default spacing.
 

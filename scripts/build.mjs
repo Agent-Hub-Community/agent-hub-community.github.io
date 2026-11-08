@@ -7,16 +7,16 @@ import { homepageCommunityPlugin } from './homepage-community.mjs';
 await mkdir('assets/licenses', { recursive: true });
 await Promise.all([
   copyFile('src/brand/space-grotesk-LICENSE.txt', 'assets/licenses/space-grotesk.txt'),
-  copyFile('src/brand/noto-serif-sc-OFL.txt', 'assets/licenses/noto-serif-sc.txt'),
   copyFile('src/brand/noto-sans-sc-OFL.txt', 'assets/licenses/noto-sans-sc.txt'),
   copyFile('src/theme-init.js', 'assets/theme.js'),
   copyFile('src/home-routing.js', 'assets/home-routing.js'),
   copyFile('node_modules/@fontsource-variable/inter/LICENSE', 'assets/licenses/inter.txt'),
-  copyFile('src/join-example.html', 'join-example.html')
+  // The community page moved onto the homepage; its address forwards old links there.
+  copyFile('src/community.html', 'community.html')
 ]);
 
 const options = {
-  entryPoints: { site: 'src/main.jsx', community: 'src/community.jsx' },
+  entryPoints: { site: 'src/main.jsx' },
   bundle: true,
   minify: true,
   format: 'esm',
@@ -61,10 +61,8 @@ async function renderHTML() {
       jsx: 'automatic', loader: { '.css': 'empty' }, plugins: [homepageCommunityPlugin], logLevel: 'silent'
     });
     const { render } = await import(`${pathToFileURL(resolve(temporary))}?build=${Date.now()}`);
-    for (const [page, name] of [['home', 'index.html'], ['community', 'community.html']]) {
-      const template = await readFile('src/' + name, 'utf8');
-      await writeFile(name, template.replace('<!--app-->', render(page)));
-    }
+    const template = await readFile('src/index.html', 'utf8');
+    await writeFile('index.html', template.replace('<!--app-->', render()));
   } finally {
     await rm(temporary, { force: true });
   }
