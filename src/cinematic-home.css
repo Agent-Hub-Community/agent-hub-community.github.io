@@ -14,12 +14,16 @@
 [data-page='home'] .genesis-portal { right: clamp(28px, 5.5vw, 96px); bottom: 28px; font-size: 12px; }
 .planet-scene, .institution-section { scroll-margin-top: calc(-1 * (var(--header-height) + var(--space-lg))); }
 /* Original Mars videos, full frame, left/middle copy. See docs/cinematic-home.md. */
-.planet-scene { position: relative; isolation: isolate; height: max(100svh, 941px); overflow: clip; background: #000; color: #fff; }
+.planet-scene { position: relative; isolation: isolate; height: max(100svh, 520px); overflow: clip; background: #000; color: #fff; }
 .planet-media { position: absolute; inset: 0; }
 .planet-media picture, .planet-media img, .planet-media video { display: block; width: 100%; height: 100%; }
 .planet-media img, .planet-media video { object-fit: cover; object-position: center; }
 .planet-media video { position: absolute; inset: 0; opacity: 0; }
 .planet-media video.has-frame { opacity: 1; }
+/* Directions as points of light in the dark sky; the media layer sits under the text, so pointers reach it
+   everywhere except over the copy. */
+.planet-lights { position: absolute; inset: 0; width: 100%; height: 100%; }
+html:not(.js) .planet-lights { display: none; }
 .planet-content { position: relative; height: 100%; max-width: 1700px; margin-inline: auto; pointer-events: none; }
 .planet-copy { position: absolute; left: 100px; top: 50%; transform: translateY(-50%); width: 450px; pointer-events: auto; }
 .planet-copy h2 { max-width: none; font: 500 48px/1.22 var(--font-body); letter-spacing: -.04em; text-wrap: wrap; }
@@ -52,7 +56,6 @@
 .institution-name { color: #a7afb8; font-size: 11px; line-height: 1.35; white-space: nowrap; }
 :lang(en) .institution-name { max-width: 100%; white-space: normal; text-align: center; font-size: 11px; }
 :lang(en) .planet-copy > p { font-size: 15px; line-height: 1.8; }
-:lang(en) .institution-bottom p { max-width: 50em; }
 .institution-section .member-logo, .institution-section .member-logo > span { display: flex; align-items: center; justify-content: center; height: 36px; opacity: 1; }
 .institution-section .member-logo img, .institution-section .member-logo svg { width: auto; height: 29px; max-height: 36px; max-width: 138px; filter: grayscale(1) brightness(0) invert(.87); }
 .institution-section .member-logo.chip img { height: 34px; filter: grayscale(1) invert(1) brightness(1.45); mix-blend-mode: screen; }
@@ -60,14 +63,14 @@
 .js .institution-group[aria-hidden] { display: flex; }
 .js .institution-track { animation: institution-drift calc(var(--item-count) * 6s) linear infinite; }
 .js .institution-track[data-reverse='true'] { animation-direction: reverse; }
-.institution-marquee[data-paused='true'] .institution-track, .institution-marquee:focus-within .institution-track { animation-play-state: paused; }
-.institution-row:focus .institution-track { animation: none; transform: none; }
-.institution-row:focus .institution-group[aria-hidden] { display: none; }
+/* Only keyboard focus stops the rows: a row reached with Tab holds still so its logos can be read and scrolled with
+   the arrow keys. A mouse click never focuses a row (see InstitutionWall), and :focus-visible keeps it that way. */
+.institution-marquee[data-paused='true'] .institution-track, .institution-marquee:has(.institution-row:focus-visible) .institution-track { animation-play-state: paused; }
+.institution-row:focus-visible .institution-track { animation: none; transform: none; }
+.institution-row:focus-visible .institution-group[aria-hidden] { display: none; }
 .institution-row:focus-visible { outline-offset: -4px; }
-@media (hover: hover) { .institution-marquee:hover .institution-track { animation-play-state: paused; } }
 @keyframes institution-drift { to { transform: translateX(-50%); } }
-.institution-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1120px; }
-.institution-bottom p { color: #8d98a3; font-size: 11px; }
+.institution-bottom { display: flex; align-items: center; justify-content: flex-end; gap: 24px; max-width: 1120px; }
 .institution-pause { display: none; align-items: center; gap: 9px; min-height: 44px; padding: 0; color: #b8c1ca; font-size: 11px; white-space: nowrap; }
 .js .institution-pause { display: inline-flex; }
 .institution-directory { max-width: 1120px; margin-top: 12px; }
@@ -113,7 +116,6 @@
   .institution-section .member-logo.round img { height: 31px; }
   .institution-name { font-size: 11px; }
   .institution-bottom { align-items: flex-start; gap: 14px; }
-  .institution-bottom p { max-width: 19em; font-size: 11px; padding-top: 11px; }
   .institution-directory { margin-top: 16px; }
   .institution-directory summary { font-size: 11px; }
   .institution-directory-groups { grid-template-columns: 1fr; gap: 26px; }
@@ -128,4 +130,22 @@
   .js .institution-group[aria-hidden] { display: none; }
   .js .institution-track { animation: none; transform: none; }
   .js .institution-pause { display: none; }
+}
+
+/* On desktop windows the institutions fit one screen below the header: rows, spacing and the heading follow the
+   window's height. */
+@media (min-width: 962px) and (min-height: 520px) {
+  .institution-section { padding-block: calc(var(--header-height) + clamp(4px, 2vh, 32px)) clamp(12px, 3vh, 48px); }
+  .institution-heading h2 { font-size: clamp(30px, 5.2vh, 52px); line-height: 1.3; }
+  .institution-heading p { margin-top: clamp(8px, 2vh, 22px); }
+  .institution-marquee { margin: clamp(18px, 4vh, 46px) 0 clamp(10px, 2.4vh, 26px); }
+  .institution-group li { height: clamp(66px, 10.5vh, 98px); gap: clamp(8px, 1.4vh, 14px); }
+  .institution-directory { margin-top: 4px; }
+}
+@media (min-width: 962px) and (max-height: 640px) {
+  .institution-section { padding-bottom: 8px; }
+  .institution-heading h2 { font-size: 28px; }
+  .institution-group li { height: 56px; gap: 6px; }
+  .institution-section .member-logo img, .institution-section .member-logo svg { height: 24px; }
+  .institution-directory summary { min-height: 40px; }
 }

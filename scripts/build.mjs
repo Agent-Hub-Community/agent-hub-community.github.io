@@ -12,7 +12,6 @@ await Promise.all([
   copyFile('src/theme-init.js', 'assets/theme.js'),
   copyFile('src/home-routing.js', 'assets/home-routing.js'),
   copyFile('node_modules/@fontsource-variable/inter/LICENSE', 'assets/licenses/inter.txt'),
-  copyFile('node_modules/three/LICENSE', 'assets/licenses/three.txt'),
   copyFile('src/join-example.html', 'join-example.html')
 ]);
 

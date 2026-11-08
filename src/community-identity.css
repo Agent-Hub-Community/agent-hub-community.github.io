@@ -1,34 +1,110 @@
-/* A shared space for people, projects and open questions. */
-.community-identity {
-  --fj-sans: var(--font-body); --fj-ink: #edf3fa;
-  --world-hero-height: max(900px, 100svh);
-  position: relative; isolation: isolate; overflow: clip;
-  background: #070b13; color: var(--fj-ink);
-  scroll-margin-top: calc(0px - var(--header-height) - var(--space-lg));
+/* The community's questions as a night sky, and the selected discussion opened below it. */
+.community-identity { position: relative; isolation: isolate; overflow: clip; padding-block: clamp(96px, 11vw, 168px) clamp(72px, 8vw, 120px);
+  background: linear-gradient(180deg, #000 0%, #070b13 22%, #070b13 78%, #000 100%); color: #edf3fa; scroll-margin-top: var(--header-height); }
+
+.commons-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 112px); align-items: end; }
+.commons-head h2 { margin: 0; font: 500 clamp(40px, 4.2vw, 62px)/1.22 var(--font-body); letter-spacing: -.045em; }
+.commons-lead > p { max-width: 30em; font-size: 14px; line-height: 1.95; color: #b5c2d1; }
+.commons-actions { margin-top: 28px; }
+
+/* The sky spans the full width and fades at both edges. It only exists with scripts. */
+.commons-sky { display: none; }
+.js .commons-sky { display: block; position: relative; height: clamp(360px, 36vw, 520px); margin: clamp(8px, 2vw, 24px) calc(50% - 50vw) 0;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 90%, transparent); mask-image: linear-gradient(180deg, transparent, #000 12%, #000 90%, transparent); }
+.commons-sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
+/* Text in the sky lines up with the page content, not the full-width sky. */
+.commons-hint { position: absolute; top: 10%; left: max(clamp(28px, 5.5vw, 96px), calc((100vw - 1680px) / 2 + clamp(28px, 5.5vw, 96px)));
+  max-width: calc(100vw - 56px); font-size: 12px; letter-spacing: .02em; color: #6f7c8a; pointer-events: none; }
+
+.commons-peek { position: absolute; z-index: 2; width: max-content; max-width: min(320px, 80vw); padding: 12px 14px 11px; transform: translate(-50%, calc(-100% - 16px));
+  border: 1px solid #ffffff24; border-radius: 6px; background: #05090fe6; backdrop-filter: blur(6px); box-shadow: 0 12px 32px #0009; pointer-events: none;
+  display: grid; gap: 6px; animation: commons-peek .18s ease-out; }
+.commons-peek.is-start { transform: translate(-16px, calc(-100% - 16px)); }
+.commons-peek.is-end { transform: translate(calc(-100% + 16px), calc(-100% - 16px)); }
+.commons-peek-tag { font-size: 11px; letter-spacing: .04em; color: #8fbbe0; }
+.commons-peek-question { font-size: 14px; line-height: 1.6; color: #fff; }
+.commons-peek.is-open .commons-peek-tag { color: #e0b86e; }
+@keyframes commons-peek { from { opacity: 0; margin-top: 4px; } }
+
+/* The opened discussion: the question and how to move on at the left, its ideas and open point at the right. */
+.commons-detail { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 88px);
+  padding: clamp(28px, 3vw, 44px); border: 1px solid #ffffff1c; border-radius: 6px; background: #04070b; }
+.js .commons-sky + .commons-detail { margin-top: 0; }
+.commons-detail { margin-top: clamp(48px, 5vw, 72px); }
+.commons-detail-main { display: flex; flex-direction: column; min-width: 0; }
+.commons-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 12px; color: #6f7c8a; }
+.commons-tag { padding: 3px 9px; border: 1px solid #8fbbe044; border-radius: 999px; color: #8fbbe0; letter-spacing: .03em; }
+.commons-detail h3 { margin: 18px 0 0; font: 500 clamp(22px, 2vw, 30px)/1.45 var(--font-body); letter-spacing: -.025em; color: #fff; text-wrap: pretty; }
+.commons-detail blockquote { margin: 24px 0 0; padding-left: 16px; border-left: 1px solid #ffffff2e; font-size: 14px; line-height: 1.85; color: #b5c2d1; }
+.commons-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: auto; padding-top: 32px; }
+.commons-nav button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; min-height: 44px; padding: 0 12px;
+  border: 1px solid #ffffff2b; border-radius: 4px; background: transparent; color: #dfe4e9; font: 500 13px var(--font-body); cursor: pointer; transition: background .25s, color .25s, border-color .25s; }
+.commons-nav button:is(:hover, :focus-visible) { background: #f4f5f6; border-color: #f4f5f6; color: #000; }
+.commons-nav button:focus-visible, .commons-record:focus-visible { outline: 2px solid #afd2e6; outline-offset: 3px; }
+.commons-shuffle { padding-inline: 16px !important; }
+.commons-record { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-left: 8px; font-size: 13px; color: #c8d0d8; transition: color .25s; }
+.commons-record svg { color: #5f6973; transition: color .25s, transform .35s cubic-bezier(.2, .7, .2, 1); }
+.commons-record:is(:hover, :focus-visible) { color: #fff; }
+.commons-record:is(:hover, :focus-visible) svg { color: #fff; transform: translate(2px, -2px); }
+
+.commons-ideas { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.commons-ideas li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 10px 12px 10px 0; border-radius: 4px; transition: background .25s; }
+.commons-ideas li:is(:hover, .is-lit) { background: #ffffff0a; }
+.commons-ideas li > span { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-top: 2px; border: 1px solid #8fbbe066; border-radius: 50%;
+  font: 500 11px/1 'AgentHub Grotesk', var(--font-body); color: #8fbbe0; transition: background .25s, color .25s; }
+.commons-ideas li:is(:hover, .is-lit) > span { background: #8fbbe0; color: #04070b; }
+.commons-ideas p { font-size: 14px; line-height: 1.85; color: #d7dee6; }
+.commons-open { margin-top: 20px; padding: 18px 12px 4px 0; border-top: 1px dashed #ffffff26; transition: background .25s; }
+.commons-open.is-lit { background: linear-gradient(180deg, #e0b86e0f, transparent); }
+.commons-open span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #e0b86e; }
+.commons-open span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px #e0b86e24; }
+.commons-open p { margin-top: 8px; font-size: 13px; line-height: 1.85; color: #a9b4c0; }
+/* Without scripts the buttons cannot change the discussion, so only the record link remains. */
+html:not(.js) .commons-nav button { display: none; }
+
+:lang(en) .commons-ideas p { line-height: 1.7; }
+
+@media (max-width: 960px) {
+  .commons-detail { grid-template-columns: minmax(0, 1fr); }
+  .commons-nav { order: 3; }
 }
-.identity-world-heading { position: absolute; z-index: 3; left: max(64px, calc((100vw - 1700px) / 2 + 100px)); top: 38%; width: min(34vw, 450px); }
-.identity-world-heading h2 { margin: 0; font: 500 clamp(44px, 4.2vw, 62px)/1.25 var(--fj-sans); letter-spacing: -.045em; text-wrap: wrap; }
-.identity-world-heading > p { margin-top: 24px; color: #b5c2d1; font-size: 13px; line-height: 1.95; }
-.identity-actions { gap: 14px 25px; margin-top: 28px; }
-.identity-actions .scene-button { min-width: 154px; }
-.identity-actions .scene-link { font-size: 12px; }
-@media (max-width: 1100px) and (min-width: 900px) {
-  .identity-world-heading { left: 40px; width: 310px; top: 46%; }
-  .identity-world-heading h2 { font-size: 44px; }
-  .identity-world-heading > p { font-size: 12px; }
-  .identity-actions { gap: 10px 22px; }
+@media (max-width: 760px) {
+  .community-identity { padding-block: 80px 72px; }
+  .commons-head { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .commons-head h2 { font-size: clamp(34px, 9vw, 42px); }
+  .commons-lead > p { font-size: 13px; }
+  .js .commons-sky { height: 400px; }
+  .commons-hint { top: 6%; font-size: 11px; }
+  .commons-detail { padding: 24px 20px; }
+  .commons-detail h3 { font-size: 20px; }
+  .commons-ideas p { font-size: 13px; }
+  .commons-record { margin-left: 0; }
 }
-@media (max-width: 899px) {
-  .community-identity { --world-hero-height: max(1160px, 100svh); }
-  .identity-world-heading { left: 24px; right: 24px; top: auto; bottom: 130px; width: auto; }
-  .identity-world-heading h2 { font-size: clamp(34px, 9vw, 42px); line-height: 1.23; }
-  .identity-world-heading > p { margin-top: 16px; font-size: 12px; line-height: 1.85; }
-  .identity-actions { margin-top: 21px; gap: 16px 24px; }
-  .identity-actions .scene-button { min-width: 148px; }
+@media (prefers-reduced-motion: reduce) {
+  .commons-peek { animation: none; }
+  .commons-nav button, .commons-record, .commons-record svg, .commons-ideas li, .commons-ideas li > span { transition: none; }
 }
-@media (max-width: 360px) {
-  .identity-world-heading { left: 22px; right: 22px; }
-  .identity-actions { gap: 14px; }
-  .identity-actions .scene-button { min-width: 135px; padding-inline: 13px; }
-  .identity-actions .scene-link { font-size: 11px; }
+
+/* On desktop windows the section is at least one screen: the heading and the open discussion take what they need,
+   and the sky fills what is left. The panel never scrolls; a discussion with many ideas makes the section a little
+   taller instead. */
+@media (min-width: 962px) and (min-height: 520px) {
+  .community-identity { display: flex; flex-direction: column; min-height: max(100svh, 520px); padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(16px, 3vh, 36px); }
+  .community-identity > .cinema-wrap { flex: 1; display: flex; flex-direction: column; }
+  .commons-head h2 { font-size: clamp(30px, 4.6vh, 52px); }
+  .commons-lead > p { line-height: 1.8; }
+  .commons-actions { margin-top: clamp(12px, 2vh, 24px); }
+  .js .commons-sky { flex: 1 1 0; height: auto; min-height: 140px; margin-top: 0; }
+  .commons-detail { flex: none; margin-top: 0; padding: clamp(18px, 2.6vh, 32px) clamp(22px, 2.4vw, 36px); gap: clamp(24px, 3vw, 64px); }
+  .commons-detail h3 { margin-top: 10px; font-size: clamp(19px, 2.6vh, 28px); }
+  .commons-detail blockquote { margin-top: clamp(10px, 1.6vh, 20px); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .commons-nav { padding-top: clamp(12px, 2vh, 28px); }
+  .commons-ideas li { padding-block: clamp(4px, .8vh, 10px); }
+  .commons-ideas p { line-height: 1.7; }
+  .commons-open { margin-top: clamp(8px, 1.4vh, 20px); padding-top: clamp(10px, 1.4vh, 18px); }
+}
+@media (min-width: 962px) and (max-height: 640px) {
+  .commons-lead > p, .commons-detail blockquote { display: none; }
+  .commons-actions { margin-top: 0; }
+  .commons-hint { top: 4%; }
 }

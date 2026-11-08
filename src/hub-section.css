@@ -1,38 +1,42 @@
-/* "Today in the groups": the latest daily headlines and every section of the site, between Mars and the 3D scene. */
+/* "Today in the groups": the latest issue as a front page, then the weekly review, the site's figures and the ways
+   in. Between Mars and the sky of questions. */
 .hub-section { position: relative; isolation: isolate; overflow: clip; padding-block: clamp(96px, 11vw, 168px); color: #f4f5f6; scroll-margin-top: var(--header-height);
   background: radial-gradient(90% 70% at 85% 0%, #0d1d31 0%, #050a11 46%, #000 78%); }
-.hub-section::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
-  background-image: radial-gradient(#ffffff26 1px, transparent 1.4px); background-size: 34px 34px; mask-image: linear-gradient(180deg, #000, transparent 70%); }
-.hub-inner { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(44px, 6vw, 112px); align-items: start; }
-.hub-eyebrow { display: flex; align-items: center; gap: 14px; font-size: 12px; letter-spacing: .04em; color: #a7afb8; }
-.hub-eyebrow time { position: relative; padding-left: 14px; color: #f4f5f6; font-family: 'AgentHub Grotesk', var(--font-body); font-size: 13px; }
-.hub-eyebrow time::before { content: ''; position: absolute; left: 0; top: 50%; width: 6px; height: 6px; margin-top: -3px; border-radius: 50%; background: #7fd1a6; box-shadow: 0 0 0 4px #7fd1a62a; }
-.hub-lead h2 { max-width: none; margin-top: 20px; font: 500 clamp(34px, 3.3vw, 50px)/1.22 var(--font-body); letter-spacing: -.04em; }
+.hub-inner { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); gap: clamp(44px, 6vw, 112px); align-items: start; }
+.hub-lead h2 { max-width: none; margin-top: 0; font: 500 clamp(34px, 3.3vw, 50px)/1.22 var(--font-body); letter-spacing: -.04em; }
 .hub-intro { max-width: 34em; margin-top: 20px; font-size: 14px; line-height: 1.95; color: #c8d0d8; }
-.hub-headlines { list-style: none; margin: 40px 0 0; padding: 0; border-top: 1px solid #ffffff1f; }
-.hub-headlines li { border-bottom: 1px solid #ffffff1f; }
-.hub-headlines a { display: grid; grid-template-columns: 5.6em minmax(0, 1fr) 16px; gap: 20px; align-items: baseline; padding: 17px 0; color: #e8ebee; transition: color .25s, transform .35s cubic-bezier(.2, .7, .2, 1); }
-.hub-headlines a:is(:hover, :focus-visible) { color: #fff; transform: translateX(6px); }
-.hub-headlines a:is(:hover, :focus-visible) svg { color: #fff; }
-.hub-group { font-size: 11px; letter-spacing: .06em; color: #8fbbe0; }
-.hub-headline { font-size: 15px; line-height: 1.62; }
-.hub-headlines svg { align-self: center; color: #5f6973; transition: color .25s; }
-.hub-quiet { display: block; font-size: 13px; color: #929ba5; }
-.hub-last { display: block; margin-top: 2px; font-size: 13px; line-height: 1.7; color: #7d8690; }
-.hub-headlines .is-quiet a:is(:hover, :focus-visible) .hub-last { color: #c8d0d8; }
-.hub-skeleton li { padding: 22px 0; }
-.hub-skeleton span { display: block; height: 13px; width: 78%; border-radius: 3px; background: linear-gradient(90deg, #ffffff0d 0%, #ffffff1f 50%, #ffffff0d 100%) 0 0 / 200% 100%; animation: hub-shimmer 1.6s linear infinite; }
-.hub-skeleton li:nth-child(2n) span { width: 62%; }
-@keyframes hub-shimmer { to { background-position: -200% 0; } }
-.hub-note { margin-top: 36px; padding: 18px 0; border-block: 1px solid #ffffff1f; font-size: 13px; color: #a7afb8; }
-.hub-actions { margin-top: 36px; }
-.hub-count { font-size: 12px; color: #929ba5; }
-.hub-language { margin-top: 14px; font-size: 12px; color: #7d8690; }
 
-.hub-side { display: grid; gap: 28px; }
+/* Dateline between a heavy and a light rule, as at the top of a newspaper page. */
+.hub-dateline { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; margin-top: 40px; padding: 10px 0 9px;
+  border-top: 2px solid #f4f5f6; border-bottom: 1px solid #ffffff3d; font-size: 14px; letter-spacing: .02em; color: #dfe4e9; font-variant-numeric: tabular-nums; }
+
+/* The lead story, then the other groups. */
+.hub-story { position: relative; display: grid; gap: 12px; padding: 26px 40px 26px 0; border-bottom: 1px solid #ffffff1f; }
+.hub-story-meta { font-size: 13px; color: #8fbbe0; letter-spacing: .04em; }
+.hub-story-title { font: 500 clamp(24px, 2.3vw, 32px)/1.4 var(--font-body); letter-spacing: -.02em; color: #fff; text-wrap: pretty; transition: color .25s; }
+.hub-story > svg { position: absolute; right: 0; top: 30px; color: #5f6973; transition: color .25s, transform .35s cubic-bezier(.2, .7, .2, 1); }
+.hub-story:is(:hover, :focus-visible) > svg { color: #fff; transform: translate(3px, -3px); }
+.hub-headlines { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+.hub-headlines li { border-bottom: 1px solid #ffffff14; }
+.hub-headlines a { display: grid; gap: 6px; padding: 16px 0; color: #e8ebee; transition: color .25s, transform .35s cubic-bezier(.2, .7, .2, 1); }
+.hub-headlines a:is(:hover, :focus-visible) { color: #fff; transform: translateX(4px); }
+.hub-group { font-size: 11px; letter-spacing: .06em; color: #8fbbe0; }
+.hub-headline { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 14px; line-height: 1.6; }
+.hub-headlines .is-quiet a { color: #7d8690; }
+.hub-headlines .is-quiet .hub-group { color: #5f6f80; }
+.hub-quiet { margin-right: 4px; color: #5f6973; }
+.hub-skeleton { display: grid; gap: 14px; padding-top: 26px; }
+.hub-skeleton span { display: block; height: 13px; width: 78%; border-radius: 3px; background: linear-gradient(90deg, #ffffff0d 0%, #ffffff1f 50%, #ffffff0d 100%) 0 0 / 200% 100%; animation: hub-shimmer 1.6s linear infinite; }
+.hub-skeleton .is-lead { height: 26px; width: 92%; margin-bottom: 12px; }
+.hub-skeleton span:nth-child(2n) { width: 62%; }
+@keyframes hub-shimmer { to { background-position: -200% 0; } }
+.hub-note { margin-top: 32px; padding: 22px 0; border-block: 1px solid #ffffff1f; font-size: 13px; color: #a7afb8; }
+.hub-actions { margin-top: 36px; }
+
+/* Right column: search, the weekly review, a strip of figures, then the newest resources and the agent entry. */
+.hub-side { display: grid; gap: 20px; }
 .hub-search { display: grid; gap: 10px; }
 .hub-search-label { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; letter-spacing: .04em; color: #a7afb8; }
-.hub-search-label span { font-family: 'AgentHub Grotesk', var(--font-body); color: #7d8690; font-variant-numeric: tabular-nums; }
 .hub-search-field { display: flex; align-items: center; min-height: 54px; border: 1px solid #ffffff2b; border-radius: 6px; background: #04070b; transition: border-color .25s, box-shadow .25s; }
 .hub-search-field:focus-within { border-color: #8fbbe0; box-shadow: 0 0 0 3px #8fbbe024; }
 .hub-search-field > svg { flex: none; margin-left: 18px; color: #7d8690; }
@@ -41,24 +45,50 @@
 .hub-search-field input::-webkit-search-cancel-button { filter: invert(1) opacity(.5); }
 .hub-search-field button { flex: none; align-self: stretch; padding: 0 22px; border: 0; border-left: 1px solid #ffffff1c; border-radius: 0 5px 5px 0; background: transparent; color: #dfe4e9; font: 500 14px var(--font-body); cursor: pointer; transition: background .25s, color .25s; }
 .hub-search-field button:is(:hover, :focus-visible) { background: #f4f5f6; color: #000; }
-.hub-tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; overflow: hidden; border: 1px solid #ffffff1c; border-radius: 6px; background: #ffffff1c; }
-.hub-tiles li { min-width: 0; background: #04070b; }
-.hub-tiles a { position: relative; display: flex; flex-direction: column; gap: 10px; height: 100%; min-height: 168px; padding: 24px 24px 22px; transition: background .35s; }
-.hub-tiles a::after { content: ''; position: absolute; inset: auto 24px 0; height: 1px; background: linear-gradient(90deg, #8fbbe0, transparent); transform: scaleX(0); transform-origin: left; transition: transform .45s cubic-bezier(.2, .7, .2, 1); }
-.hub-tiles a:is(:hover, :focus-visible) { background: #0a1420; }
-.hub-tiles a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
-.hub-tile-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; color: #dfe4e9; }
-.hub-tile-title svg { color: #5f6973; transition: color .25s, transform .35s; }
-.hub-tiles a:is(:hover, :focus-visible) .hub-tile-title svg { color: #fff; transform: translate(2px, -2px); }
-.hub-figure { font: 500 42px/1 'AgentHub Grotesk', var(--font-body); letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: #fff; }
-.hub-quote { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; font-size: 15px; line-height: 1.6; color: #f4f5f6; }
-.hub-code { align-self: flex-start; padding: 5px 10px; border: 1px solid #ffffff24; border-radius: 4px; background: #ffffff0a; font: 500 15px/1.4 ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; color: #cfe3f5; }
-.hub-tile-note { margin-top: auto; font-size: 12px; line-height: 1.7; color: #929ba5; }
+
+.hub-panel-title { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #dfe4e9; }
+.hub-panel-title > span { font: 12px 'AgentHub Grotesk', var(--font-body); color: #7d8690; font-variant-numeric: tabular-nums; }
+.hub-panel-title svg { margin-left: auto; color: #5f6973; transition: color .25s, transform .35s; }
+.hub-weekly, .hub-agents { display: grid; gap: 14px; padding: 22px 24px; border: 1px solid #ffffff1c; border-radius: 6px; background: #04070bcc; transition: background .35s, border-color .35s; }
+.hub-weekly:is(:hover, :focus-visible) { background: #0a1420; border-color: #ffffff2e; }
+.hub-weekly:is(:hover, :focus-visible) .hub-panel-title svg { color: #fff; transform: translate(2px, -2px); }
+.hub-weekly ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: weekly; }
+.hub-weekly li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: baseline; font-size: 14px; line-height: 1.55; color: #e8ebee; }
+.hub-weekly li:first-child { font-size: 16px; color: #fff; }
+.hub-weekly li span { font-size: 11px; letter-spacing: .06em; color: #8fbbe0; }
+
+.hub-stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-block: 1px solid #ffffff1f; }
+.hub-stats li + li { border-left: 1px solid #ffffff14; }
+.hub-stats a { display: grid; align-content: start; gap: 6px; height: 100%; padding: 18px 14px 16px; transition: background .3s; }
+.hub-stats li:first-child a { padding-left: 0; }
+.hub-stats a:is(:hover, :focus-visible) { background: #ffffff06; }
+.hub-figure { font: 500 clamp(30px, 2.6vw, 40px)/1 'AgentHub Grotesk', var(--font-body); letter-spacing: -.03em; font-variant-numeric: tabular-nums; color: #fff; }
+.hub-stat-label { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: #dfe4e9; }
+.hub-stat-label svg { color: #5f6973; transition: color .25s, transform .3s; }
+.hub-stats a:is(:hover, :focus-visible) .hub-stat-label svg { color: #fff; transform: translate(2px, -2px); }
+.hub-stat-note { font-size: 11px; line-height: 1.6; color: #7d8690; }
+
+.hub-bottom { display: grid; gap: 20px; }
 .hub-recent p { font-size: 11px; letter-spacing: .06em; color: #7d8690; }
-.hub-recent ul { list-style: none; margin: 12px 0 0; padding: 0; }
-.hub-recent a { display: flex; align-items: baseline; gap: 14px; min-height: 40px; padding: 9px 0; border-bottom: 1px solid #ffffff14; font-size: 13px; line-height: 1.55; color: #c8d0d8; transition: color .25s; }
+.hub-recent ul { list-style: none; margin: 10px 0 0; padding: 0; }
+.hub-recent a { display: flex; align-items: baseline; gap: 12px; min-height: 40px; padding: 9px 0; border-bottom: 1px solid #ffffff14; font-size: 13px; line-height: 1.55; color: #c8d0d8; transition: color .25s; }
 .hub-recent a:is(:hover, :focus-visible) { color: #fff; }
-.hub-recent a span { flex: none; width: 5.6em; font-size: 11px; color: #8fbbe0; }
+.hub-recent a span { flex: none; width: 4.6em; font-size: 11px; color: #8fbbe0; }
+/* For agents: pick a prompt, read it whole, copy it. */
+.hub-agents-lead { font-size: 13px; line-height: 1.75; color: #a7afb8; }
+.hub-agents-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.hub-reveal { display: inline-flex; align-items: center; gap: 4px; min-height: 34px; padding: 0 2px; border: 0; background: none; color: #a7afb8; font: 12px var(--font-body); cursor: pointer; transition: color .25s; }
+.hub-reveal:is(:hover, :focus-visible) { color: #fff; }
+.hub-reveal svg { transition: transform .25s; }
+.hub-agents.is-open .hub-reveal svg { transform: rotate(180deg); }
+.hub-reveal:focus-visible { outline: 2px solid #afd2e6; outline-offset: 2px; }
+.hub-prompt[hidden] { display: none; }
+.hub-prompt { position: relative; padding: 14px 14px 14px 16px; border: 1px solid #ffffff14; border-left: 2px solid #7fd1a6; border-radius: 4px; background: #000; }
+.hub-prompt p { font: 13px/1.75 ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'AgentHub Sans SC', monospace; color: #cfe3f5; word-break: break-all; user-select: all; }
+.hub-copy { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px; border: 1px solid #ffffff2b; border-radius: 4px; background: #0a1420; color: #dfe4e9; font: 500 12px var(--font-body); cursor: pointer; white-space: nowrap; transition: background .25s, color .25s, border-color .25s; }
+.hub-copy:is(:hover, :focus-visible) { background: #f4f5f6; border-color: #f4f5f6; color: #000; }
+.hub-copy.is-done { border-color: #7fd1a666; color: #7fd1a6; background: transparent; }
+.hub-copy:focus-visible { outline: 2px solid #afd2e6; outline-offset: 2px; }
 :lang(en) .hub-intro { font-size: 15px; line-height: 1.8; }
 
 @media (max-width: 961px) {
@@ -67,18 +97,56 @@
 @media (max-width: 600px) {
   .hub-section { padding-block: 80px 88px; }
   .hub-lead h2 { font-size: 32px; }
-  .hub-headlines a { grid-template-columns: minmax(0, 1fr) 16px; gap: 4px 14px; padding: 14px 0; }
-  .hub-group { grid-column: 1 / -1; }
-  .hub-tiles a { min-height: 136px; padding: 18px 16px 16px; }
-  .hub-figure { font-size: 32px; }
-  .hub-quote { font-size: 13px; -webkit-line-clamp: 4; }
-  .hub-code { font-size: 13px; }
-  .hub-recent a span { width: 5em; }
+  .hub-dateline { margin-top: 32px; font-size: 13px; }
+  .hub-headlines { grid-template-columns: minmax(0, 1fr); }
+  .hub-story { padding-right: 32px; }
+  .hub-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hub-stats li:nth-child(3) { border-left: 0; }
+  .hub-stats li:nth-child(3) a { padding-left: 0; }
+  .hub-stats li:nth-child(n + 3) { border-top: 1px solid #ffffff14; }
+  .hub-weekly, .hub-agents { padding: 18px 16px; }
   .hub-search-field > svg { margin-left: 14px; }
   .hub-search-field input { padding: 0 10px; font-size: 16px; }
   .hub-search-field button { padding: 0 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hub-skeleton span { animation: none; }
-  .hub-headlines a, .hub-tiles a::after, .hub-tile-title svg { transition: none; }
+  .hub-headlines a, .hub-story > svg, .hub-panel-title svg, .hub-stat-label svg { transition: none; }
+}
+
+/* On desktop windows the panel fills exactly one screen below the header: spacing and type follow the window's
+   height, and the extras give way first when it is short. */
+@media (min-width: 962px) and (min-height: 520px) {
+  .hub-section { min-height: 100svh; display: flex; align-items: center; padding-block: calc(var(--header-height) + clamp(4px, 1.5vh, 20px)) clamp(20px, 3.5vh, 44px); }
+  .hub-inner { width: 100%; }
+  .hub-lead h2 { font-size: clamp(28px, 4.5vh, 48px); }
+  .hub-intro { margin-top: clamp(10px, 1.8vh, 18px); }
+  .hub-dateline { margin-top: clamp(14px, 2.8vh, 40px); }
+  .hub-story { padding-block: clamp(14px, 2.4vh, 24px); gap: 8px; }
+  .hub-story-title { font-size: clamp(20px, 3.3vh, 32px); }
+  .hub-headlines a { padding-block: clamp(9px, 1.5vh, 15px); }
+  .hub-actions { margin-top: clamp(16px, 3vh, 32px); }
+  .hub-side { gap: clamp(10px, 1.6vh, 18px); }
+  .hub-weekly, .hub-agents { gap: clamp(8px, 1.4vh, 14px); padding: clamp(14px, 2.2vh, 22px) 22px; }
+  .hub-stats a { padding-block: clamp(10px, 1.8vh, 18px); }
+  .hub-recent li:nth-child(n + 4) { display: none; }
+}
+@media (min-width: 962px) and (max-height: 920px) {
+  .hub-headline { -webkit-line-clamp: 1; }
+  .hub-weekly li:nth-child(n + 4) { display: none; }
+}
+@media (min-width: 962px) and (max-height: 860px) {
+  .hub-recent { display: none; }
+}
+@media (min-width: 962px) and (max-height: 760px) {
+  .hub-headlines a { padding-block: 7px; gap: 3px; }
+  .hub-intro { line-height: 1.7; }
+}
+@media (min-width: 962px) and (max-height: 640px) {
+  .hub-intro, .hub-agents-lead { display: none; }
+  .hub-weekly li:nth-child(n + 3) { display: none; }
+  .hub-dateline { margin-top: 12px; }
+  .hub-actions { margin-top: 12px; }
+  .hub-section { padding-bottom: 8px; }
+  .hub-story { padding-block: 10px; }
 }

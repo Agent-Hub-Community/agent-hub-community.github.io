@@ -35,5 +35,8 @@ export const sitePath = id => Object.values(SITE).flat().find(item => item.id ==
 // The primary header: the five reading sections, then the community page.
 export const PRIMARY = [...SITE.read.slice(0, 5), SITE.community[0]];
 
+// The agenthub skill as published in the skills repository; the homepage's install prompt points agents here.
+export const SKILL_SOURCE = 'https://raw.githubusercontent.com/Agent-Hub-Community/skills/main/skills/agenthub/SKILL.md';
+
 // The newspaper writes this summary on every daily rebuild (newspaper/lib/hub.mjs).
 export const HUB_SUMMARY = '/newspaper/hub.json';
