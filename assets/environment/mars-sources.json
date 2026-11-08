@@ -28,9 +28,9 @@
     {
       "file": "mars-portrait.mp4",
       "source": "https://sxcontent9668.azureedge.us/cms-assets/assets/Mobile_v4_HB_e1d2eda88f.mp4",
-      "bytes": 7838098,
-      "sha256": "02ffc3428680de40d495bdae9c8bd842c92da26a3c72cee12b3e56788288d4ac",
-      "modifications": "None; original bytes.",
+      "bytes": 7834071,
+      "sha256": "a4c6b95597dc58232f6f982c0d5955a4dbac5e7e9250f5d1321f9787013e186b",
+      "modifications": "Remuxed with ffmpeg -c copy -movflags +faststart (2026-11-08) so playback can start before the whole file arrives; the video stream is unchanged (stream MD5 d41636284238ae4bf8341ff5169a4df5 before and after). Original: 7838098 bytes, sha256 02ffc3428680de40d495bdae9c8bd842c92da26a3c72cee12b3e56788288d4ac.",
       "programs": [],
       "streams": [
         {
