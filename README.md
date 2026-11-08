@@ -2,7 +2,7 @@
 
 Agent Hub 是一个围绕 LLM Agent 进行技术分享、讨论与共建的社群。这里有基模研究员、高校教授与青年硕博，也持续邀请自然科学领域的同行，一起交流 LLM Agent、RSI、AI4Science、AI 安全与物理 AI。
 
-V86 首页由四段展示组成：原有 ASCII 双手、星系与字标开场；SpaceX 火星视频背景与社群简介；人和 Agent 交流的 3D 社群场景；「不同的来处，共同的好奇」机构滚动页。顶部提供模块入口和中英文切换，首次访问默认为中文。117 个机构标志连续滚动，支持暂停、键盘浏览与完整目录。日报精选、研究方向、66 则真实讨论和加入方式保留在独立的 `community.html` 中。布局、素材和维护说明见 [四屏首页](docs/cinematic-home.md)。
+V86 首页由四段展示组成：原有 ASCII 双手、星系与字标开场；SpaceX 火星视频背景与社群简介；三组并排的社群讨论；「不同的来处，共同的好奇」机构滚动页。顶部提供模块入口和中英文切换，首次访问默认为中文。117 个机构标志连续滚动，支持暂停、键盘浏览与完整目录。日报精选、研究方向、66 则真实讨论和加入方式保留在独立的 `community.html` 中。布局、素材和维护说明见 [四屏首页](docs/cinematic-home.md)。
 
 ## 本地开发
 
@@ -21,9 +21,8 @@ npm run dev
 - `src/SiteHeader.jsx`、`src/module-header.css`：始终可用的模块入口与移动端菜单。
 - `src/InstitutionWall.jsx`、`src/MemberLogo.jsx`：117 个机构的连续滚动、暂停、键盘浏览、完整目录与 SVG 标识去重。
 - `src/community.jsx`、`src/FieldJournal.jsx`：独立资料页、讨论搜索与分页、成员目录、加入说明和页脚。
-- `src/CommunityIdentity.jsx`、`src/CyberCommons.jsx`、`src/community-world.js`：首页 3D 社群场景、交互与稳定的机器人姿态；维护说明见 [社群场景](docs/cyber-commons.md)。
+- `src/CommunityIdentity.jsx`、`src/community-identity.css`：首页“把想法，一起做出来”一屏，三组讨论并排展示问题、双方观点、仍未解决的部分和讨论记录链接。
 - `src/commons-stories.js`：根据原始讨论 59、47、7 整理的三组对话及英文翻译，结论保留原讨论中的不确定性。
-- `scripts/render-community-world.py`：从实际场景生成无 WebGL 或无脚本时显示的横竖 WebP。
 - `src/site.css`：共享导航、字标、首屏和基础样式；正文使用 `src/field-journal.css`。
 - `src/journal-search.js`：搜索词的原文位置与匹配句提取，保留原始文字和完整句子。
 - `src/ResearchPlate.jsx`：三张原创 SVG 研究插图。
@@ -55,7 +54,7 @@ npm run dev
 npm run build
 ```
 
-构建通过 esbuild 同时打包并预渲染首页与资料页，写入根目录 `index.html`、`community.html`、`join-example.html`、对应的 JS/CSS、`assets/theme.js`、`assets/home-routing.js`、共享模块与字体。3D 模块在场景接近视口时才加载，火星视频仅在该屏可见且允许播放时加载。GitHub Pages 使用 `main` 分支根目录；提交时应同时包含源码与构建产物，包括当前 JS 分包、字体、模型、视频与海报。
+构建通过 esbuild 同时打包并预渲染首页与资料页，写入根目录 `index.html`、`community.html`、`join-example.html`、对应的 JS/CSS、`assets/theme.js`、`assets/home-routing.js`、共享模块与字体。火星视频仅在该屏可见且允许播放时加载。GitHub Pages 使用 `main` 分支根目录；提交时应同时包含源码与构建产物，包括当前 JS 分包、字体、模型、视频与海报。
 
 资料页的六个研究方向始终可见。讨论支持全文搜索、话题筛选和分页，通过原生 `details` 展开。禁用脚本后，全部 66 则讨论与成员目录仍可阅读。首页滚动展示全部 117 个机构，可暂停或展开名称目录；复制轨道对辅助技术隐藏。机构区离屏或页面进入后台时停止自动滚动。
 
@@ -63,10 +62,10 @@ npm run build
 
 `featuredInstitutions` 的两组名称分别取自原始资料中的团队与科研机构、高校，名称需完全一致。客户端和 HTML 预渲染共用 `agenthub:homepage-community` 构建模块；`npm run dev` 会监听原始资料和精选配置，修改后自动更新。没有额外的数据生成步骤，也不修改完整原始资料。
 
-首页固定为深色展示，并保留已有阅读偏好。资料页跟随系统并保存手动选择，与同源 newspaper 共用 `agenthub-theme`。减少动态效果时，原开场显示完整静态封面，火星视频默认不加载，3D 场景停止动画，机构行保留原生横向浏览。禁用脚本时海报、场景图、模块入口、机构目录和资料仍可使用。
+首页固定为深色展示，并保留已有阅读偏好。资料页跟随系统并保存手动选择，与同源 newspaper 共用 `agenthub-theme`。减少动态效果时，原开场显示完整静态封面，火星视频默认不加载，机构行保留原生横向浏览。禁用脚本时海报、讨论、模块入口、机构目录和资料仍可使用。
 
 ## 许可
 
-Inter、Space Grotesk、Noto Sans SC、Noto Serif SC、Three.js 的上游许可位于 `assets/licenses/`。火星页使用 SpaceX 官网公开提供的原始视频与海报，具体来源和哈希见 `assets/environment/mars-sources.json`，权利说明见 `assets/licenses/spacex-mars.txt`；这些素材不是 CC0 或 Agent Hub 原创。场景使用有出处记录的 Quaternius CC0 人物与 Poly Haven CC0 环境光。没有引入 SpaceX 网站的 JavaScript 或品牌字标。
+Inter、Space Grotesk、Noto Sans SC、Noto Serif SC 的上游许可位于 `assets/licenses/`。火星页使用 SpaceX 官网公开提供的原始视频与海报，具体来源和哈希见 `assets/environment/mars-sources.json`，权利说明见 `assets/licenses/spacex-mars.txt`；这些素材不是 CC0 或 Agent Hub 原创。没有引入 SpaceX 网站的 JavaScript 或品牌字标。
 
 本地检查、截图及早期设计备份保存在忽略目录 `.hallmark/`，不随站点发布。

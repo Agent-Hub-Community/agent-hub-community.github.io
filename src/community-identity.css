@@ -1,34 +1,73 @@
-/* A shared space for people, projects and open questions. */
-.community-identity {
-  --fj-sans: var(--font-body); --fj-ink: #edf3fa;
-  --world-hero-height: max(900px, 100svh);
-  position: relative; isolation: isolate; overflow: clip;
-  background: #070b13; color: var(--fj-ink);
-  scroll-margin-top: calc(0px - var(--header-height) - var(--space-lg));
+/* Three real discussions: a question, two positions, and what is still open. */
+.community-identity { position: relative; isolation: isolate; overflow: clip; padding-block: clamp(96px, 11vw, 168px) clamp(72px, 8vw, 120px);
+  background: linear-gradient(180deg, #000 0%, #070b13 22%, #070b13 78%, #000 100%); color: #edf3fa; scroll-margin-top: var(--header-height); }
+
+.commons-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 112px); align-items: end; }
+.commons-head h2 { margin: 0; font: 500 clamp(40px, 4.2vw, 62px)/1.22 var(--font-body); letter-spacing: -.045em; }
+.commons-lead > p { max-width: 30em; font-size: 14px; line-height: 1.95; color: #b5c2d1; }
+.commons-actions { margin-top: 28px; }
+
+.commons-threads { list-style: none; margin: clamp(56px, 6vw, 88px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px;
+  overflow: hidden; border: 1px solid #ffffff1c; border-radius: 6px; background: #ffffff1c; }
+.commons-threads > li { min-width: 0; background: #04070b; }
+.commons-thread { display: flex; flex-direction: column; height: 100%; padding: clamp(24px, 2.4vw, 36px); }
+.commons-topic { display: flex; align-items: baseline; gap: 12px; font-size: 12px; letter-spacing: .04em; color: #8fbbe0; }
+.commons-topic span { font: 500 12px/1 'AgentHub Grotesk', var(--font-body); font-variant-numeric: tabular-nums; color: #5f6f80; }
+.commons-thread h3 { margin: 18px 0 0; font: 500 clamp(19px, 1.5vw, 22px)/1.5 var(--font-body); letter-spacing: -.02em; color: #fff; text-wrap: pretty; }
+
+/* Two positions on one thread line: the first speaker a filled mark, the reply a hollow one. */
+.commons-turns { position: relative; list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 22px; }
+.commons-turns::before { content: ''; position: absolute; left: 4px; top: 10px; bottom: 10px; width: 1px; background: #ffffff24; }
+.commons-turns li { position: relative; padding-left: 26px; }
+.commons-turns li::before { content: ''; position: absolute; left: 0; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: #8fbbe0; box-shadow: 0 0 0 4px #04070b; }
+.commons-turns li + li::before { background: #04070b; border: 1px solid #8fbbe0; box-sizing: border-box; }
+.commons-turns span { display: block; font-size: 12px; color: #8f9aa6; }
+.commons-turns p { margin-top: 6px; font-size: 14px; line-height: 1.85; color: #d7dee6; }
+
+.commons-open { margin-top: 28px; padding-top: 20px; border-top: 1px dashed #ffffff26; }
+.commons-open span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: #e0b86e; }
+.commons-open span::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 3px #e0b86e24; }
+.commons-open p { margin-top: 8px; font-size: 13px; line-height: 1.85; color: #a9b4c0; }
+
+.commons-record { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin-top: auto; padding-top: 18px; font-size: 13px; color: #c8d0d8; transition: color .25s; }
+.commons-record svg { color: #5f6973; transition: color .25s, transform .35s cubic-bezier(.2, .7, .2, 1); }
+.commons-record:is(:hover, :focus-visible) { color: #fff; }
+.commons-record:is(:hover, :focus-visible) svg { color: #fff; transform: translate(2px, -2px); }
+.commons-threads > li:has(.commons-record:is(:hover, :focus-visible)) { background: #08111c; }
+.commons-threads > li { transition: background .35s; }
+
+.commons-note { margin-top: 18px; font-size: 12px; color: #7d8690; }
+:lang(en) .commons-turns p { line-height: 1.7; }
+
+/* Side by side, the three cards share rows, so questions, positions and open points line up across them. */
+@media (min-width: 1101px) {
+  @supports (grid-template-rows: subgrid) {
+    .commons-threads > li { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; }
+    .commons-thread { grid-row: 1 / -1; display: grid; grid-template-rows: subgrid; row-gap: 0; height: auto; }
+    .commons-turns { align-self: start; }
+    .commons-record { align-self: end; margin-top: 0; }
+  }
 }
-.identity-world-heading { position: absolute; z-index: 3; left: max(64px, calc((100vw - 1700px) / 2 + 100px)); top: 38%; width: min(34vw, 450px); }
-.identity-world-heading h2 { margin: 0; font: 500 clamp(44px, 4.2vw, 62px)/1.25 var(--fj-sans); letter-spacing: -.045em; text-wrap: wrap; }
-.identity-world-heading > p { margin-top: 24px; color: #b5c2d1; font-size: 13px; line-height: 1.95; }
-.identity-actions { gap: 14px 25px; margin-top: 28px; }
-.identity-actions .scene-button { min-width: 154px; }
-.identity-actions .scene-link { font-size: 12px; }
-@media (max-width: 1100px) and (min-width: 900px) {
-  .identity-world-heading { left: 40px; width: 310px; top: 46%; }
-  .identity-world-heading h2 { font-size: 44px; }
-  .identity-world-heading > p { font-size: 12px; }
-  .identity-actions { gap: 10px 22px; }
+
+@media (max-width: 1100px) {
+  .commons-threads { grid-template-columns: minmax(0, 1fr); }
+  .commons-thread { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: auto auto 1fr auto; column-gap: 48px; align-items: start; }
+  .commons-topic, .commons-thread h3 { grid-column: 1; }
+  .commons-turns, .commons-open { grid-column: 2; grid-row: 1 / span 3; }
+  .commons-turns { margin-top: 0; }
+  .commons-open { grid-row: 4; margin-top: 24px; }
+  .commons-record { grid-column: 1; grid-row: 3; margin-top: 12px; }
 }
-@media (max-width: 899px) {
-  .community-identity { --world-hero-height: max(1160px, 100svh); }
-  .identity-world-heading { left: 24px; right: 24px; top: auto; bottom: 130px; width: auto; }
-  .identity-world-heading h2 { font-size: clamp(34px, 9vw, 42px); line-height: 1.23; }
-  .identity-world-heading > p { margin-top: 16px; font-size: 12px; line-height: 1.85; }
-  .identity-actions { margin-top: 21px; gap: 16px 24px; }
-  .identity-actions .scene-button { min-width: 148px; }
+@media (max-width: 760px) {
+  .community-identity { padding-block: 80px 72px; }
+  .commons-head { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .commons-head h2 { font-size: clamp(34px, 9vw, 42px); }
+  .commons-lead > p { font-size: 13px; }
+  .commons-thread { display: flex; padding: 24px 20px; }
+  .commons-thread h3 { font-size: 18px; }
+  .commons-turns { margin-top: 22px; }
+  .commons-turns p { font-size: 13px; }
 }
-@media (max-width: 360px) {
-  .identity-world-heading { left: 22px; right: 22px; }
-  .identity-actions { gap: 14px; }
-  .identity-actions .scene-button { min-width: 135px; padding-inline: 13px; }
-  .identity-actions .scene-link { font-size: 11px; }
+@media (prefers-reduced-motion: reduce) {
+  .commons-threads > li, .commons-record, .commons-record svg { transition: none; }
 }

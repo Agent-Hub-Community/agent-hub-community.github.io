@@ -1,13 +1,13 @@
 # V86 · 首页的四段展示
 
-首页顺序为原有 ASCII 双手、星系与字标开场 → SpaceX 火星背景与社群简介 → 人和 Agent 相聚的赛博空间 →「不同的来处，共同的好奇」机构滚动墙。顶部持续提供模块入口和中英文切换。社群场景不再有地球背景；人物与机器人都保持固定的朝向。
+首页顺序为原有 ASCII 双手、星系与字标开场 → SpaceX 火星背景与社群简介 → 今天群里在聊什么 →「把想法，一起做出来」三组讨论 →「不同的来处，共同的好奇」机构滚动墙。顶部持续提供模块入口和中英文切换。
 
 ## 页面与语言
 
 - `src/main.jsx`、`src/CinematicHome.jsx`：四段首页与页脚。
 - `src/GenesisHero.jsx`、`src/genesis.css`：保留原有双手分开、星系展开、字标出现的滚动映射，只翻译文字与辅助标签。
 - `src/PlanetScene.jsx`、`src/cinematic-home.css`：火星、简介、日报和资料库入口。
-- `src/CommunityIdentity.jsx`、`src/CyberCommons.jsx`：社群场景、三组讨论和来源链接；维护说明见 [社群场景](cyber-commons.md)。
+- `src/CommunityIdentity.jsx`、`src/community-identity.css`：三组讨论并排展示，每组是问题、双方观点、还在讨论的部分和讨论记录链接。V86 的 3D 社群场景已移除。
 - `src/HomeLanguage.jsx`、`src/home-copy.js`：首页中英文本。第一次访问始终用中文；明确选择后，通过 `agenthub-language` 保存偏好。切换同时更新文档语言、标题和说明。
 - `src/SiteHeader.jsx`、`src/module-header.css`：共享模块导航与移动端菜单，支持 Escape 关闭与焦点返回。
 - `src/community.jsx`、`src/community.html`：独立中文资料页，保留日报精选、六个研究方向、66 则讨论、成员目录与邀请方式。
