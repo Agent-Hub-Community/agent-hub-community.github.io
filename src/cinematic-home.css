@@ -70,10 +70,15 @@ html:not(.js) .planet-lights { display: none; }
 .institution-row:focus-visible .institution-group[aria-hidden] { display: none; }
 .institution-row:focus-visible { outline-offset: -4px; }
 @keyframes institution-drift { to { transform: translateX(-50%); } }
-.institution-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1120px; }
-.institution-join { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 28px; }
-.institution-join p { margin: 0; color: #cad1d8; font-size: 13px; }
-.institution-join .scene-button { gap: 8px; }
+.institution-bottom { display: flex; align-items: center; justify-content: space-between; gap: 24px; max-width: 1120px; margin-top: 36px; }
+/* The way in is the screen's last and largest call: a line at reading size and a filled button. */
+.institution-join { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 36px; }
+.institution-join p { margin: 0; color: #f4f5f6; font: 500 clamp(20px, 2.2vw, 28px)/1.4 var(--font-body); letter-spacing: -.02em; }
+.institution-join .scene-button { gap: 10px; min-width: 200px; min-height: 60px; padding-block: 0; padding-inline: 36px; border-color: #f4f5f6; background: #f4f5f6; color: #000; font-size: 16px; font-weight: 600; }
+.institution-join .scene-button::before { background: #cfdeea; }
+.institution-join .scene-button:is(:hover, :focus-visible) { border-color: #cfdeea; }
+.institution-join .scene-button svg { transition: transform .25s; }
+.institution-join .scene-button:is(:hover, :focus-visible) svg { transform: translate(2px, -2px); }
 .institution-pause { display: none; align-items: center; gap: 9px; min-height: 44px; padding: 0; color: #b8c1ca; font-size: 11px; white-space: nowrap; }
 .js .institution-pause { display: inline-flex; }
 .institution-directory { max-width: 1120px; margin-top: 12px; }
@@ -116,7 +121,11 @@ html:not(.js) .planet-lights { display: none; }
   .institution-section .member-logo.chip img { height: 29px; }
   .institution-section .member-logo.round img { height: 31px; }
   .institution-name { font-size: 11px; }
-  .institution-bottom { align-items: flex-start; gap: 14px; }
+  .institution-bottom { flex-direction: column; align-items: stretch; gap: 14px; margin-top: 28px; }
+  .institution-join { flex-direction: column; align-items: stretch; gap: 18px; }
+  .institution-join p { font-size: 22px; }
+  .institution-join .scene-button { width: 100%; min-height: 58px; font-size: 16px; }
+  .institution-pause { align-self: flex-start; }
   .institution-directory { margin-top: 16px; }
   .institution-directory summary { font-size: 11px; }
   .institution-directory-groups { grid-template-columns: 1fr; gap: 26px; }
@@ -142,6 +151,9 @@ html:not(.js) .planet-lights { display: none; }
   .institution-marquee { margin: clamp(18px, 4vh, 46px) 0 clamp(10px, 2.4vh, 26px); }
   .institution-group li { height: clamp(66px, 10.5vh, 98px); gap: clamp(8px, 1.4vh, 14px); }
   .institution-directory { margin-top: 4px; }
+  .institution-bottom { margin-top: clamp(12px, 3.2vh, 40px); }
+  .institution-join p { font-size: clamp(19px, 3vh, 28px); }
+  .institution-join .scene-button { min-height: clamp(52px, 6.6vh, 60px); }
 }
 @media (min-width: 962px) and (max-height: 640px) {
   .institution-section { padding-bottom: 8px; }
@@ -149,4 +161,8 @@ html:not(.js) .planet-lights { display: none; }
   .institution-group li { height: 56px; gap: 6px; }
   .institution-section .member-logo img, .institution-section .member-logo svg { height: 24px; }
   .institution-directory summary { min-height: 40px; }
+  .institution-marquee { margin: 14px 0 8px; }
+  .institution-bottom { margin-top: 8px; }
+  .institution-join p { font-size: 18px; }
+  .institution-join .scene-button { min-height: 44px; }
 }

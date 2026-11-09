@@ -45,18 +45,19 @@ export default function InstitutionWall() {
         </div>
       </div>)}
     </div>
+    <details className="institution-directory cinema-wrap">
+      <summary><span>{copy.directory.replace('{count}', institutions.flat().length)}</span><Plus size={17} aria-hidden="true"/></summary>
+      <div className="institution-directory-groups">{institutions.map((row, index) => <div key={index}><h3>{copy.groups[index]}</h3><ul>{row.map(item => <li key={item.title}>{name(item)}</li>)}</ul></div>)}</div>
+    </details>
+    {/* The way in closes the screen, below the directory, larger than the rows around it. */}
     <div className="institution-bottom cinema-wrap">
       <div className="institution-join">
         <p>{copy.joinLead}</p>
-        <a className="scene-button" href={JOIN_FORM} target="_blank" rel="noopener">{copy.joinForm}<ArrowUpRight size={14} aria-hidden="true"/></a>
+        <a className="scene-button" href={JOIN_FORM} target="_blank" rel="noopener">{copy.joinForm}<ArrowUpRight size={18} aria-hidden="true"/></a>
       </div>
       <button className="institution-pause" type="button" aria-pressed={paused} onClick={() => setPaused(value => !value)}>
         {paused ? <Play size={14} aria-hidden="true"/> : <Pause size={14} aria-hidden="true"/>}<span>{paused ? copy.resumeScroll : copy.pauseScroll}</span>
       </button>
     </div>
-    <details className="institution-directory cinema-wrap">
-      <summary><span>{copy.directory.replace('{count}', institutions.flat().length)}</span><Plus size={17} aria-hidden="true"/></summary>
-      <div className="institution-directory-groups">{institutions.map((row, index) => <div key={index}><h3>{copy.groups[index]}</h3><ul>{row.map(item => <li key={item.title}>{name(item)}</li>)}</ul></div>)}</div>
-    </details>
   </section>;
 }
