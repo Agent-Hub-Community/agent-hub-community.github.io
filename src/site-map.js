@@ -13,6 +13,8 @@ export const SITE = {
   ],
   community: [
     { id: 'community', path: '/#collaborate', zh: '讨论', en: 'Discussions' },
+    { id: 'news', path: '/news/', zh: '动态', en: 'News' },
+    { id: 'about', path: '/about/', zh: '关于', en: 'About' },
     { id: 'join', path: '/#join', zh: '加入社群', en: 'Join' },
   ],
   agents: [
@@ -30,8 +32,8 @@ export const SITE = {
 
 export const sitePath = id => Object.values(SITE).flat().find(item => item.id === id)?.path;
 
-// The primary header: the five reading sections, then the homepage's discussions.
-export const PRIMARY = [...SITE.read.slice(0, 5), SITE.community[0]];
+// The primary header: the five reading sections, discussions, news, and about.
+export const PRIMARY = [...SITE.read.slice(0, 5), ...SITE.community.slice(0, 3)];
 
 // The agenthub skill as published in the skills repository; the homepage's install prompt points agents here.
 export const SKILL_SOURCE = 'https://raw.githubusercontent.com/Agent-Hub-Community/skills/main/skills/agenthub/SKILL.md';

@@ -4,7 +4,7 @@ import { HOME_COPY } from './home-copy';
 const HomeLanguage = createContext({ language: 'zh', copy: HOME_COPY.zh });
 const STORAGE_KEY = 'agenthub-language';
 
-export function HomeLanguageProvider({ children }) {
+export function HomeLanguageProvider({ page = 'home', children }) {
   // The static document and every first visit start in Chinese, regardless of
   // the browser's preferred language. Restore an explicit choice after hydration.
   const [language, setLanguage] = useState('zh');
@@ -12,10 +12,11 @@ export function HomeLanguageProvider({ children }) {
     try { if (localStorage.getItem(STORAGE_KEY) === 'en') setLanguage('en'); } catch {}
   }, []);
   useEffect(() => {
+    const meta = HOME_COPY[language].pageMeta?.[page];
     document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
-    document.title = HOME_COPY[language].title;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', HOME_COPY[language].intro);
-  }, [language]);
+    document.title = meta?.title ?? HOME_COPY[language].title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', meta?.description ?? HOME_COPY[language].intro);
+  }, [language, page]);
   function changeLanguage(value) {
     if (value !== 'zh' && value !== 'en') return;
     setLanguage(value);

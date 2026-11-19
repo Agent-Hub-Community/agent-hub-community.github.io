@@ -4,16 +4,17 @@ import BrandWordmark from './BrandWordmark';
 import { LanguageSwitch, useHomeLanguage } from './HomeLanguage';
 import { PRIMARY, sitePath } from './site-map';
 
-export default function SiteHeader() {
+export default function SiteHeader({ current = 'home' }) {
   const { copy } = useHomeLanguage();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const header = useRef(null), menu = useRef(null);
-  // The same sections, in the same order, as the newspaper's masthead.
-  const navigation = PRIMARY.map((item, index) => [item.path, copy.nav[index]]);
+  // The same sections, in the same order, as the newspaper's masthead, plus News and About.
+  const navigation = PRIMARY.map((item, index) => [item.id, item.path, copy.nav[index]]);
   const join = sitePath('join');
+  const homeHref = current === 'home' ? '#cover' : '/';
   useEffect(() => {
-    const desktop = matchMedia('(min-width: 901px)');
+    const desktop = matchMedia('(min-width: 961px)');
     const resize = () => { if (desktop.matches) setOpen(false); };
     const scroll = () => setScrolled(window.scrollY > 30);
     scroll();
@@ -38,9 +39,9 @@ export default function SiteHeader() {
   }, [open]);
   return <header ref={header} className={'site-header module-header is-visible ' + 'cinema-header' + (scrolled ? ' is-scrolled' : '') + (open ? ' menu-open' : '')}>
     <div className="header-inner cinema-wrap">
-      <a className="brand" href="#cover" aria-label={copy.home}><img src="assets/agenthub-icon.webp" alt="" width="28" height="28"/><BrandWordmark/></a>
+      <a className="brand" href={homeHref} aria-label={copy.home}><img src="/assets/agenthub-icon.webp" alt="" width="28" height="28"/><BrandWordmark/></a>
       <nav id="site-navigation" className={'nav' + (open ? ' is-open' : '')} aria-label={copy.navigation}>
-        {navigation.map(([href, label]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}
+        {navigation.map(([id, href, label]) => <a key={href} href={href} aria-current={id === current ? 'page' : undefined} onClick={() => setOpen(false)}>{label}</a>)}
         <a className="nav-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>
       </nav>
       <div className="header-actions">

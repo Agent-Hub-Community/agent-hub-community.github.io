@@ -16,7 +16,7 @@ await Promise.all([
 ]);
 
 const options = {
-  entryPoints: { site: 'src/main.jsx' },
+  entryPoints: { site: 'src/main.jsx', news: 'src/news-main.jsx', about: 'src/about-main.jsx' },
   bundle: true,
   minify: true,
   format: 'esm',
@@ -60,9 +60,18 @@ async function renderHTML() {
       format: 'esm', packages: 'external', outfile: temporary,
       jsx: 'automatic', loader: { '.css': 'empty' }, plugins: [homepageCommunityPlugin], logLevel: 'silent'
     });
-    const { render } = await import(`${pathToFileURL(resolve(temporary))}?build=${Date.now()}`);
-    const template = await readFile('src/index.html', 'utf8');
-    await writeFile('index.html', template.replace('<!--app-->', render()));
+    const { render, renderNews, renderAbout } = await import(`${pathToFileURL(resolve(temporary))}?build=${Date.now()}`);
+    const [homeTemplate, newsTemplate, aboutTemplate] = await Promise.all([
+      readFile('src/index.html', 'utf8'),
+      readFile('src/news.html', 'utf8'),
+      readFile('src/about.html', 'utf8'),
+    ]);
+    await Promise.all([mkdir('news', { recursive: true }), mkdir('about', { recursive: true })]);
+    await Promise.all([
+      writeFile('index.html', homeTemplate.replace('<!--app-->', render())),
+      writeFile('news/index.html', newsTemplate.replace('<!--app-->', renderNews())),
+      writeFile('about/index.html', aboutTemplate.replace('<!--app-->', renderAbout())),
+    ]);
   } finally {
     await rm(temporary, { force: true });
   }

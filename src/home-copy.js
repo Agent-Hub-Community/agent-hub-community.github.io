@@ -1,8 +1,22 @@
 export const HOME_COPY = {
   zh: {
     title: 'Agent Hub · LLM Agent 技术分享、讨论与共建',
+    pageMeta: {
+      home: {
+        title: 'Agent Hub · LLM Agent 技术分享、讨论与共建',
+        description: 'Agent Hub 是一个围绕 LLM Agent 进行技术分享、讨论与共建的社群。这里有基模研究员、高校教授与青年硕博，也持续邀请自然科学领域的同行，一起交流 LLM Agent、RSI、AI4Science、AI 安全、物理 AI 等方向。',
+      },
+      news: {
+        title: '动态与活动 · Agent Hub',
+        description: 'Agent Hub 近期社群活动、开源发布与社区进展公告。',
+      },
+      about: {
+        title: '关于我们 · Agent Hub',
+        description: '了解 Agent Hub 的社群宣言、运作方式与联合发起人：让做 Agent 的人彼此找到。',
+      },
+    },
     skip: '跳转到主要内容', home: 'Agent Hub 首页', navigation: '模块入口',
-    nav: ['日报', '周报', '资料库', '黑话', '活跃榜', '社群'],
+    nav: ['日报', '周报', '资料库', '黑话', '活跃榜', '社群', '动态', '关于'],
     join: '加入社群', menuOpen: '打开导航', menuClose: '关闭导航',
     genesis: ['连接研究者、工程师，', '与对 Agent 保持好奇的人。'],
     explore: '向下探索',
@@ -40,8 +54,22 @@ export const HOME_COPY = {
   },
   en: {
     title: 'Agent Hub · A community for LLM agent research',
+    pageMeta: {
+      home: {
+        title: 'Agent Hub · A community for LLM agent research',
+        description: 'Agent Hub is a community for technical exchange, discussion and collaboration in LLM agents. Members include foundation model researchers, university professors, and graduate students.',
+      },
+      news: {
+        title: 'News & Events · Agent Hub',
+        description: 'Recent events, open-source releases, and community announcements from Agent Hub.',
+      },
+      about: {
+        title: 'About · Agent Hub',
+        description: 'Learn about Agent Hub’s manifesto, beliefs, operating principles, and co-founders.',
+      },
+    },
     skip: 'Skip to main content', home: 'Agent Hub home', navigation: 'Explore Agent Hub',
-    nav: ['Daily', 'Weekly', 'Library', 'Glossary', 'Activity', 'Community'],
+    nav: ['Daily', 'Weekly', 'Library', 'Glossary', 'Activity', 'Community', 'News', 'About'],
     join: 'Join', menuOpen: 'Open navigation', menuClose: 'Close navigation',
     genesis: ['For researchers, engineers,', 'and curious minds in agents.'],
     explore: 'Explore',
