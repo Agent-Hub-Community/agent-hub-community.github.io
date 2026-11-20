@@ -177,14 +177,14 @@ export const FOUNDERS = [
       subname: 'Guanting Dong',
       role: '联合发起人 · Co-Founder',
       affiliation: '中国人民大学高瓴人工智能学院博士生 · 上海 AI Lab MCP 方向负责人',
-      bio: '曾于字节跳动 Seed、阿里 Qwen、快手等团队实习，研究聚焦通用智能体训练、Agent Harness 工程与 Agentic RL，代表工作包括 CoworkOS、ToolSpace、ARPO、Search-o1 等，获 2026 百度奖学金。',
+      bio: '曾于字节跳动 Seed、阿里 Qwen、快手等团队实习，研究聚焦通用智能体训练、Agent Harness 工程与 Agentic RL，代表工作包括 CoworkOS、ToolSpace、ARPO、Search-o1 等，获 2026 百度奖学金、首届腾讯青云奖学金。',
     },
     en: {
       name: 'Guanting Dong',
       subname: '董冠霆',
       role: 'Co-Founder',
       affiliation: 'Ph.D. Student @ GSAI, RUC · Lead for MCP @ Shanghai AI Lab',
-      bio: 'Previously researched at ByteDance Seed and Alibaba Qwen. Focuses on general agent training, agent harness engineering, and agentic RL—leading works including CoworkOS, ToolSpace, ARPO, and Search-o1.',
+      bio: 'Previously researched at ByteDance Seed and Alibaba Qwen. Focuses on general agent training, agent harness engineering, and agentic RL—leading works including CoworkOS, ToolSpace, ARPO, and Search-o1. Recipient of the 2026 Baidu Scholarship and Tencent Project Up (Qingyun) Scholarship.',
     },
   },
 ];
