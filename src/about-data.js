@@ -156,14 +156,14 @@ export const FOUNDERS = [
       subname: 'Chengpeng Li',
       role: '联合发起人 · Co-Founder',
       affiliation: '阿里巴巴 Qwen 团队研究员',
-      bio: '参与 Qwen2 至 Qwen4 系列大语言模型研发，聚焦强化学习、工具集成推理（START、CoRT）与递归自我改进（RSI）。在 NeurIPS、EMNLP、ICLR、ACL 等顶会发表多篇论文。',
+      bio: '参与 Qwen2 至 Qwen4 系列大语言模型研发，关注强化学习、Reasoning、Cowork、LLM4Game、Code Agent 与递归自我改进等。',
     },
     en: {
       name: 'Chengpeng Li',
       subname: '李成鹏',
       role: 'Co-Founder',
       affiliation: 'Researcher, Qwen Team at Alibaba',
-      bio: 'Core contributor to the Qwen2 through Qwen4 foundation model series. Researches reinforcement learning, tool-integrated reasoning (START, CoRT), and recursive self-improvement (RSI).',
+      bio: 'Core contributor to the Qwen2 through Qwen4 foundation model series. Focuses on reinforcement learning, reasoning, cowork, LLM4Game, code agents, and recursive self-improvement (RSI).',
     },
   },
   {
