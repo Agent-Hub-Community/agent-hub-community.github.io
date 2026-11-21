@@ -2,6 +2,42 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { THEMES_REGISTRY } from './site-map';
 
 const ThemePackContext = createContext(null);
+const OVERRIDE_KEY = 'agenthub-theme-override';
+const CACHE_KEY = 'agenthub-themes-registry';
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+function readPreviewOverride() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const q = params.get('theme') ?? params.get('skin');
+    if (q === 'auto') {
+      sessionStorage.removeItem(OVERRIDE_KEY);
+      return null;
+    }
+    if (q) {
+      sessionStorage.setItem(OVERRIDE_KEY, q);
+      return q;
+    }
+    return sessionStorage.getItem(OVERRIDE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function readCachedRegistry() {
+  try {
+    const parsed = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+    return parsed?.data ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedRegistry(data) {
+  try {
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+  } catch {}
+}
 
 function selectHomeTheme(registry, preview, now = Date.now()) {
   if (!registry || preview === 'default') return null;
@@ -18,18 +54,28 @@ function selectHomeTheme(registry, preview, now = Date.now()) {
   return matched || null;
 }
 
+function themeSignature(themePack) {
+  if (!themePack) return '';
+  return JSON.stringify([themePack.id, themePack.home]);
+}
+
 export function ThemePackProvider({ children }) {
   const [themePack, setThemePack] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
     let timer = 0;
-    const params = new URLSearchParams(location.search);
-    const preview = params.get('theme') ?? params.get('skin');
+    const preview = readPreviewOverride();
+    let lastSig = '';
 
     function schedule(registry) {
       clearTimeout(timer);
-      setThemePack(selectHomeTheme(registry, preview));
+      const nextPack = selectHomeTheme(registry, preview);
+      const nextSig = themeSignature(nextPack);
+      if (nextSig !== lastSig) {
+        lastSig = nextSig;
+        setThemePack(nextPack);
+      }
       const next = (registry?.campaigns || [])
         .flatMap(c => [Date.parse(c.startsAt), Date.parse(c.endsAt)])
         .filter(time => time > Date.now())
@@ -37,10 +83,20 @@ export function ThemePackProvider({ children }) {
       if (next) timer = setTimeout(() => schedule(registry), Math.min(next - Date.now() + 20, 2147483647));
     }
 
-    fetch(THEMES_REGISTRY, { signal: controller.signal, cache: 'no-cache' })
-      .then(response => (response.ok ? response.json() : null))
-      .then(registry => { if (registry) schedule(registry); })
-      .catch(() => {});
+    const cached = readCachedRegistry();
+    if (cached?.data) schedule(cached.data);
+
+    const needsFetch = !cached || (Date.now() - (cached.ts || 0)) > CACHE_TTL_MS;
+    if (needsFetch) {
+      fetch(THEMES_REGISTRY, { signal: controller.signal })
+        .then(response => (response.ok ? response.json() : null))
+        .then(registry => {
+          if (!registry) return;
+          writeCachedRegistry(registry);
+          schedule(registry);
+        })
+        .catch(() => {});
+    }
 
     return () => {
       controller.abort();
@@ -59,17 +115,22 @@ export function ThemePackProvider({ children }) {
       ['--theme-pack-accent', home?.accent],
       ['--theme-pack-bg', home?.bandBg],
     ];
-    if (themePack?.id) root.dataset.themePack = themePack.id;
-    else delete root.dataset.themePack;
-    for (const [prop, value] of props) {
-      if (value) root.style.setProperty(prop, value);
-      else root.style.removeProperty(prop);
+    let mutated = false;
+    const targetId = themePack?.id || '';
+    if ((root.dataset.themePack || '') !== targetId) {
+      if (targetId) root.dataset.themePack = targetId;
+      else delete root.dataset.themePack;
+      mutated = true;
     }
-    window.dispatchEvent(new Event('agenthub:theme'));
-    return () => {
-      delete root.dataset.themePack;
-      for (const [prop] of props) root.style.removeProperty(prop);
-    };
+    for (const [prop, value] of props) {
+      const nextVal = value || '';
+      if (root.style.getPropertyValue(prop).trim() !== nextVal) {
+        if (nextVal) root.style.setProperty(prop, nextVal);
+        else root.style.removeProperty(prop);
+        mutated = true;
+      }
+    }
+    if (mutated) window.dispatchEvent(new Event('agenthub:theme'));
   }, [themePack]);
 
   return <ThemePackContext.Provider value={themePack}>{children}</ThemePackContext.Provider>;

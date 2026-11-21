@@ -50,10 +50,14 @@ async function inlineHeadScripts() {
     readFile('src/theme-init.js', 'utf8'),
     readFile('src/home-routing.js', 'utf8')
   ]);
-  const combined = await esbuild.transform(`${themeSource}\n${routingSource}`, {
-    minify: true, target: 'es2020', charset: 'utf8'
-  });
-  return `<script>${combined.code.trim()}</script>`;
+  const [homeCombined, subpageTheme] = await Promise.all([
+    esbuild.transform(`${themeSource}\n${routingSource}`, { minify: true, target: 'es2020', charset: 'utf8' }),
+    esbuild.transform(themeSource, { minify: true, target: 'es2020', charset: 'utf8' }),
+  ]);
+  return {
+    home: `<script>${homeCombined.code.trim()}</script>`,
+    subpage: `<script>${subpageTheme.code.trim()}</script>`,
+  };
 }
 
 async function renderHTML() {
@@ -81,9 +85,9 @@ async function renderHTML() {
     ]);
     await Promise.all([mkdir('news', { recursive: true }), mkdir('about', { recursive: true })]);
     await Promise.all([
-      writeFile('index.html', homeTemplate.replace('<!--head-scripts-->', headScripts).replace('<!--app-->', render())),
-      writeFile('news/index.html', newsTemplate.replace('<!--app-->', renderNews())),
-      writeFile('about/index.html', aboutTemplate.replace('<!--app-->', renderAbout())),
+      writeFile('index.html', homeTemplate.replace('<!--head-scripts-->', headScripts.home).replace('<!--app-->', render())),
+      writeFile('news/index.html', newsTemplate.replace('<!--head-scripts-->', headScripts.subpage).replace('<!--app-->', renderNews())),
+      writeFile('about/index.html', aboutTemplate.replace('<!--head-scripts-->', headScripts.subpage).replace('<!--app-->', renderAbout())),
     ]);
   } finally {
     await rm(temporary, { force: true });

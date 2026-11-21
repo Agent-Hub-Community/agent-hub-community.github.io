@@ -42,6 +42,43 @@
     }
   };
   apply(manual ? saved : system.matches ? 'light' : 'dark');
+  // Pre-paint Theme Pack v2 sync from sessionStorage so navigating /, /news/, /about/, /newspaper/ never flashes default colors.
+  (() => {
+    const overrideKey = 'agenthub-theme-override';
+    const cacheKey = 'agenthub-themes-registry';
+    try {
+      const params = new URLSearchParams(location.search);
+      const q = params.get('theme') ?? params.get('skin');
+      if (q === 'auto') sessionStorage.removeItem(overrideKey);
+      else if (q) sessionStorage.setItem(overrideKey, q);
+      const preview = q === 'auto' ? null : (q || sessionStorage.getItem(overrideKey));
+      if (preview === 'default') return;
+      const cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+      const registry = cached?.data;
+      if (!registry) return;
+      const plugins = Array.isArray(registry.plugins) ? registry.plugins : [];
+      const campaigns = Array.isArray(registry.campaigns) ? registry.campaigns : [];
+      const eligible = p => p?.home && (!Array.isArray(p.targets) || p.targets.includes('home'));
+      const now = Date.now();
+      let matched = preview ? plugins.find(p => p.id === preview && eligible(p)) : null;
+      if (!matched) {
+        const active = campaigns.find(c => Date.parse(c.startsAt) <= now && now < Date.parse(c.endsAt));
+        if (active) matched = plugins.find(p => p.id === active.skin && eligible(p));
+      }
+      if (!matched?.home) return;
+      const h = matched.home;
+      root.dataset.themePack = matched.id;
+      const pairs = [
+        ['--color-hand-human', h.asciiHands?.humanColor],
+        ['--color-hand-machine', h.asciiHands?.machineColor],
+        ['--color-galaxy-core', h.galaxyCore],
+        ['--color-galaxy-arm', h.galaxyArm],
+        ['--theme-pack-accent', h.accent],
+        ['--theme-pack-bg', h.bandBg],
+      ];
+      for (const [prop, val] of pairs) if (val) root.style.setProperty(prop, val);
+    } catch {}
+  })();
   root.classList.add('js');
   system.addEventListener('change', () => { if (!manual) apply(system.matches ? 'light' : 'dark'); });
   window.addEventListener('storage', event => {

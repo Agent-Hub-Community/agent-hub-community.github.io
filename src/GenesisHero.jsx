@@ -35,20 +35,31 @@ function lerpRange(value, input, output) {
 // Glyphs are pre-rasterized onto tiny Retina sprite atlases so 20 fps redraws
 // use fast drawImage blits instead of thousands of fillText calls per frame.
 function useAsciiHands(ref, left, right, activeRef, glyphBands) {
+  const controllerRef = useRef(null);
+  const bandsRef = useRef(glyphBands);
+  bandsRef.current = glyphBands;
+
   useEffect(() => {
-    const bands = Array.isArray(glyphBands) && glyphBands.length >= 4 ? glyphBands : GLYPH_BANDS;
-    const charset = [];
-    const charIndex = new Map();
-    const poolIndices = bands.map(band => {
-      const arr = new Uint8Array(band.length);
-      for (let i = 0; i < band.length; i++) {
-        const ch = band[i];
-        let idx = charIndex.get(ch);
-        if (idx === undefined) { idx = charset.length; charIndex.set(ch, idx); charset.push(ch); }
-        arr[i] = idx;
-      }
-      return arr;
-    });
+    let charset = [];
+    let poolIndices = [];
+    function compileBands(input) {
+      const bands = Array.isArray(input) && input.length >= 4 ? input : GLYPH_BANDS;
+      const nextCharset = [];
+      const charIndex = new Map();
+      const nextPools = bands.map(band => {
+        const arr = new Uint8Array(band.length);
+        for (let i = 0; i < band.length; i++) {
+          const ch = band[i];
+          let idx = charIndex.get(ch);
+          if (idx === undefined) { idx = nextCharset.length; charIndex.set(ch, idx); nextCharset.push(ch); }
+          arr[i] = idx;
+        }
+        return arr;
+      });
+      charset = nextCharset;
+      poolIndices = nextPools;
+    }
+    compileBands(bandsRef.current);
     const host = ref.current;
     const canvases = [left.current, right.current];
     const contexts = canvases.map(canvas => canvas.getContext('2d'));
@@ -63,6 +74,7 @@ function useAsciiHands(ref, left, right, activeRef, glyphBands) {
     let fields = [[], []], width = 0, height = 0, cellX = 0, cellY = 0, ratio = 1;
     let spriteW = 0, spriteH = 0, bw = 0, bh = 0;
     let handColors = [], glyphWeight = 500, opacityFloor = .18;
+    let lastThemeSig = '', themeRaf = 0;
     let frame = 0, clock = 0, last = 0, lastDraw = 0, loaded = false, visible = true;
     let paused = preference.matches, active = activeRef.current.active;
 
@@ -184,21 +196,47 @@ function useAsciiHands(ref, left, right, activeRef, glyphBands) {
         if (!paused && active && visible && !document.hidden) frame = requestAnimationFrame(tick);
       }
     }
-    function updateTheme() {
+    function applyThemeNow(forceAtlas = false) {
+      themeRaf = 0;
       const styles = getComputedStyle(document.documentElement);
-      handColors = ['--color-hand-machine', '--color-hand-human'].map(token => styles.getPropertyValue(token).trim());
-      glyphWeight = styles.getPropertyValue('--hand-glyph-weight').trim() || 500;
-      opacityFloor = parseFloat(styles.getPropertyValue('--hand-opacity-floor')) || .18;
+      const nextColors = ['--color-hand-machine', '--color-hand-human'].map(token => styles.getPropertyValue(token).trim());
+      const nextWeight = styles.getPropertyValue('--hand-glyph-weight').trim() || 500;
+      const nextFloor = parseFloat(styles.getPropertyValue('--hand-opacity-floor')) || .18;
+      const sig = `${nextColors.join('|')}|${nextWeight}|${nextFloor}`;
+      if (!forceAtlas && sig === lastThemeSig) return;
+      lastThemeSig = sig;
+      handColors = nextColors;
+      glyphWeight = nextWeight;
+      opacityFloor = nextFloor;
       rebuildAlphaLut();
       if (loaded) { rebuildAtlases(); draw(); }
     }
+    function scheduleThemeUpdate() {
+      if (themeRaf) return;
+      themeRaf = requestAnimationFrame(() => applyThemeNow(false));
+    }
+    controllerRef.current = {
+      setGlyphBands(nextBands) {
+        compileBands(nextBands);
+        for (let hand = 0; hand < 2; hand++) {
+          const list = fields[hand];
+          for (let i = 0; i < list.length; i++) {
+            const point = list[i];
+            const pool = poolIndices[Math.min(poolIndices.length - 1, Math.floor(point.light * poolIndices.length))];
+            point.pool = pool;
+            point.glyph = point.glyph % pool.length;
+          }
+        }
+        applyThemeNow(true);
+      },
+    };
     activeRef.current.onChange = next => {
       if (next !== active) { active = next; sync(); }
     };
-    const themeObserver = new MutationObserver(updateTheme);
+    const themeObserver = new MutationObserver(scheduleThemeUpdate);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-theme-pack', 'style'] });
-    window.addEventListener('agenthub:theme', updateTheme);
-    updateTheme();
+    window.addEventListener('agenthub:theme', scheduleThemeUpdate);
+    applyThemeNow(false);
     const change = event => { paused = event.matches; sync(); };
     const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }); observer.observe(host);
     const resizeObserver = new ResizeObserver(resize); resizeObserver.observe(host);
@@ -206,11 +244,17 @@ function useAsciiHands(ref, left, right, activeRef, glyphBands) {
     source.onload = () => { loaded = true; resize(); sync(); };
     source.src = HANDS_SOURCE;
     return () => {
-      cancelAnimationFrame(frame); activeRef.current.onChange = null; observer.disconnect(); resizeObserver.disconnect(); themeObserver.disconnect();
-      window.removeEventListener('agenthub:theme', updateTheme); preference.removeEventListener('change', change);
+      cancelAnimationFrame(frame); cancelAnimationFrame(themeRaf); controllerRef.current = null;
+      activeRef.current.onChange = null; observer.disconnect(); resizeObserver.disconnect(); themeObserver.disconnect();
+      window.removeEventListener('agenthub:theme', scheduleThemeUpdate); preference.removeEventListener('change', change);
       document.removeEventListener('visibilitychange', sync); source.onload = null;
     };
-  }, [ref, left, right, activeRef, glyphBands]);
+  }, [ref, left, right, activeRef]);
+
+  const bandsKey = Array.isArray(glyphBands) ? glyphBands.join('\u0000') : '';
+  useEffect(() => {
+    controllerRef.current?.setGlyphBands(glyphBands);
+  }, [bandsKey]);
 }
 
 export default function GenesisHero({ onInterfaceChange }) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRight, ChevronLeft, ChevronRight, Shuffle } from 'lucide-react';
 import community from 'agenthub:homepage-community';
 import { DISCUSSION_TRANSLATIONS } from './commons-stories';
@@ -39,15 +39,17 @@ export default function CommunityIdentity() {
   const discussion = read(selected, language);
   const preview = peek && (peek.kind === 'question' ? read(peek.index, language) : null);
   const ideaText = index => index < discussion.ideas.length ? discussion.ideas[index] : discussion.conclusion;
-  const specialStars = (() => {
-    const kws = themePack?.home?.starKeywords;
-    if (!Array.isArray(kws) || !kws.length) return [];
-    const needles = kws.map(k => k.toLowerCase());
+  const starKeywords = themePack?.home?.starKeywords;
+  const starKeywordsKey = Array.isArray(starKeywords) ? starKeywords.join('\u0000') : '';
+  const specialStars = useMemo(() => {
+    if (!Array.isArray(starKeywords) || !starKeywords.length) return [];
+    const needles = starKeywords.map(k => k.toLowerCase());
     return DISCUSSIONS.flatMap((item, index) => {
       const hay = `${item.tag} ${item.question} ${item.detail} ${item.conclusion}`.toLowerCase();
       return needles.some(n => hay.includes(n)) ? [index] : [];
     });
-  })();
+  }, [starKeywordsKey]);
+  const specialStarSet = useMemo(() => new Set(specialStars), [specialStars]);
   const jumpSpecialStar = () => {
     if (!specialStars.length) return;
     const pos = specialStars.indexOf(selected);
@@ -115,7 +117,7 @@ export default function CommunityIdentity() {
       </div>
       <article className="commons-detail" aria-labelledby="commons-question" aria-live="polite">
         <div className="commons-detail-main">
-          <p className="commons-meta"><span>{selected + 1} / {DISCUSSIONS.length}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span>{specialStars.includes(selected) && themePack?.home && <span className="commons-special-badge">{themePack.home.badge}</span>}</p>
+          <p className="commons-meta"><span>{selected + 1} / {DISCUSSIONS.length}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span>{specialStarSet.has(selected) && themePack?.home && <span className="commons-special-badge">{themePack.home.badge}</span>}</p>
           <h3 id="commons-question" lang={discussion.lang}>{discussion.question}</h3>
           {discussion.quote && <blockquote lang={discussion.lang}>{discussion.quote}</blockquote>}
           <div className="commons-nav" role="group" aria-label={copy.browseDiscussions}>
