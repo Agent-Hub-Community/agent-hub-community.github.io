@@ -4,6 +4,7 @@ import SiteHeader from './SiteHeader';
 import AboutPage from './AboutPage';
 import SiteFooter from './SiteFooter';
 import { HomeLanguageProvider, useHomeLanguage } from './HomeLanguage';
+import { ThemePackProvider } from './ThemePack';
 import './fonts.css';
 import './site.css';
 import './module-header.css';
@@ -21,7 +22,7 @@ function AboutShell() {
 }
 
 export function AboutApp() {
-  return <HomeLanguageProvider page="about"><AboutShell/></HomeLanguageProvider>;
+  return <HomeLanguageProvider page="about"><ThemePackProvider><AboutShell/></ThemePackProvider></HomeLanguageProvider>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <AboutApp/>);

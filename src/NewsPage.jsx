@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpRight, Calendar } from 'lucide-react';
 import { NEWS_COPY, NEWS_ITEMS } from './news-data';
-import { HUB_SUMMARY } from './site-map';
+import { HUB_SUMMARY, sitePath } from './site-map';
 import { useHomeLanguage } from './HomeLanguage';
+import { useThemePack } from './ThemePack';
 
 function formatTemplate(template, values) {
   return Object.entries(values).reduce((out, [key, value]) => out.replace(`{${key}}`, String(value)), template);
@@ -10,6 +11,7 @@ function formatTemplate(template, values) {
 
 export default function NewsPage() {
   const { language } = useHomeLanguage();
+  const themePack = useThemePack();
   const c = NEWS_COPY[language];
   const [filter, setFilter] = useState('all');
   const [hub, setHub] = useState(null);
@@ -43,6 +45,23 @@ export default function NewsPage() {
           {hub.opportunities?.path && <a className="news-live-link" href={hub.opportunities.path}>
             {c.liveOpeningsLink}<ArrowUpRight size={13} aria-hidden="true"/>
           </a>}
+        </div>}
+        {themePack?.home && <div className="news-theme-ribbon" role="region" aria-label={themePack.home.badge}>
+          <div className="news-theme-copy">
+            <div className="news-theme-meta">
+              <span className="news-theme-badge">{themePack.home.badge}</span>
+              <span className="news-theme-eyebrow" lang="en">{themePack.home.eyebrow}</span>
+            </div>
+            <p className="news-theme-summary">{themePack.home.summary}</p>
+          </div>
+          <div className="news-theme-actions">
+            <a className="news-theme-primary" href={themePack.home.href}>
+              {language === 'en' ? 'Read special edition' : '阅读本期特刊'}<ArrowUpRight size={14} aria-hidden="true"/>
+            </a>
+            <a className="news-theme-secondary" href={sitePath('themes')}>
+              {language === 'en' ? 'Theme archive' : '主题档案馆'}
+            </a>
+          </div>
         </div>}
       </div>
     </section>

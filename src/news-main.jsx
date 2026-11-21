@@ -4,6 +4,7 @@ import SiteHeader from './SiteHeader';
 import NewsPage from './NewsPage';
 import SiteFooter from './SiteFooter';
 import { HomeLanguageProvider, useHomeLanguage } from './HomeLanguage';
+import { ThemePackProvider } from './ThemePack';
 import './fonts.css';
 import './site.css';
 import './module-header.css';
@@ -21,7 +22,7 @@ function NewsShell() {
 }
 
 export function NewsApp() {
-  return <HomeLanguageProvider page="news"><NewsShell/></HomeLanguageProvider>;
+  return <HomeLanguageProvider page="news"><ThemePackProvider><NewsShell/></ThemePackProvider></HomeLanguageProvider>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <NewsApp/>);
