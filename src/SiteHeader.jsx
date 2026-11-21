@@ -2,10 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import BrandWordmark from './BrandWordmark';
 import { LanguageSwitch, useHomeLanguage } from './HomeLanguage';
+import { useThemePack } from './ThemePack';
 import { PRIMARY, sitePath } from './site-map';
 
 export default function SiteHeader({ current = 'home' }) {
   const { copy } = useHomeLanguage();
+  const themePack = useThemePack();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const header = useRef(null), menu = useRef(null);
@@ -40,6 +42,7 @@ export default function SiteHeader({ current = 'home' }) {
   return <header ref={header} className={'site-header module-header is-visible ' + 'cinema-header' + (scrolled ? ' is-scrolled' : '') + (open ? ' menu-open' : '')}>
     <div className="header-inner cinema-wrap">
       <a className="brand" href={homeHref} aria-label={copy.home}><img src="/assets/agenthub-icon.webp" alt="" width="28" height="28"/><BrandWordmark/></a>
+      {themePack?.home && <a className="header-theme-pill" href={themePack.home.href} title={themePack.home.summary}><span className="header-theme-dot" aria-hidden="true"/>{themePack.home.badge}</a>}
       <nav id="site-navigation" className={'nav' + (open ? ' is-open' : '')} aria-label={copy.navigation}>
         {navigation.map(([id, href, label]) => <a key={href} href={href} aria-current={id === current ? 'page' : undefined} onClick={() => setOpen(false)}>{label}</a>)}
         <a className="nav-join" href={join} onClick={() => setOpen(false)}>{copy.join}</a>

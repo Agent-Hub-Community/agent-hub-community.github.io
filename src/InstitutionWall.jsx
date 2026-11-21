@@ -21,7 +21,9 @@ export default function InstitutionWall() {
   const ref = useRef(null);
   const [paused, setPaused] = useState(false);
   const [active, setActive] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
+    setHydrated(true);
     let inView = false;
     const sync = () => setActive(inView && !document.hidden);
     const observer = new IntersectionObserver(entries => { inView = entries[0].isIntersecting; sync(); });
@@ -29,6 +31,7 @@ export default function InstitutionWall() {
     document.addEventListener('visibilitychange', sync);
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
   }, []);
+  const copies = hydrated ? [false, true] : [false];
   return <section className="institution-section" id="join" ref={ref} aria-labelledby="members-title">
     <div className="institution-heading cinema-wrap">
       <h2 id="members-title"><span>{copy.memberHeading[0]}</span><span>{copy.memberHeading[1]}</span></h2>
@@ -39,7 +42,7 @@ export default function InstitutionWall() {
       {rows.map((row, index) => <div className="institution-row" key={index} style={{ '--item-count': row.length }} tabIndex={0} role="group" aria-label={copy.groups[index < 2 ? 0 : 1] + ', ' + copy.browseRow}
         onMouseDown={event => event.preventDefault()} onBlur={event => { event.currentTarget.scrollLeft = 0; }}>
         <div className="institution-track" data-reverse={index % 2 === 1}>
-          {[false, true].map(duplicate => <ul className="institution-group" key={String(duplicate)} aria-label={duplicate ? undefined : copy.groups[index < 2 ? 0 : 1]} aria-hidden={duplicate || undefined} inert={duplicate || undefined}>
+          {copies.map(duplicate => <ul className="institution-group" key={String(duplicate)} aria-label={duplicate ? undefined : copy.groups[index < 2 ? 0 : 1]} aria-hidden={duplicate || undefined} inert={duplicate || undefined}>
             {row.map(item => <li key={item.title} title={name(item)}><MemberLogo item={item}/><span className="institution-name">{name(item)}</span></li>)}
           </ul>)}
         </div>

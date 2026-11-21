@@ -1,10 +1,10 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { MotionConfig } from 'motion/react';
 import GenesisHero from './GenesisHero';
 import SiteHeader from './SiteHeader';
 import CinematicHome, { HomeFooter } from './CinematicHome';
 import { HomeLanguageProvider, useHomeLanguage } from './HomeLanguage';
+import { ThemePackProvider } from './ThemePack';
 import './fonts.css';
 import './site.css';
 import './module-header.css';
@@ -24,7 +24,7 @@ function HomeContent() {
 }
 
 export function App() {
-  return <HomeLanguageProvider><MotionConfig reducedMotion="user"><HomeContent/></MotionConfig></HomeLanguageProvider>;
+  return <HomeLanguageProvider><ThemePackProvider><HomeContent/></ThemePackProvider></HomeLanguageProvider>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <App/>);

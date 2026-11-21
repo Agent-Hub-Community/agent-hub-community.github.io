@@ -10,6 +10,7 @@ export const SITE = {
     { id: 'rank', path: '/newspaper/rank/week/', zh: '活跃榜', en: 'Activity' },
     { id: 'search', path: '/newspaper/search/', zh: '搜索', en: 'Search' },
     { id: 'opportunities', path: '/newspaper/library/#opportunities', zh: '机会', en: 'Openings' },
+    { id: 'themes', path: '/newspaper/themes/', zh: '主题馆', en: 'Themes' },
   ],
   community: [
     { id: 'community', path: '/#collaborate', zh: '讨论', en: 'Discussions' },
@@ -44,3 +45,5 @@ export const JOIN_FORM = 'https://my.feishu.cn/share/base/form/shrcnF9LRoxGd0iNM
 
 // The newspaper writes this summary on every daily rebuild (newspaper/lib/hub.mjs).
 export const HUB_SUMMARY = '/newspaper/hub.json';
+// Active special-day & knowledge theme packs published by the newspaper (newspaper/lib/themes.mjs).
+export const THEMES_REGISTRY = '/newspaper/themes.json';

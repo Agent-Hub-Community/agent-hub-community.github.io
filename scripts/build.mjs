@@ -19,6 +19,7 @@ const options = {
   entryPoints: { site: 'src/main.jsx', news: 'src/news-main.jsx', about: 'src/about-main.jsx' },
   bundle: true,
   minify: true,
+  charset: 'utf8',
   format: 'esm',
   target: ['es2020'],
   outdir: 'assets',
@@ -44,6 +45,17 @@ async function pruneOutputs(metafile) {
   }
 }
 
+async function inlineHeadScripts() {
+  const [themeSource, routingSource] = await Promise.all([
+    readFile('src/theme-init.js', 'utf8'),
+    readFile('src/home-routing.js', 'utf8')
+  ]);
+  const combined = await esbuild.transform(`${themeSource}\n${routingSource}`, {
+    minify: true, target: 'es2020', charset: 'utf8'
+  });
+  return `<script>${combined.code.trim()}</script>`;
+}
+
 async function renderHTML() {
   const wordmark = JSON.parse(await readFile('src/brand/wordmark.json', 'utf8'));
   const paths = wordmark.letters.map(letter => `<path d="${letter.d}"/>`).join('');
@@ -60,15 +72,16 @@ async function renderHTML() {
       format: 'esm', packages: 'external', outfile: temporary,
       jsx: 'automatic', loader: { '.css': 'empty' }, plugins: [homepageCommunityPlugin], logLevel: 'silent'
     });
-    const { render, renderNews, renderAbout } = await import(`${pathToFileURL(resolve(temporary))}?build=${Date.now()}`);
-    const [homeTemplate, newsTemplate, aboutTemplate] = await Promise.all([
+    const [{ render, renderNews, renderAbout }, homeTemplate, newsTemplate, aboutTemplate, headScripts] = await Promise.all([
+      import(`${pathToFileURL(resolve(temporary))}?build=${Date.now()}`),
       readFile('src/index.html', 'utf8'),
       readFile('src/news.html', 'utf8'),
       readFile('src/about.html', 'utf8'),
+      inlineHeadScripts(),
     ]);
     await Promise.all([mkdir('news', { recursive: true }), mkdir('about', { recursive: true })]);
     await Promise.all([
-      writeFile('index.html', homeTemplate.replace('<!--app-->', render())),
+      writeFile('index.html', homeTemplate.replace('<!--head-scripts-->', headScripts).replace('<!--app-->', render())),
       writeFile('news/index.html', newsTemplate.replace('<!--app-->', renderNews())),
       writeFile('about/index.html', aboutTemplate.replace('<!--app-->', renderAbout())),
     ]);

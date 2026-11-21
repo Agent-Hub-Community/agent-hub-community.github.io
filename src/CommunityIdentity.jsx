@@ -4,6 +4,7 @@ import community from 'agenthub:homepage-community';
 import { DISCUSSION_TRANSLATIONS } from './commons-stories';
 import { createSky } from './commons-sky';
 import { useHomeLanguage } from './HomeLanguage';
+import { useThemePack } from './ThemePack';
 import { sitePath } from './site-map';
 import SOURCES from './discussion-sources.json';
 
@@ -29,6 +30,7 @@ function read(index, language) {
 // brings the matching idea in the list into view.
 export default function CommunityIdentity() {
   const { copy, language } = useHomeLanguage();
+  const themePack = useThemePack();
   const surface = useRef(null), sky = useRef(null), ideaList = useRef(null), openPoint = useRef(null);
   const [selected, setSelected] = useState(FIRST);
   const [peek, setPeek] = useState(null);
@@ -37,6 +39,20 @@ export default function CommunityIdentity() {
   const discussion = read(selected, language);
   const preview = peek && (peek.kind === 'question' ? read(peek.index, language) : null);
   const ideaText = index => index < discussion.ideas.length ? discussion.ideas[index] : discussion.conclusion;
+  const specialStars = (() => {
+    const kws = themePack?.home?.starKeywords;
+    if (!Array.isArray(kws) || !kws.length) return [];
+    const needles = kws.map(k => k.toLowerCase());
+    return DISCUSSIONS.flatMap((item, index) => {
+      const hay = `${item.tag} ${item.question} ${item.detail} ${item.conclusion}`.toLowerCase();
+      return needles.some(n => hay.includes(n)) ? [index] : [];
+    });
+  })();
+  const jumpSpecialStar = () => {
+    if (!specialStars.length) return;
+    const pos = specialStars.indexOf(selected);
+    setSelected(specialStars[(pos + 1) % specialStars.length]);
+  };
 
   useEffect(() => {
     sky.current = createSky(surface.current, {
@@ -65,6 +81,9 @@ export default function CommunityIdentity() {
   }, []);
   useEffect(() => { sky.current?.select(selected, discussion.ideas.length); setIdea(null); setPinned(null); }, [selected, discussion.ideas.length]);
   useEffect(() => { sky.current?.focusIdea(lit); }, [lit]);
+  useEffect(() => {
+    sky.current?.setHighlights(specialStars, themePack?.home?.accent || '#f5cf7a');
+  }, [themePack?.id, specialStars.join(',')]);
 
   const step = offset => setSelected(index => (index + offset + DISCUSSIONS.length) % DISCUSSIONS.length);
   const shuffle = () => setSelected(index => (index + 1 + Math.floor(Math.random() * (DISCUSSIONS.length - 1))) % DISCUSSIONS.length);
@@ -96,13 +115,14 @@ export default function CommunityIdentity() {
       </div>
       <article className="commons-detail" aria-labelledby="commons-question" aria-live="polite">
         <div className="commons-detail-main">
-          <p className="commons-meta"><span>{selected + 1} / {DISCUSSIONS.length}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span></p>
+          <p className="commons-meta"><span>{selected + 1} / {DISCUSSIONS.length}</span><span className="commons-tag" lang={discussion.lang}>{discussion.tag}</span>{specialStars.includes(selected) && themePack?.home && <span className="commons-special-badge">{themePack.home.badge}</span>}</p>
           <h3 id="commons-question" lang={discussion.lang}>{discussion.question}</h3>
           {discussion.quote && <blockquote lang={discussion.lang}>{discussion.quote}</blockquote>}
           <div className="commons-nav" role="group" aria-label={copy.browseDiscussions}>
             <button type="button" onClick={() => step(-1)} aria-label={copy.previousDiscussion}><ChevronLeft size={17} aria-hidden="true"/></button>
             <button type="button" className="commons-shuffle" onClick={shuffle}><Shuffle size={15} aria-hidden="true"/>{copy.randomDiscussion}</button>
             <button type="button" onClick={() => step(1)} aria-label={copy.nextDiscussion}><ChevronRight size={17} aria-hidden="true"/></button>
+            {specialStars.length > 0 && themePack?.home && <button type="button" className="commons-special-jump" onClick={jumpSpecialStar}>✦ {themePack.home.badge}星点 ({specialStars.length})</button>}
             <a className="commons-record" href={sourceOf(selected)?.path || sitePath('search') + '?q=' + encodeURIComponent(DISCUSSIONS[selected].question)}>
               {sourceOf(selected) ? copy.sourceRecord[sourceOf(selected).kind] : copy.searchRecord}<ArrowUpRight size={14} aria-hidden="true"/></a>
           </div>

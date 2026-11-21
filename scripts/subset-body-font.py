@@ -44,10 +44,13 @@ def main():
     parser.add_argument('source', type=Path)
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'src/brand')
     args = parser.parse_args()
-    sources = ['src/CommunityIdentity.jsx', 'src/commons-stories.js', 'src/main.jsx', 'src/GenesisHero.jsx', 'src/SiteHeader.jsx', 'src/CinematicHome.jsx', 'src/InstitutionWall.jsx', 'src/PlanetScene.jsx', 'src/HomeLanguage.jsx', 'src/home-copy.js']
+    sources = ['src/CommunityIdentity.jsx', 'src/commons-stories.js', 'src/main.jsx', 'src/GenesisHero.jsx', 'src/SiteHeader.jsx', 'src/CinematicHome.jsx', 'src/HubSection.jsx', 'src/InstitutionWall.jsx', 'src/PlanetScene.jsx', 'src/HomeLanguage.jsx', 'src/home-copy.js', 'src/site-map.js']
     core = characters(''.join((ROOT / name).read_text() for name in sources))
     data_text = (ROOT / 'src/community-data.json').read_text()
     data = json.loads(data_text)
+    # Include the default discussion shown on initial load (#59) so archive font is never fetched on first paint.
+    first_item = data['discussions'][58]
+    core |= characters(first_item['question'] + first_item['tag'] + first_item['quote'] + first_item['detail'] + first_item['conclusion'])
     # Follow the curated first page. The remaining characters are loaded only
     # when additional excerpts or expanded discussions make them necessary.
     journal = json.loads((ROOT / 'src/journal-content.json').read_text())

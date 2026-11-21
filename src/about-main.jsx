@@ -1,6 +1,5 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { MotionConfig } from 'motion/react';
 import SiteHeader from './SiteHeader';
 import AboutPage from './AboutPage';
 import SiteFooter from './SiteFooter';
@@ -22,7 +21,7 @@ function AboutShell() {
 }
 
 export function AboutApp() {
-  return <HomeLanguageProvider page="about"><MotionConfig reducedMotion="user"><AboutShell/></MotionConfig></HomeLanguageProvider>;
+  return <HomeLanguageProvider page="about"><AboutShell/></HomeLanguageProvider>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <AboutApp/>);

@@ -85,11 +85,13 @@ export function createSky(canvas, { groups, weights, onHover, onSelect }) {
   let width = 0, height = 0, twinklers = [], questions = [], compact = false;
   let frame = 0, clock = 0, last = 0, visible = false, still = preference.matches;
   let selected = 0, ideas = 0, bloom = 1, hovered = null, focusIdea = null, drift = 0;
+  let highlights = new Set(), highlightColor = '#f5cf7a';
 
   function layout() {
     const box = canvas.parentElement.getBoundingClientRect();
     width = box.width; height = box.height;
     if (!width || !height) return false;
+    drift = still ? 0 : clamp((box.top + height / 2 - innerHeight / 2) * .05, -24, 24);
     const ratio = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -166,8 +168,6 @@ export function createSky(canvas, { groups, weights, onHover, onSelect }) {
 
   function draw(delta) {
     context.clearRect(0, 0, width, height);
-    const rect = canvas.getBoundingClientRect();
-    drift = still ? 0 : clamp((rect.top + rect.height / 2 - innerHeight / 2) * .05, -24, 24);
     context.globalAlpha = 1;
     context.drawImage(backdrop, 0, -24 + drift * .45, width, height + 48);
     for (const star of twinklers) {
@@ -205,17 +205,22 @@ export function createSky(canvas, { groups, weights, onHover, onSelect }) {
         }
       });
     }
-    // Every question; the selected and hovered ones carry a ring.
+    // Every question; the selected, hovered, and active theme-highlighted stars carry rings.
     questions.forEach((star, index) => {
       const twinkle = still ? 1 : .78 + .22 * Math.sin(clock * star.speed + star.phase);
-      const isSelected = index === selected, isHovered = index === hovered;
-      const alpha = isSelected ? 1 : isHovered ? .95 : (.55 + star.r * .12) * twinkle;
-      const radius = isSelected ? star.r + 1.1 : isHovered ? star.r + .6 : star.r;
-      if (star.spikes || isSelected) spikes(star.x, star.y, radius, star.tint, alpha * .5);
-      drawStar(star.x, star.y, radius, isSelected ? STAR : star.tint, alpha, isSelected ? 1.5 : isHovered ? 1.1 : .45 + star.r * .12);
-      if (isSelected || isHovered) {
-        context.globalAlpha = isSelected ? .5 : .35; context.strokeStyle = isSelected ? STAR : LINE; context.lineWidth = 1;
-        context.beginPath(); context.arc(star.x, star.y, star.r + (isSelected ? 7 + (still ? 0 : Math.sin(clock * 1.6)) : 6), 0, Math.PI * 2); context.stroke();
+      const isSelected = index === selected, isHovered = index === hovered, isSpecial = highlights.has(index);
+      const alpha = isSelected ? 1 : isHovered ? .95 : isSpecial ? .96 * twinkle : (.55 + star.r * .12) * twinkle;
+      const radius = isSelected ? star.r + 1.1 : isHovered ? star.r + .6 : isSpecial ? star.r + .85 : star.r;
+      const tint = isSpecial && !isSelected ? highlightColor : (isSelected ? STAR : star.tint);
+      if (star.spikes || isSelected || isSpecial) spikes(star.x, star.y, radius, tint, alpha * (isSpecial ? .7 : .5));
+      drawStar(star.x, star.y, radius, tint, alpha, isSelected ? 1.5 : isSpecial ? 1.35 : isHovered ? 1.1 : .45 + star.r * .12);
+      if (isSelected || isHovered || isSpecial) {
+        context.globalAlpha = isSelected ? .5 : isSpecial ? .48 : .35;
+        context.strokeStyle = isSelected ? STAR : isSpecial ? highlightColor : LINE;
+        context.lineWidth = isSpecial ? 1.15 : 1;
+        context.setLineDash(isSpecial && !isSelected ? [2, 3] : []);
+        context.beginPath(); context.arc(star.x, star.y, star.r + (isSelected ? 7 + (still ? 0 : Math.sin(clock * 1.6)) : isSpecial ? 8 + (still ? 0 : Math.sin(clock * 1.9 + star.phase)) : 6), 0, Math.PI * 2); context.stroke();
+        context.setLineDash([]);
       }
     });
     context.globalAlpha = 1;
@@ -265,11 +270,17 @@ export function createSky(canvas, { groups, weights, onHover, onSelect }) {
   const leave = () => report(null);
   const click = event => { const target = nearest(event); if (target) onSelect(target); };
 
-  const reduce = event => { still = event.matches; sync(); };
-  const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }, { rootMargin: '80px' });
+  function updateDrift() {
+    if (!visible || still) { drift = 0; return; }
+    const rect = canvas.getBoundingClientRect();
+    drift = clamp((rect.top + rect.height / 2 - innerHeight / 2) * .05, -24, 24);
+  }
+  const reduce = event => { still = event.matches; if (still) drift = 0; else updateDrift(); sync(); };
+  const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; if (visible) updateDrift(); sync(); }, { rootMargin: '80px' });
   const resizer = new ResizeObserver(() => { if (layout()) draw(0); });
   observer.observe(canvas); resizer.observe(canvas.parentElement);
   canvas.addEventListener('pointermove', move); canvas.addEventListener('pointerleave', leave); canvas.addEventListener('click', click);
+  window.addEventListener('scroll', updateDrift, { passive: true });
   preference.addEventListener('change', reduce); document.addEventListener('visibilitychange', sync);
   if (layout()) draw(0);
   return {
@@ -277,9 +288,16 @@ export function createSky(canvas, { groups, weights, onHover, onSelect }) {
     select(index, ideaCount) { if (index !== selected || ideaCount !== ideas) bloom = 0; selected = index; ideas = ideaCount; if (!frame) draw(0); },
     // Brighten one idea while it is hovered or focused in the list.
     focusIdea(index) { focusIdea = index; if (!frame) draw(0); },
+    // Highlight theme-relevant discussion stars during a special edition.
+    setHighlights(indices = [], color = '#f5cf7a') {
+      highlights = new Set(indices);
+      highlightColor = color || '#f5cf7a';
+      if (!frame) draw(0);
+    },
     dispose() {
       cancelAnimationFrame(frame); observer.disconnect(); resizer.disconnect();
       canvas.removeEventListener('pointermove', move); canvas.removeEventListener('pointerleave', leave); canvas.removeEventListener('click', click);
+      window.removeEventListener('scroll', updateDrift);
       preference.removeEventListener('change', reduce); document.removeEventListener('visibilitychange', sync);
     },
   };

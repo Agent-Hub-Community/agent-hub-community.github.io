@@ -13,6 +13,7 @@
 [data-page='home'] .genesis { background: #000; }
 [data-page='home'] .genesis-portal { right: clamp(28px, 5.5vw, 96px); bottom: 28px; font-size: 12px; }
 .planet-scene, .institution-section { scroll-margin-top: calc(-1 * (var(--header-height) + var(--space-lg))); }
+.hub-section, .community-identity, .institution-section { content-visibility: auto; contain-intrinsic-size: auto 100svh; }
 /* Original Mars videos, full frame, left/middle copy. See docs/cinematic-home.md. */
 .planet-scene { position: relative; isolation: isolate; height: max(100svh, 520px); overflow: clip; background: #000; color: #fff; }
 .planet-media { position: absolute; inset: 0; }

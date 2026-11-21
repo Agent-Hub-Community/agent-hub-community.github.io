@@ -1,15 +1,18 @@
 {
   "source": "assets/human-machine-creation.png",
   "output": "assets/human-machine-creation.webp",
-  "dimensions": [
+  "source_dimensions": [
     1536,
     1024
   ],
+  "dimensions": [
+    768,
+    512
+  ],
   "source_bytes": 762466,
-  "output_bytes": 492046,
-  "saved_bytes": 270420,
+  "output_bytes": 15812,
+  "saved_bytes": 746654,
   "source_sha256": "35f26a19169c6b6fe2ddc60022c887cffe87892a3c38a849d729c40eb90ef320",
-  "output_sha256": "2bec421f27765213ebf1065c467b8cda6555e5b9dfecb072adb375c05eb11f17",
-  "decoded_rgba_sha256": "1e69c1fd606d79ef41b1cb479845951f5d24820e819ce2d9c54e2ba89c6ec56f",
-  "encoding": "WebP lossless, quality 100, method 6; no resize; exact RGBA round-trip"
+  "output_sha256": "7b5b2bce8b8c273822655883e92d88b95cf2d3b03081b349961264e5af0ce918",
+  "encoding": "WebP grayscale lossy, quality 85, method 6, 768x512 Lanczos (>2x ASCII sampling grid)"
 }

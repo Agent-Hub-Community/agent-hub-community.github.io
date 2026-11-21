@@ -1,6 +1,5 @@
 import React from 'react';
 import { hydrateRoot } from 'react-dom/client';
-import { MotionConfig } from 'motion/react';
 import SiteHeader from './SiteHeader';
 import NewsPage from './NewsPage';
 import SiteFooter from './SiteFooter';
@@ -22,7 +21,7 @@ function NewsShell() {
 }
 
 export function NewsApp() {
-  return <HomeLanguageProvider page="news"><MotionConfig reducedMotion="user"><NewsShell/></MotionConfig></HomeLanguageProvider>;
+  return <HomeLanguageProvider page="news"><NewsShell/></HomeLanguageProvider>;
 }
 
 if (typeof document !== 'undefined') hydrateRoot(document.getElementById('root'), <NewsApp/>);

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Check, ChevronDown, Copy, Search } from 'lucide-react';
 import { useHomeLanguage } from './HomeLanguage';
+import { useThemePack } from './ThemePack';
 import { HUB_SUMMARY, SITE, SKILL_SOURCE, sitePath } from './site-map';
 
 const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? '');
@@ -72,6 +73,7 @@ function AgentPrompt({ text }) {
 // cannot load, the links still work.
 export default function HubSection() {
   const { copy, language } = useHomeLanguage();
+  const themePack = useThemePack();
   const text = copy.hub;
   const locale = language === 'en' ? 'en-US' : 'zh-CN';
   const section = useRef(null);
@@ -114,6 +116,14 @@ export default function HubSection() {
       <div className="hub-lead">
         <h2 id="hub-title">{text.heading[0]}<br/>{text.heading[1]}</h2>
         <p className="hub-intro">{text.intro}</p>
+        {themePack?.home && <a className="hub-theme-ribbon" href={themePack.home.href}>
+          <div className="hub-theme-meta">
+            <span className="hub-theme-badge">{themePack.home.badge}</span>
+            <span className="hub-theme-eyebrow">{themePack.home.eyebrow}</span>
+          </div>
+          <p className="hub-theme-summary">{themePack.home.summary}</p>
+          <ArrowUpRight size={17} aria-hidden="true"/>
+        </a>}
         {/* The dateline, as a newspaper prints it under its rules: issue number, then the date. */}
         {status !== 'error' && <p className="hub-dateline">
           <span>{hub?.issues?.daily ? fill(text.issueNumber, { n: hub.issues.daily }) : '\u00a0'}</span>

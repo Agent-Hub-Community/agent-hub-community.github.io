@@ -1,4 +1,4 @@
-@font-face { font-family: 'AgentHub Grotesk'; src: url('./brand/space-grotesk-latin-450.woff') format('woff'); font-style: normal; font-weight: 450; font-display: swap; }
+@font-face { font-family: 'AgentHub Grotesk'; src: url('./brand/space-grotesk-latin-450.woff2') format('woff2'); font-style: normal; font-weight: 450; font-display: swap; }
 
 .genesis { position: relative; height: 310svh; background: var(--color-paper); }
 .genesis-stage { position: sticky; top: 0; height: 100svh; min-height: 500px; overflow: clip; isolation: isolate; }
